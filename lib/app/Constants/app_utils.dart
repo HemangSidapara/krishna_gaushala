@@ -36,7 +36,7 @@ class Utils {
         margin: EdgeInsets.only(bottom: isExpandedMargin ? 12 : 20, left: 10, right: 10),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: title == 'Error' ? AppColors.ERROR_COLOR : AppColors.SUCCESS_COLOR,
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
         messageText: Row(
           children: [
             Icon(
