@@ -14,7 +14,7 @@ class SplashView extends StatelessWidget {
         child: Container(
           color: Colors.red,
           child: SizedBox(
-            height: 50.h,
+            height: 50.w,
             width: 50.w,
           ),
         ),

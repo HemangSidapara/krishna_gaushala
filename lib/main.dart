@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_fonts.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
-      theme: ThemeData(fontFamily: AppFonts.appFontFamily, primaryColor: AppColors.PRIMARY_COLOR),
+      theme: ThemeData(primaryColor: AppColors.PRIMARY_COLOR, textTheme: GoogleFonts.nunitoSansTextTheme()),
       initialRoute: Routes.splash,
       defaultTransition: Transition.downToUp,
       getPages: AppPages.pages,
