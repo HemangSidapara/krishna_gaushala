@@ -21,6 +21,9 @@ class ApiBaseHelper {
     connectTimeout: const Duration(milliseconds: 5000),
     receiveTimeout: const Duration(milliseconds: 5000),
     sendTimeout: const Duration(milliseconds: 10000),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
   );
 
   static Dio createDio() {
@@ -93,12 +96,14 @@ class ApiBaseHelper {
     Function(ResponseModel res)? onSuccess,
     Function(DioExceptions dioExceptions)? onError,
     Options? options,
+    Map<String, dynamic>? queryParameters,
   }) async {
     try {
       showProgressDialog = showProgress;
       Response response = await baseAPI.post(
         url,
         data: params,
+        queryParameters: queryParameters,
       );
       return handleResponse(response, onError!, onSuccess!);
     } on DioError catch (e) {

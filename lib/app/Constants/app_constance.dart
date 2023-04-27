@@ -1,34 +1,4 @@
 class AppConstance {
   static const authorizationToken = "authorizationToken";
-  static const businessID = "businessID";
-  static const currentUserPersonID = "currentUserPersonID";
-  static const personDetailId = "personDetailId";
-  static const personProfileUrl = "personProfileUrl";
-  static const isLeaveFromEdit = "isLeaveFromEdit";
-  static const isTimesheetFromEdit = "isTimesheetFromEdit";
-  static const currentUserProfileUrl = "currentUserProfileUrl";
-  static const isTimesheetsFromPeople = "isTimesheetsFromPeople";
-  static const currentUserPersonName = "currentUserPersonName";
-  static const capitalAlphabates = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  static const isSignUpBusinessAdded = "isSignUpBusinessAdded";
-  static const currentUserEmailID = "currentUserEmailID";
-  static const isLeaveApplicationFromPeople = "isLeaveApplicationFromPeople";
-  static const isLeaveApplicationFromProfileSettings = "isLeaveApplicationFromProfileSettings";
-  static const isTimesheetsFromProfileSettings = "isTimesheetsFromProfileSettings";
-  static const isTimesheetsFromTimesheetModule = "isTimesheetsFromTimesheetModule";
-  static const currentUserPrimaryLocationID = "currentUserPrimaryLocationID";
-  static const locationFromDashboardTab = "locationFromDashboardTab";
-  static const locationFromNewsFeedTab = "locationFromNewsFeedTab";
-  static const locationFromScheduleTab = "locationFromScheduleTab";
-  static const locationFromTimesheetTab = "locationFromTimesheetTab";
-  static const locationFromPeopleTab = "locationFromPeopleTab";
-  static const whichTab = "whichTab";
-  static const currentUserRole = "currentUserRole";
-  static const currentUserRoleId = "currentUserRoleId";
-  static const currentUserResourceCode = "currentUserResourceCode";
-  static const isTimesheetsFromDashboard = "isTimeSheetsFromDashboard";
-  static const timeZoneId = "timeZoneId";
-  static const currentUserFCMToken = "currentUserFCMToken";
-  static const currentUserLeaveRequestID = "currentUserLeaveRequestID";
-  static const currentUserTimesheetRequestID = "currentUserTimesheetRequestID";
+  static const isLoggedIn = "isLoggedIn";
 }

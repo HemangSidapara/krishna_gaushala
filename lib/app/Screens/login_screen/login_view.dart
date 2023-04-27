@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
               color: AppColors.SECONDARY_COLOR,
             ),
           ),
-          elevation: 0,
+          elevation: 4,
           leading: const SizedBox(),
         ),
         body: Form(
@@ -46,6 +46,10 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 ///Username
                 TextFormField(
+                  controller: controller.usernameController,
+                  validator: (value) {
+                    return controller.validateEmail(value!);
+                  },
                   decoration: InputDecoration(
                       hintText: 'Enter username',
                       hintStyle: TextStyle(
@@ -79,7 +83,24 @@ class _LoginViewState extends State<LoginView> {
 
                 ///Password
                 TextFormField(
+                  controller: controller.passwordController,
+                  obscureText: !controller.visiblePassword,
+                  validator: (value) {
+                    return controller.validatePassword(value!);
+                  },
                   decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.visiblePassword ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                          color: controller.visiblePassword ? AppColors.SECONDARY_COLOR : AppColors.BLACK_COLOR.withAlpha(70),
+                          size: 5.w,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            controller.visiblePassword = !controller.visiblePassword;
+                          });
+                        },
+                      ),
                       hintText: 'Enter password',
                       hintStyle: TextStyle(
                         fontSize: 10.sp,
@@ -112,8 +133,8 @@ class _LoginViewState extends State<LoginView> {
 
                 ///Button
                 ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.dashboard);
+                  onPressed: () async{
+                   await controller.checkLogin();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.SECONDARY_COLOR,

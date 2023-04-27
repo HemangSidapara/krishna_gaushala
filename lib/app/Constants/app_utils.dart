@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
+import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
 class Utils {
   static void warningMessage(String message) {
@@ -30,21 +31,21 @@ class Utils {
     }
   }
 
-  static void validationCheck({message, title = "Error", isExpandedMargin = false}) {
+  static void validationCheck({message, bool isSuccess = true, isExpandedMargin = false}) {
     if (!Get.isSnackbarOpen) {
       Get.rawSnackbar(
         margin: EdgeInsets.only(bottom: isExpandedMargin ? 12 : 20, left: 10, right: 10),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: title == 'Error' ? AppColors.ERROR_COLOR : AppColors.SUCCESS_COLOR,
-        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        backgroundColor: isSuccess ? AppColors.SUCCESS_COLOR : AppColors.ERROR_COLOR,
+        padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
         messageText: Row(
           children: [
             Icon(
-              title == 'Error' ? Icons.error_rounded : Icons.check_circle,
+              isSuccess ? Icons.check_circle : Icons.error_rounded,
               color: AppColors.WHITE_COLOR,
               size: 24,
             ),
-            SizedBox(width: 3),
+            SizedBox(width: 2.w),
             Expanded(
               child: Text(
                 message ?? 'Empty message',
