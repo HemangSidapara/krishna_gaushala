@@ -4,6 +4,7 @@ import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_controller.dart';
+import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_view.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
 class DashboardView extends StatefulWidget {
@@ -18,81 +19,98 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.WHITE_COLOR,
-      appBar: AppBar(
-        backgroundColor: AppColors.PRIMARY_COLOR,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.WHITE_COLOR,
+        appBar: AppBar(
+          backgroundColor: AppColors.PRIMARY_COLOR,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: AppColors.SECONDARY_COLOR,
+                size: 6.w,
+              ),
+              onPressed: () {
+                Get.toNamed(Routes.settings);
+              },
+            )
+          ],
+          title: Text(
+            AppStrings.krishnaGaushala,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
               color: AppColors.SECONDARY_COLOR,
-              size: 6.w,
             ),
-            onPressed: () {
-              Get.offAllNamed(Routes.login);
-            },
-          )
-        ],
-        title: Text(
-          AppStrings.krishnaGaushala,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: AppColors.SECONDARY_COLOR,
           ),
+          elevation: 0,
+          leading: const SizedBox(),
         ),
-        elevation: 0,
-        leading: const SizedBox(),
-      ),
-      body: Obx(() {
-        return Center(
-          child: controller.isLoading.value
-              ? CircularProgressIndicator(color: AppColors.SECONDARY_COLOR)
-              : controller.tabsList.isNotEmpty
-                  ? Column(
-                      children: [
-                        Container(
-                          color: AppColors.PRIMARY_COLOR,
-                          child: DefaultTabController(
-                            length: controller.tabsList.length,
-                            child: TabBar(
-                              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h).copyWith(bottom: 0),
-                              labelPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                              labelStyle: TextStyle(
-                                color: AppColors.SECONDARY_COLOR,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              unselectedLabelColor: AppColors.BLACK_COLOR.withOpacity(0.5),
-                              unselectedLabelStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              indicatorColor: AppColors.SECONDARY_COLOR,
-                              indicator: UnderlineTabIndicator(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
+        body: Obx(() {
+          return Center(
+            child: controller.isLoading.value
+                ? CircularProgressIndicator(color: AppColors.SECONDARY_COLOR)
+                : controller.tabsList.isNotEmpty
+                    ? DefaultTabController(
+                        length: controller.tabsList.length,
+                        child: Column(
+                          children: [
+                            Container(
+                              color: AppColors.PRIMARY_COLOR,
+                              child: TabBar(
+                                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h).copyWith(bottom: 0),
+                                labelPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                                labelStyle: TextStyle(
                                   color: AppColors.SECONDARY_COLOR,
-                                  width: 2.3,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
                                 ),
-                              ),
-                              isScrollable: true,
-                              tabs: [
-                                for (int index = 0; index < controller.tabsList.length; index++)
-                                  Text(
-                                    controller.tabsList[index].type ?? '',
+                                unselectedLabelColor: AppColors.BLACK_COLOR.withOpacity(0.5),
+                                unselectedLabelStyle: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                indicatorColor: AppColors.SECONDARY_COLOR,
+                                indicator: UnderlineTabIndicator(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                    color: AppColors.SECONDARY_COLOR,
+                                    width: 2.3,
                                   ),
-                              ],
+                                ),
+                                isScrollable: true,
+                                tabs: [
+                                  for (int index = 0; index < controller.tabsList.length; index++)
+                                    Text(
+                                      controller.tabsList[index].type ?? '',
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: TabBarView(
+                                physics: const BouncingScrollPhysics(),
+                                children: [
+                                  for (int index = 0; index < controller.tabsList.length; index++)
+                                    PaymentDetailsView(
+                                      index: index,
+                                      tabList: controller.tabsList,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    )
-                  : const Text('Temporary service is not available'),
-        );
-      }),
+                      )
+                    : const Text('Temporary service is not available'),
+          );
+        }),
+      ),
     );
   }
 }

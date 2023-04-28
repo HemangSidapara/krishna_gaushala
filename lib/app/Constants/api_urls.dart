@@ -5,4 +5,5 @@ class ApiUrls {
 
   static const String loginApi = '${baseUrlPath}Login';
   static const String getTypesApi = '${baseUrlPath}getTypes';
+  static const String generatePDFApi = '${baseUrlPath}generatePdf';
 }

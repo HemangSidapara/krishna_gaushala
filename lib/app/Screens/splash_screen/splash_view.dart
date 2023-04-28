@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
+import 'package:krishna_gaushala/app/Constants/app_images.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
 class SplashView extends StatelessWidget {
@@ -9,14 +10,12 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
     return Scaffold(
-      backgroundColor: AppColors.WHITE_COLOR,
+      backgroundColor: AppColors.PRIMARY_COLOR,
       body: Center(
-        child: Container(
-          color: Colors.red,
-          child: SizedBox(
-            height: 50.w,
-            width: 50.w,
-          ),
+        child: Image.asset(
+          Images.splashImage,
+          height: 70.w,
+          width: 70.w,
         ),
       ),
     );

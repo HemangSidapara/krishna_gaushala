@@ -1,78 +1,87 @@
 import 'dart:convert';
 /// code : "200"
-/// msg : [{"id":"1","type":"General"},{"id":"2","type":"Niran"},{"id":"3","type":"Gau\nDohan"},{"id":"4","type":"Vahan Vyavastha"},{"id":"5","type":"Sarvar"},{"id":"6","type":"Makan Bandhkam"}]
+/// Data : [{"type":"General","id":"1"},{"type":"Niran","id":"2"},{"type":"Gau Dohan","id":"3"},{"type":"Vahan Vyavastha","id":"4"},{"type":"Sarvar","id":"5"},{"type":"Makan Bandhkam","id":"6"}]
+/// msg : "Types Fetch Successfully..."
 
 GetTypesModel getTypesModelFromJson(String str) => GetTypesModel.fromJson(json.decode(str));
 String getTypesModelToJson(GetTypesModel data) => json.encode(data.toJson());
 class GetTypesModel {
   GetTypesModel({
       String? code, 
-      List<Msg>? msg,}){
+      List<Data>? data, 
+      String? msg,}){
     _code = code;
+    _data = data;
     _msg = msg;
 }
 
   GetTypesModel.fromJson(dynamic json) {
     _code = json['code'];
-    if (json['msg'] != null) {
-      _msg = [];
-      json['msg'].forEach((v) {
-        _msg?.add(Msg.fromJson(v));
+    if (json['Data'] != null) {
+      _data = [];
+      json['Data'].forEach((v) {
+        _data?.add(Data.fromJson(v));
       });
     }
+    _msg = json['msg'];
   }
   String? _code;
-  List<Msg>? _msg;
+  List<Data>? _data;
+  String? _msg;
 GetTypesModel copyWith({  String? code,
-  List<Msg>? msg,
+  List<Data>? data,
+  String? msg,
 }) => GetTypesModel(  code: code ?? _code,
+  data: data ?? _data,
   msg: msg ?? _msg,
 );
   String? get code => _code;
-  List<Msg>? get msg => _msg;
+  List<Data>? get data => _data;
+  String? get msg => _msg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['code'] = _code;
-    if (_msg != null) {
-      map['msg'] = _msg?.map((v) => v.toJson()).toList();
+    if (_data != null) {
+      map['Data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map['msg'] = _msg;
     return map;
   }
 
 }
 
-/// id : "1"
 /// type : "General"
+/// id : "1"
 
-Msg msgFromJson(String str) => Msg.fromJson(json.decode(str));
-String msgToJson(Msg data) => json.encode(data.toJson());
-class Msg {
-  Msg({
-      String? id, 
-      String? type,}){
-    _id = id;
+Data dataFromJson(String str) => Data.fromJson(json.decode(str));
+String dataToJson(Data data) => json.encode(data.toJson());
+class Data {
+  Data({
+      String? type, 
+      String? id,}){
     _type = type;
+    _id = id;
 }
 
-  Msg.fromJson(dynamic json) {
-    _id = json['id'];
+  Data.fromJson(dynamic json) {
     _type = json['type'];
+    _id = json['id'];
   }
-  String? _id;
   String? _type;
-Msg copyWith({  String? id,
-  String? type,
-}) => Msg(  id: id ?? _id,
-  type: type ?? _type,
+  String? _id;
+Data copyWith({  String? type,
+  String? id,
+}) => Data(  type: type ?? _type,
+  id: id ?? _id,
 );
-  String? get id => _id;
   String? get type => _type;
+  String? get id => _id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = _id;
     map['type'] = _type;
+    map['id'] = _id;
     return map;
   }
 

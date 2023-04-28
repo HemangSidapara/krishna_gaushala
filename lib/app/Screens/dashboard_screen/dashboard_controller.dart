@@ -5,7 +5,7 @@ import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_models/g
 class DashboardController extends GetxController {
   RxBool isLoading = false.obs;
 
-  List<Msg> tabsList = [];
+  List<Data> tabsList = [];
 
   @override
   void onInit() async {
@@ -18,7 +18,7 @@ class DashboardController extends GetxController {
       isLoading(true);
       final response = await DashboardService().getTypesApiService();
       if (response?.code == '200') {
-        tabsList = response?.msg ?? [];
+        tabsList = response?.data ?? [];
       }
     } finally {
       isLoading(false);
