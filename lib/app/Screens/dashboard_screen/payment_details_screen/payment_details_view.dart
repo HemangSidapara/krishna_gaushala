@@ -85,7 +85,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                     ),
-                    hintText: 'Enter amount',
+                    hintText: AppStrings.enterAmount,
                     hintStyle: TextStyle(
                       color: AppColors.BLACK_COLOR.withOpacity(0.5),
                       fontWeight: FontWeight.w500,
@@ -173,12 +173,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     return controller.validateName(value!);
                   },
                   decoration: InputDecoration(
-                    hintText: 'Enter person name',
+                    hintText: AppStrings.enterPersonName,
                     hintStyle: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
-                    labelText: 'Person Name',
+                    labelText: AppStrings.personName,
                     labelStyle: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontSize: 10.sp,
