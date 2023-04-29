@@ -14,4 +14,8 @@ class AppStrings {
   static String enterAmount = 'Enter amount';
   static String enterPersonName = 'Enter person name';
   static String personName = 'Person Name';
+  static String titleOfExpenditure = 'Title of Expenditure';
+  static String note = 'Note';
+  static String pleaseEnterTitle = 'Please enter title.';
+  static String pleaseEnterNote = 'Please enter note.';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
-import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_models/get_types_model.dart';
+import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:share_plus/share_plus.dart';
 
 class PaymentDetailsController extends GetxController {
@@ -34,7 +34,7 @@ class PaymentDetailsController extends GetxController {
     if (!isValid) {
       return;
     } else {
-      final response = await PaymentService().getTypesApiService(
+      final response = await PaymentService().generatePDFApiService(
         name: nameController.text,
         amount: amountController.text,
         type: tabList[index].type!,

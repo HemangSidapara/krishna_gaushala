@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/dashboard_service.dart';
-import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_models/get_types_model.dart';
+import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 
 class DashboardController extends GetxController {
   RxBool isLoading = false.obs;

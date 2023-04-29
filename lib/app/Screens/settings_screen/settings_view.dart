@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
+import 'package:krishna_gaushala/app/Constants/app_icons.dart';
+import 'package:krishna_gaushala/app/Constants/app_images.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/get_storage.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';
@@ -72,18 +74,18 @@ class _SettingsViewState extends State<SettingsView> {
 
           ///Cost details
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w),
+            padding: EdgeInsets.symmetric(horizontal: 8.w).copyWith(right: 3.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.payments_outlined,
-                      color: AppColors.SECONDARY_COLOR,
-                      size: 5.w,
+                    Image.asset(
+                      AppIcons.sendMoneyIcon,
+                      height: 5.5.w,
+                      width: 5.5.w,
                     ),
-                    SizedBox(width: 2.w),
+                    SizedBox(width: 3.w),
                     Text(
                       AppStrings.costDetails,
                       style: TextStyle(

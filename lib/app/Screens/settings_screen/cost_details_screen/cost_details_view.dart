@@ -59,11 +59,12 @@ class _CostDetailsViewState extends State<CostDetailsView> {
         itemCount: controller.costDetailsList.length,
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.only(bottom: 1.h),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
@@ -90,9 +91,12 @@ class _CostDetailsViewState extends State<CostDetailsView> {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
-            thickness: 1,
+          return Padding(
+            padding: EdgeInsets.only(right: 3.w),
+            child: Divider(
+              color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+              thickness: 1,
+            ),
           );
         },
       ),

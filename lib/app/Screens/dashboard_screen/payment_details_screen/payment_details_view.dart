@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
-import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_models/get_types_model.dart';
+import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
@@ -60,7 +60,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
       body: Form(
         key: paymentDetailsFormKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding + 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding + 15.h),
           child: SingleChildScrollView(
             child: Column(
               children: [

@@ -20,6 +20,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
   @override
   Widget build(BuildContext context) {
     final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
+    print(keyboardPadding);
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -49,10 +50,13 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
             },
           ),
         ),
+        resizeToAvoidBottomInset: false,
         bottomSheet: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h).copyWith(top: 0),
           child: ElevatedButton(
-            onPressed: () async {},
+            onPressed: () async {
+              await controller.checkAddCostDetails(key: addCostDetailsFormKey);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.SECONDARY_COLOR,
               fixedSize: Size(90.w, 6.h),
@@ -74,10 +78,14 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
         body: Form(
           key: addCostDetailsFormKey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h).copyWith(bottom: keyboardPadding),
+            padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding != 0.0 ? keyboardPadding  : 0),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 5.h),
+
                   ///Amount
                   TextFormField(
                     controller: controller.amountController,
@@ -176,7 +184,77 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: 3.h),
+
+                  ///Title of Expenditure
+                  Text(
+                    AppStrings.titleOfExpenditure,
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 0.6.h),
+
+                  ///Title of Expenditure Field
+                  TextFormField(
+                    controller: controller.titleOfExpenditureController,
+                    validator: (value) {
+                      return controller.validateAmount(value!);
+                    },
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: AppStrings.titleOfExpenditure,
+                      hintStyle: TextStyle(
+                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    cursorColor: AppColors.SECONDARY_COLOR,
+                  ),
+                  SizedBox(height: 2.h),
+
+                  ///Note
+                  Text(
+                    AppStrings.note,
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                  SizedBox(height: 0.6.h),
+                  TextFormField(
+                    controller: controller.noteController,
+                    validator: (value) {
+                      return controller.validateAmount(value!);
+                    },
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    minLines: 3,
+                    maxLines: 8,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: AppStrings.note,
+                      hintStyle: TextStyle(
+                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    cursorColor: AppColors.SECONDARY_COLOR,
+                  ),
                 ],
               ),
             ),
