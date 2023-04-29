@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
-import 'package:krishna_gaushala/app/Routes/app_pages.dart';
 import 'package:krishna_gaushala/app/Screens/login_screen/login_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
@@ -47,6 +46,7 @@ class _LoginViewState extends State<LoginView> {
                 ///Username
                 TextFormField(
                   controller: controller.usernameController,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     return controller.validateEmail(value!);
                   },
@@ -85,6 +85,7 @@ class _LoginViewState extends State<LoginView> {
                 TextFormField(
                   controller: controller.passwordController,
                   obscureText: !controller.visiblePassword,
+                  textInputAction: TextInputAction.done,
                   validator: (value) {
                     return controller.validatePassword(value!);
                   },
@@ -133,8 +134,8 @@ class _LoginViewState extends State<LoginView> {
 
                 ///Button
                 ElevatedButton(
-                  onPressed: () async{
-                   await controller.checkLogin();
+                  onPressed: () async {
+                    await controller.checkLogin();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.SECONDARY_COLOR,

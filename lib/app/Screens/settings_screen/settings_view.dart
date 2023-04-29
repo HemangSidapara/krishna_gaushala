@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_icons.dart';
-import 'package:krishna_gaushala/app/Constants/app_images.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/get_storage.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';

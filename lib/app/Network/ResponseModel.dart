@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 
 class ResponseModel {
@@ -12,9 +10,7 @@ class ResponseModel {
 
   get message => response!.data['message'];
 
-  getExtraData(String paramName){
+  getExtraData(String paramName) {
     return response!.data[paramName];
   }
-
 }
-

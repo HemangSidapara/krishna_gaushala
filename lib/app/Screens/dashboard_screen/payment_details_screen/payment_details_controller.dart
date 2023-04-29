@@ -42,7 +42,16 @@ class PaymentDetailsController extends GetxController {
 
       if (response?.code == '200') {
         await Share.share(response!.path!, subject: 'Share Receipt to person.');
+        amountController.clear();
+        nameController.clear();
       } else {}
     }
+  }
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    nameController.dispose();
+    super.dispose();
   }
 }

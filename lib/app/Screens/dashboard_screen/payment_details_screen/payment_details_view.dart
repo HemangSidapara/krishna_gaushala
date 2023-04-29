@@ -69,6 +69,8 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                 ///Amount
                 TextFormField(
                   controller: controller.amountController,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     return controller.validateAmount(value!);
                   },
@@ -169,6 +171,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                 ///Name
                 TextFormField(
                   controller: controller.nameController,
+                  textInputAction: TextInputAction.done,
                   validator: (value) {
                     return controller.validateName(value!);
                   },

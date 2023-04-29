@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
+import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/services/settings_service/settings_service.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_controller.dart';
 
 class AddCostDetailsController extends GetxController {
   TextEditingController amountController = TextEditingController();
@@ -46,8 +48,18 @@ class AddCostDetailsController extends GetxController {
       );
 
       if (response?.code == '200') {
-        Get.back(closeOverlays:  true);
+        Get.back(closeOverlays: true);
+        Utils.validationCheck(message: response?.msg);
+        await Get.find<CostDetailsController>().checkCostDetails();
       }
     }
+  }
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    titleOfExpenditureController.dispose();
+    noteController.dispose();
+    super.dispose();
   }
 }

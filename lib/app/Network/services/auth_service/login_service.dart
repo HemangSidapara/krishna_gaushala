@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/api_urls.dart';
 import 'package:krishna_gaushala/app/Constants/app_constance.dart';
@@ -13,15 +14,15 @@ class LoginService {
     required String username,
     required String password,
   }) async {
-    // var param = {
-    //   ApiKeys.username: username,
-    //   ApiKeys.password: password,
-    // };
-
     var param = {
-      ApiKeys.username: 'Admin',
-      ApiKeys.password: 'admin@123',
+      ApiKeys.username: username,
+      ApiKeys.password: password,
     };
+
+    // var param = {
+    //   ApiKeys.username: 'Admin',
+    //   ApiKeys.password: 'admin@123',
+    // };
 
     var response = await ApiBaseHelper().postHTTP(
       ApiUrls.loginApi,
@@ -34,14 +35,20 @@ class LoginService {
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (loginModel.code == '200') {
             setData(AppConstance.isLoggedIn, true);
-            print('login success :::: ${jsonDecode(res.response!.data)['msg']}');
+            if (kDebugMode) {
+              print('login success :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
             Utils.validationCheck(message: loginModel.msg);
           } else {
-            print('login error :::: ${jsonDecode(res.response!.data)['msg']}');
+            if (kDebugMode) {
+              print('login error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
             Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
           }
         } else {
-          print('login error :::: ${jsonDecode(res.response!.data)['msg']}');
+          if (kDebugMode) {
+            print('login error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
           Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
         }
       },

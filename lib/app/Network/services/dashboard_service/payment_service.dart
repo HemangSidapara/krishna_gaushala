@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/api_urls.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
@@ -28,14 +29,20 @@ class PaymentService {
         GeneratePdfModel generatePdfModel = generatePdfModelFromJson(res.response.toString());
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (generatePdfModel.code == '200') {
-            print('generatePdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            if (kDebugMode) {
+              print('generatePdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
             Utils.validationCheck(message: generatePdfModel.msg);
           } else {
-            print('generatePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+            if (kDebugMode) {
+              print('generatePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
             Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
           }
         } else {
-          print('generatePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+          if (kDebugMode) {
+            print('generatePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
           Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
         }
       },

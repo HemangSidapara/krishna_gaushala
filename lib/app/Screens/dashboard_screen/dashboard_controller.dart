@@ -23,6 +23,5 @@ class DashboardController extends GetxController {
     } finally {
       isLoading(false);
     }
-    update();
   }
 }

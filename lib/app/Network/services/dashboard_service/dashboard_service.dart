@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:krishna_gaushala/app/Constants/api_urls.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/api_base_helper.dart';
@@ -17,12 +18,18 @@ class DashboardService{
         GetTypesModel getTypesModel = getTypesModelFromJson(res.response.toString());
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (getTypesModel.code == '200') {
-            print('getTypes success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            if (kDebugMode) {
+              print('getTypes success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
           } else {
-            print('getTypes error :::: ${jsonDecode(res.response!.data)['msg']}');
+            if (kDebugMode) {
+              print('getTypes error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
           }
         } else {
-          print('getTypes error :::: ${jsonDecode(res.response!.data)['msg']}');
+          if (kDebugMode) {
+            print('getTypes error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
         }
       },
     );

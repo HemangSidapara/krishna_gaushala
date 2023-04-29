@@ -20,7 +20,6 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
   @override
   Widget build(BuildContext context) {
     final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
-    print(keyboardPadding);
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -78,7 +77,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
         body: Form(
           key: addCostDetailsFormKey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding != 0.0 ? keyboardPadding  : 0),
+            padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding != 0.0 ? keyboardPadding : 0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -89,9 +88,11 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                   ///Amount
                   TextFormField(
                     controller: controller.amountController,
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       return controller.validateAmount(value!);
                     },
+                    keyboardType: TextInputType.number,
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontSize: 12.sp,
@@ -200,6 +201,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                   ///Title of Expenditure Field
                   TextFormField(
                     controller: controller.titleOfExpenditureController,
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       return controller.validateAmount(value!);
                     },
@@ -210,7 +212,12 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                     ),
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      border: InputBorder.none,
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
+                      ),
                       hintText: AppStrings.titleOfExpenditure,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),
@@ -234,6 +241,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                   SizedBox(height: 0.6.h),
                   TextFormField(
                     controller: controller.noteController,
+                    textInputAction: TextInputAction.done,
                     validator: (value) {
                       return controller.validateAmount(value!);
                     },
@@ -245,7 +253,12 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                     minLines: 3,
                     maxLines: 8,
                     decoration: InputDecoration(
-                      border: InputBorder.none,
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
+                      ),
                       hintText: AppStrings.note,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),

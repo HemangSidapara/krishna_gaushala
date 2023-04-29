@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+// ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
-import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/api_urls.dart';
 import 'package:krishna_gaushala/app/Constants/app_constance.dart';
-import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Constants/get_storage.dart';
 import 'package:krishna_gaushala/app/Network/ResponseModel.dart';
-import 'package:krishna_gaushala/app/Routes/app_pages.dart';
 import 'package:krishna_gaushala/app/utils/progress_dialog.dart';
 import 'package:krishna_gaushala/app/utils/utils.dart';
 
