@@ -8,4 +8,5 @@ abstract class Routes {
   static const settings = '/settings';
   static const costDetails = '/costDetails';
   static const addCostDetails = '/addCostDetails';
+  static const generatedReceipts = '/generatedReceipts';
 }

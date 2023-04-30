@@ -9,6 +9,8 @@ import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_view.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_binding.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_view.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipts_binding.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipts_view.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/settings_binding.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/settings_view.dart';
 import 'package:krishna_gaushala/app/Screens/splash_screen/splash_binding.dart';
@@ -62,6 +64,13 @@ class AppPages {
       name: Routes.addCostDetails,
       page: () => const AddCostDetailsView(),
       binding: AddCostDetailsBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: transitionDuration,
+    ),
+    GetPage(
+      name: Routes.generatedReceipts,
+      page: () => const GeneratedReceiptsView(),
+      binding: GeneratedReceiptsBinding(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: transitionDuration,
     ),

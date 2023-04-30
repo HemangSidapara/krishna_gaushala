@@ -18,4 +18,5 @@ class AppStrings {
   static String note = 'Note';
   static String pleaseEnterTitle = 'Please enter title.';
   static String pleaseEnterNote = 'Please enter note.';
+  static String generatedReceipts = 'Generated Receipts';
 }

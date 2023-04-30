@@ -5,6 +5,7 @@ import 'package:krishna_gaushala/app/Constants/app_icons.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/get_storage.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/settings_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
 class SettingsView extends StatefulWidget {
@@ -15,6 +16,8 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  SettingsController controller = Get.find<SettingsController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,42 +74,57 @@ class _SettingsViewState extends State<SettingsView> {
         children: [
           SizedBox(height: 2.h),
 
-          ///Cost details
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w).copyWith(right: 3.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      AppIcons.sendMoneyIcon,
-                      height: 5.5.w,
-                      width: 5.5.w,
-                    ),
-                    SizedBox(width: 3.w),
-                    Text(
-                      AppStrings.costDetails,
-                      style: TextStyle(
-                        color: AppColors.SECONDARY_COLOR,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12.sp,
+          ///List
+          ListView.separated(
+            itemCount: 2,
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
+            itemBuilder: (context, index) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        controller.settingsIconList[index],
+                        height: 5.5.w,
+                        width: 5.5.w,
                       ),
-                    ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.costDetails);
-                  },
-                  icon: Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: AppColors.SECONDARY_COLOR,
-                    size: 5.w,
+                      SizedBox(width: 3.w),
+                      Text(
+                        controller.settingsNameList[index],
+                        style: TextStyle(
+                          color: AppColors.SECONDARY_COLOR,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
+                  IconButton(
+                    onPressed: () {
+                      if (index == 0) {
+                        Get.toNamed(Routes.costDetails);
+                      } else if (index == 1) {
+                        Get.toNamed(Routes.generatedReceipts);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: AppColors.SECONDARY_COLOR,
+                      size: 5.w,
+                    ),
+                  ),
+                ],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(
+                color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                thickness: 1,
+              );
+            },
           ),
         ],
       ),

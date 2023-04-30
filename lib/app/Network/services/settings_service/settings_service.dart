@@ -7,6 +7,7 @@ import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/api_base_helper.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_model/spend_amount_model.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_model/get_spends_model.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipt_model/get_billing_model.dart';
 
 class SettingsService {
   Future<GetSpendsModel?> getSpendsApiService() async {
@@ -73,5 +74,30 @@ class SettingsService {
       },
     );
     return spendAmountModelFromJson(response.response.toString());
+  }
+
+  Future<GetBillingModel?> getBillingApiService() async {
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.getBillingApi,
+      showProgress: false,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        GetBillingModel getBillingModel = getBillingModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (getBillingModel.code == '200') {
+            print('getBilling success :::: ${jsonDecode(res.response!.data)['msg']}');
+          } else {
+            print('getBilling error :::: ${jsonDecode(res.response!.data)['msg']}');
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          print('getBilling error :::: ${jsonDecode(res.response!.data)['msg']}');
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return getBillingModelFromJson(response.response.toString());
   }
 }
