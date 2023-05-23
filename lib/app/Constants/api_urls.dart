@@ -9,4 +9,8 @@ class ApiUrls {
   static const String spendAmountApi = '${baseUrlPath}spendAmount';
   static const String getSpendsApi = '${baseUrlPath}getSpends';
   static const String getBillingApi = '${baseUrlPath}getBilling';
+  static const String editPdfApi = '${baseUrlPath}updatePdf';
+  static const String deletePdfApi = '${baseUrlPath}deletePdf';
+  static const String editSpendApi = '${baseUrlPath}updatespendAmount';
+  static const String deleteSpendApi = '${baseUrlPath}deletespendAmount';
 }

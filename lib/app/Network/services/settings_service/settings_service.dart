@@ -100,4 +100,45 @@ class SettingsService {
     );
     return getBillingModelFromJson(response.response.toString());
   }
+
+  Future<SpendAmountModel?> editPdfApiService({
+    required String amount,
+    required String spendTo,
+    required String notes,
+  }) async {
+    final params = {
+      ApiKeys.amount: amount,
+      ApiKeys.spendTo: spendTo,
+      ApiKeys.notes: notes,
+    };
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.spendAmountApi,
+      showProgress: true,
+      params: params,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        SpendAmountModel spendAmountModel = spendAmountModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (spendAmountModel.code == '200') {
+            if (kDebugMode) {
+              print('spendAmount success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('spendAmount error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          if (kDebugMode) {
+            print('spendAmount error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return spendAmountModelFromJson(response.response.toString());
+  }
 }
