@@ -50,18 +50,39 @@ class GeneratedReceiptsController extends GetxController {
     }
   }
 
-  Future<void> checkEditReceipts() async {
-    try {
-      isLoading(true);
-      final response = await SettingsService().getBillingApiService();
+  Future<void> checkEditReceipts({
+    required GlobalKey<FormState> key,
+    required String billId,
+    required String type,
+  }) async {
+    final isValid = key.currentState!.validate();
+    if (!isValid) {
+      return;
+    } else {
+      final response = await SettingsService().editPdfApiService(
+        amount: amountController.text,
+        name: nameController.text,
+        billId: billId,
+        type: type,
+      );
 
       if (response?.code == '200') {
-        invoicesList.value = response?.data ?? [];
-      } else {
-        invoicesList.value = [];
-      }
-    } finally {
-      isLoading(false);
+        Get.back();
+        await checkGeneratedReceipts();
+      } else {}
     }
+  }
+
+  Future<void> checkDeleteReceipts({
+    required String billId,
+  }) async {
+    final response = await SettingsService().deletePdfApiService(
+      billId: billId,
+    );
+
+    if (response?.code == '200') {
+      Get.back();
+      await checkGeneratedReceipts();
+    } else {}
   }
 }

@@ -27,4 +27,13 @@ class CostDetailsController extends GetxController {
       isLoading(false);
     }
   }
+
+  Future<void> checkDeleteCostDetail({required String spendId}) async {
+    final response = await SettingsService().deleteSpendApiService(spendId: spendId);
+
+    if (response?.code == '200') {
+      Get.back();
+      await checkCostDetails();
+    } else {}
+  }
 }

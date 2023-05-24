@@ -143,7 +143,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   ],
                                 ),
 
-                                ///Share
+                                ///Edit, Delete & Share
                                 PopupMenuButton(
                                   onSelected: (value) async {
                                     if (value == 'share') {
@@ -151,8 +151,15 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                         await Share.share(controller.invoicesList[index].url!, subject: 'Share Receipt to person.');
                                       }
                                     } else if (value == 'edit') {
-                                      await showEditPdfBottomSheet();
-                                    } else if (value == 'delete') {}
+                                      controller.amountController.text = controller.invoicesList[index].amount ?? '';
+                                      controller.nameController.text = controller.invoicesList[index].name ?? '';
+                                      await showEditPdfBottomSheet(
+                                        billId: controller.invoicesList[index].billId!,
+                                        type: controller.invoicesList[index].type!,
+                                      );
+                                    } else if (value == 'delete') {
+                                      await showDeletePdfDialog(billId: controller.invoicesList[index].billId!);
+                                    }
                                   },
                                   position: PopupMenuPosition.under,
                                   shape: RoundedRectangleBorder(
@@ -209,18 +216,6 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     ];
                                   },
                                 ),
-                                // IconButton(
-                                //   icon: Icon(
-                                //     Icons.share_rounded,
-                                //     color: AppColors.SECONDARY_COLOR,
-                                //     size: 6.w,
-                                //   ),
-                                //   onPressed: () async {
-                                //     if (controller.invoicesList[index].url != null) {
-                                //       await Share.share(controller.invoicesList[index].url!, subject: 'Share Receipt to person.');
-                                //     }
-                                //   },
-                                // ),
                               ],
                             ),
                             SizedBox(height: 0.5.h),
@@ -239,7 +234,10 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     );
   }
 
-  showEditPdfBottomSheet() async {
+  showEditPdfBottomSheet({
+    required String billId,
+    required String type,
+  }) async {
     return await showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -459,8 +457,8 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
                                 ///Edit
                                 ElevatedButton(
-                                  onPressed: () {
-                                    Get.back();
+                                  onPressed: () async {
+                                    await controller.checkEditReceipts(billId: billId, type: type, key: editPdfFormKey);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.SECONDARY_COLOR,
@@ -484,7 +482,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -493,6 +491,106 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                 ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  showDeletePdfDialog({
+    required String billId,
+  }) async {
+    return await showGeneralDialog(
+      context: context,
+      barrierLabel: 'delete',
+      barrierDismissible: true,
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: AppColors.WHITE_COLOR,
+          surfaceTintColor: AppColors.WHITE_COLOR,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ///Icon
+              Icon(
+                Icons.error_rounded,
+                color: AppColors.WARNING_COLOR,
+                size: 5.w,
+              ),
+              SizedBox(height: 2.h),
+
+              ///ConfirmNote
+              Text(
+                'Are you sure, you want to delete this receipt?',
+                style: TextStyle(
+                  color: AppColors.SECONDARY_COLOR,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 2.h),
+
+              ///Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ///Cancel
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.WHITE_COLOR,
+                      surfaceTintColor: AppColors.WHITE_COLOR,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                      side: BorderSide(
+                        color: AppColors.SECONDARY_COLOR,
+                        width: 1,
+                      ),
+                      fixedSize: Size(35.w, 6.h),
+                    ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: AppColors.SECONDARY_COLOR,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
+                  ///Delete
+                  ElevatedButton(
+                    onPressed: () async {
+                      await controller.checkDeleteReceipts(billId: billId);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.ERROR_COLOR,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                      fixedSize: Size(35.w, 6.h),
+                    ),
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                        color: AppColors.WHITE_COLOR,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+            ],
           ),
         );
       },

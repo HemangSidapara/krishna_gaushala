@@ -5,8 +5,12 @@ import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/api_urls.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/api_base_helper.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_model/edit_spends_model.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_model/spend_amount_model.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_model/delete_spends_model.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_model/get_spends_model.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipt_model/delete_pdf_model.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipt_model/edit_pdf_model.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipt_model/get_billing_model.dart';
 
 class SettingsService {
@@ -101,18 +105,20 @@ class SettingsService {
     return getBillingModelFromJson(response.response.toString());
   }
 
-  Future<SpendAmountModel?> editPdfApiService({
+  Future<EditPdfModel?> editPdfApiService({
     required String amount,
-    required String spendTo,
-    required String notes,
+    required String name,
+    required String billId,
+    required String type,
   }) async {
     final params = {
       ApiKeys.amount: amount,
-      ApiKeys.spendTo: spendTo,
-      ApiKeys.notes: notes,
+      ApiKeys.name: name,
+      ApiKeys.billId: billId,
+      ApiKeys.type: type,
     };
     var response = await ApiBaseHelper().postHTTP(
-      ApiUrls.spendAmountApi,
+      ApiUrls.editPdfApi,
       showProgress: true,
       params: params,
       onError: (error) {
@@ -123,22 +129,139 @@ class SettingsService {
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (spendAmountModel.code == '200') {
             if (kDebugMode) {
-              print('spendAmount success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+              print('editPdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
             }
           } else {
             if (kDebugMode) {
-              print('spendAmount error :::: ${jsonDecode(res.response!.data)['msg']}');
+              print('editPdf error :::: ${jsonDecode(res.response!.data)['msg']}');
             }
             Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
           }
         } else {
           if (kDebugMode) {
-            print('spendAmount error :::: ${jsonDecode(res.response!.data)['msg']}');
+            print('editPdf error :::: ${jsonDecode(res.response!.data)['msg']}');
           }
           Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
         }
       },
     );
-    return spendAmountModelFromJson(response.response.toString());
+    return editPdfModelFromJson(response.response.toString());
+  }
+
+  Future<DeletePdfModel?> deletePdfApiService({
+    required String billId,
+  }) async {
+    final params = {
+      ApiKeys.billId: billId,
+    };
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.deletePdfApi,
+      showProgress: true,
+      params: params,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        SpendAmountModel spendAmountModel = spendAmountModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (spendAmountModel.code == '200') {
+            if (kDebugMode) {
+              print('deletePdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('deletePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          if (kDebugMode) {
+            print('deletePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return deletePdfModelFromJson(response.response.toString());
+  }
+
+  Future<EditSpendsModel?> editSpendAmountApiService({
+    required String amount,
+    required String spendTo,
+    required String notes,
+    required String spendId,
+  }) async {
+    final params = {
+      ApiKeys.amount: amount,
+      ApiKeys.spendTo: spendTo,
+      ApiKeys.notes: notes,
+      ApiKeys.spendId: spendId,
+    };
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.editSpendApi,
+      showProgress: true,
+      params: params,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        SpendAmountModel spendAmountModel = spendAmountModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (spendAmountModel.code == '200') {
+            if (kDebugMode) {
+              print('editSpend success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('editSpend error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          if (kDebugMode) {
+            print('editSpend error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return editSpendsModelFromJson(response.response.toString());
+  }
+
+  Future<DeleteSpendsModel?> deleteSpendApiService({
+    required String spendId,
+  }) async {
+    final params = {
+      ApiKeys.spendId: spendId,
+    };
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.deleteSpendApi,
+      showProgress: true,
+      params: params,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        SpendAmountModel spendAmountModel = spendAmountModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (spendAmountModel.code == '200') {
+            if (kDebugMode) {
+              print('deleteSpend success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('deleteSpend error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          if (kDebugMode) {
+            print('deleteSpend error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return deleteSpendsModelFromJson(response.response.toString());
   }
 }

@@ -11,6 +11,7 @@ class AppStrings {
   static String logOut = 'Log out';
   static String costDetails = 'Cost Details';
   static String addCostDetails = 'Add Cost Details';
+  static String editCostDetails = 'Edit Cost Details';
   static String enterAmount = 'Enter amount';
   static String enterPersonName = 'Enter person name';
   static String personName = 'Person Name';

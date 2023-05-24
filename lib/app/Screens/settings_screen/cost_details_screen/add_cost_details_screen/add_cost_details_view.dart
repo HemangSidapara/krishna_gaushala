@@ -30,7 +30,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
           backgroundColor: AppColors.PRIMARY_COLOR,
           centerTitle: true,
           title: Text(
-            AppStrings.addCostDetails,
+            Get.arguments['isEdit'] == true ? AppStrings.editCostDetails : AppStrings.addCostDetails,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -54,7 +54,11 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h).copyWith(top: 0),
           child: ElevatedButton(
             onPressed: () async {
-              await controller.checkAddCostDetails(key: addCostDetailsFormKey);
+              if (Get.arguments['isEdit'] == true) {
+                await controller.checkEditCostDetails(key: addCostDetailsFormKey, spendId: controller.editableData!.spendId!);
+              } else {
+                await controller.checkAddCostDetails(key: addCostDetailsFormKey);
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.SECONDARY_COLOR,

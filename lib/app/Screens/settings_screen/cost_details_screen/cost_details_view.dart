@@ -33,7 +33,13 @@ class _CostDetailsViewState extends State<CostDetailsView> {
               size: 7.w,
             ),
             onPressed: () {
-              Get.toNamed(Routes.addCostDetails);
+              Get.toNamed(
+                Routes.addCostDetails,
+                arguments: {
+                  'isEdit': false,
+                  'editableData': null,
+                },
+              );
             },
           )
         ],
@@ -84,7 +90,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ///Title, Amount & Date
+                            ///Title, Amount
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +109,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                                 ),
                                 SizedBox(width: 2.w),
 
-                                ///Amount & Date
+                                ///Amount
                                 Row(
                                   children: [
                                     Icon(
@@ -119,6 +125,58 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
+                                    PopupMenuButton(
+                                      onSelected: (value) async {
+                                        if (value == 'edit') {
+                                          Get.toNamed(
+                                            Routes.addCostDetails,
+                                            arguments: {
+                                              'isEdit': true,
+                                              'editableData': controller.costDetailsList[index],
+                                            },
+                                          );
+                                        } else if (value == 'delete') {
+                                          await showDeleteSpendsDialog(spendId: controller.costDetailsList[index].spendId!);
+                                        }
+                                      },
+                                      position: PopupMenuPosition.under,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      itemBuilder: (context) {
+                                        return [
+                                          ///Edit
+                                          PopupMenuItem(
+                                            value: 'edit',
+                                            child: Text(
+                                              'Edit',
+                                              style: TextStyle(
+                                                color: AppColors.SECONDARY_COLOR,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                          const PopupMenuItem(
+                                            height: 0,
+                                            child: PopupMenuDivider(height: 0),
+                                          ),
+
+                                          ///Delete
+                                          PopupMenuItem(
+                                            value: 'delete',
+                                            child: Text(
+                                              'Delete',
+                                              style: TextStyle(
+                                                color: AppColors.SECONDARY_COLOR,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ];
+                                      },
+                                    )
                                   ],
                                 ),
                               ],
@@ -167,6 +225,106 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                     },
                   );
       }),
+    );
+  }
+
+  showDeleteSpendsDialog({
+    required String spendId,
+  }) async {
+    return await showGeneralDialog(
+      context: context,
+      barrierLabel: 'delete',
+      barrierDismissible: true,
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: AppColors.WHITE_COLOR,
+          surfaceTintColor: AppColors.WHITE_COLOR,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ///Icon
+              Icon(
+                Icons.error_rounded,
+                color: AppColors.WARNING_COLOR,
+                size: 5.w,
+              ),
+              SizedBox(height: 2.h),
+
+              ///ConfirmNote
+              Text(
+                'Are you sure, you want to delete this cost details?',
+                style: TextStyle(
+                  color: AppColors.SECONDARY_COLOR,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 2.h),
+
+              ///Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ///Cancel
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.WHITE_COLOR,
+                      surfaceTintColor: AppColors.WHITE_COLOR,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                      side: BorderSide(
+                        color: AppColors.SECONDARY_COLOR,
+                        width: 1,
+                      ),
+                      fixedSize: Size(35.w, 6.h),
+                    ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: AppColors.SECONDARY_COLOR,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
+                  ///Delete
+                  ElevatedButton(
+                    onPressed: () async {
+                      await controller.checkDeleteCostDetail(spendId: spendId);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.ERROR_COLOR,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                      fixedSize: Size(35.w, 6.h),
+                    ),
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                        color: AppColors.WHITE_COLOR,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+            ],
+          ),
+        );
+      },
     );
   }
 }
