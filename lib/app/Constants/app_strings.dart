@@ -50,4 +50,7 @@ class AppStrings {
   static String enterPanNumber = 'Enter pan number';
   static String panNumber = 'PAN Number';
   static String pleaseSelectPurposeOfFund = 'Please select purpose of fund.';
+  static String pleaseEnterQuantity = 'Please enter quantity.';
+  static String enterQuantity = 'Enter quantity';
+  static String quantity = 'Quantity';
 }

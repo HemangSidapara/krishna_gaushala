@@ -10,8 +10,24 @@ class GeneratedReceiptsController extends GetxController {
 
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  RxList<bool> isPurposeFundSelected = RxList.generate(3, (index) => false);
+  RxList<bool> whichCashType = RxList.generate(2, (index) => index == 0 ? true : false);
+  TextEditingController chequeNumberController = TextEditingController();
+  TextEditingController chequeDateController = TextEditingController();
+  TextEditingController bankController = TextEditingController();
+  TextEditingController branchController = TextEditingController();
+  TextEditingController accountNumberController = TextEditingController();
+  TextEditingController panNumberController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
 
-  RxList<Data> invoicesList = RxList();
+  RxList<Data> receiptList = RxList();
+  RxList<Data> niranList = RxList();
+  RxList<Data> gauDohanList = RxList();
+  RxList<Data> vahanVyavasthaList = RxList();
+  RxList<Data> sarvarList = RxList();
+  RxList<Data> makanBandhkamList = RxList();
+  RxList<Data> bandPartyList = RxList();
 
   @override
   void onInit() async {
@@ -35,15 +51,79 @@ class GeneratedReceiptsController extends GetxController {
     return null;
   }
 
+  ///validate address
+  String? validateAddress(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterAddress;
+    }
+    return null;
+  }
+
+  ///validate cheque number
+  String? validateChequeNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterAddress;
+    }
+    return null;
+  }
+
+  ///validate cheque date
+  String? validateChequeDate(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterChequeDate;
+    }
+    return null;
+  }
+
+  ///validate bank
+  String? validateBank(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterBank;
+    }
+    return null;
+  }
+
+  ///validate branch
+  String? validateBranch(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterBranch;
+    }
+    return null;
+  }
+
+  ///validate account number
+  String? validateAccountNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterAccountNumber;
+    }
+    return null;
+  }
+
+  ///validate pan number
+  String? validatePANNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterPanNumber;
+    }
+    return null;
+  }
+
+  ///validate quantity
+  String? validateQuantity(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterQuantity;
+    }
+    return null;
+  }
+
   Future<void> checkGeneratedReceipts() async {
     try {
       isLoading(true);
       final response = await SettingsService().getBillingApiService();
 
       if (response?.code == '200') {
-        invoicesList.value = response?.data ?? [];
+        // invoicesList.value = response?.data ?? [];
       } else {
-        invoicesList.value = [];
+        // invoicesList.value = [];
       }
     } finally {
       isLoading(false);

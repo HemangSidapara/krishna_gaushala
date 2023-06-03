@@ -132,10 +132,18 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                           onPressed: () {
                             controller.amountController.text = '100';
                           },
+                          style: TextButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor: AppColors.SECONDARY_COLOR,
+                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
                           child: Text(
                             '₹ 100',
                             style: TextStyle(
-                              color: AppColors.SECONDARY_COLOR,
+                              color: AppColors.WHITE_COLOR,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w700,
                             ),
@@ -147,10 +155,18 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                           onPressed: () {
                             controller.amountController.text = '500';
                           },
+                          style: TextButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor: AppColors.SECONDARY_COLOR,
+                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
                           child: Text(
                             '₹ 500',
                             style: TextStyle(
-                              color: AppColors.SECONDARY_COLOR,
+                              color: AppColors.WHITE_COLOR,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w700,
                             ),
@@ -162,10 +178,18 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                           onPressed: () {
                             controller.amountController.text = '1000';
                           },
+                          style: TextButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor: AppColors.SECONDARY_COLOR,
+                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
                           child: Text(
                             '₹ 1000',
                             style: TextStyle(
-                              color: AppColors.SECONDARY_COLOR,
+                              color: AppColors.WHITE_COLOR,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w700,
                             ),
@@ -177,10 +201,18 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                           onPressed: () {
                             controller.amountController.text = '2000';
                           },
+                          style: TextButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor: AppColors.SECONDARY_COLOR,
+                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
                           child: Text(
                             '₹ 2000',
                             style: TextStyle(
-                              color: AppColors.SECONDARY_COLOR,
+                              color: AppColors.WHITE_COLOR,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w700,
                             ),

@@ -8,4 +8,6 @@ class ApiKeys {
   static const notes = "notes";
   static const billId = "bill_id";
   static const spendId = "spend_id";
+  static const quantity = "quantity";
+  static const address = "address";
 }

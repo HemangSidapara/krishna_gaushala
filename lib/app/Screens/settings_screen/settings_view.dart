@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
-import 'package:krishna_gaushala/app/Constants/app_icons.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/get_storage.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';
@@ -81,42 +80,45 @@ class _SettingsViewState extends State<SettingsView> {
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
             itemBuilder: (context, index) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        controller.settingsIconList[index],
-                        height: 5.5.w,
-                        width: 5.5.w,
-                      ),
-                      SizedBox(width: 3.w),
-                      Text(
-                        controller.settingsNameList[index],
-                        style: TextStyle(
-                          color: AppColors.SECONDARY_COLOR,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12.sp,
+              return InkWell(
+                onTap: () {
+                  if (index == 0) {
+                    Get.toNamed(Routes.costDetails);
+                  } else if (index == 1) {
+                    Get.toNamed(Routes.generatedReceipts);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          controller.settingsIconList[index],
+                          height: 5.5.w,
+                          width: 5.5.w,
                         ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (index == 0) {
-                        Get.toNamed(Routes.costDetails);
-                      } else if (index == 1) {
-                        Get.toNamed(Routes.generatedReceipts);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      color: AppColors.SECONDARY_COLOR,
-                      size: 5.w,
+                        SizedBox(width: 3.w),
+                        Text(
+                          controller.settingsNameList[index],
+                          style: TextStyle(
+                            color: AppColors.SECONDARY_COLOR,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 1.h),
+                      child: Icon(
+                        Icons.keyboard_arrow_right_rounded,
+                        color: AppColors.SECONDARY_COLOR,
+                        size: 5.w,
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) {

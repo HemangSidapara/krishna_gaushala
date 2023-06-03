@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
@@ -18,6 +19,7 @@ class PaymentDetailsController extends GetxController {
   TextEditingController branchController = TextEditingController();
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController panNumberController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
 
   ///validate amount
   String? validateAmount(String value) {
@@ -91,6 +93,14 @@ class PaymentDetailsController extends GetxController {
     return null;
   }
 
+  ///validate quantity
+  String? validateQuantity(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterQuantity;
+    }
+    return null;
+  }
+
   Future<void> checkPayment({
     required GlobalKey<FormState> key,
     required int index,
@@ -99,27 +109,124 @@ class PaymentDetailsController extends GetxController {
     final isValid = key.currentState!.validate();
     if (!isValid) {
       return;
-    } else if (!isPurposeFundSelected[0] && !isPurposeFundSelected[1] && !isPurposeFundSelected[2]) {
+    } else if (!isPurposeFundSelected[0] && !isPurposeFundSelected[1] && !isPurposeFundSelected[2] && tabList[index].type! == 'Receipt') {
       Utils.validationCheck(isSuccess: false, message: AppStrings.pleaseSelectPurposeOfFund);
     } else {
-      final response = await PaymentService().generatePDFApiService(
-        name: nameController.text,
-        amount: amountController.text,
-        type: tabList[index].type!,
-      );
+      switch (tabList[index].type!) {
+        case 'Receipt':
+          await generatePDFApi(url: 'generateReceipePdf', params: {
+            ApiKeys.name: nameController.text,
+            ApiKeys.amount: amountController.text,
+            ApiKeys.address: addressController.text,
+          });
+          return;
 
-      if (response?.code == '200') {
-        await Share.share(response!.path!, subject: 'Share Receipt to person.');
-        amountController.clear();
-        nameController.clear();
-      } else {}
+        case 'Band Party':
+          await generatePDFApi(
+            url: 'generateBandPartyPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+            },
+          );
+          return;
+
+        case 'Makan Bandhkam':
+          await generatePDFApi(
+            url: 'generateMakanBandhkamPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+            },
+          );
+          return;
+
+        case 'Sarvar':
+          await generatePDFApi(
+            url: 'generateSarvarPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+            },
+          );
+          return;
+
+        case 'Vahan Vyavastha':
+          await generatePDFApi(
+            url: 'generateVahanVyavsthaPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+            },
+          );
+          return;
+
+        case 'Gau Dohan':
+          await generatePDFApi(
+            url: 'generateGauDohanPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.quantity: quantityController.text,
+            },
+          );
+          return;
+
+        case 'Niran':
+          await generatePDFApi(
+            url: 'generateNiranPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.quantity: quantityController.text,
+            },
+          );
+          return;
+      }
     }
+  }
+
+  Future<void> generatePDFApi({required String url, required Map<String, dynamic> params}) async {
+    final response = await PaymentService().generatePDFApiService(
+      apiUrl: url,
+      params: params,
+    );
+
+    if (response?.code == '200') {
+      await Share.share(response!.path!, subject: 'Share Receipt to person.');
+      resetControllers();
+    } else {}
   }
 
   @override
   void dispose() {
+    disposeControllers();
+    super.dispose();
+  }
+
+  void resetControllers() {
+    amountController.clear();
+    nameController.clear();
+    addressController.clear();
+    chequeDateController.clear();
+    chequeNumberController.clear();
+    bankController.clear();
+    branchController.clear();
+    accountNumberController.clear();
+    panNumberController.clear();
+    quantityController.clear();
+  }
+
+  void disposeControllers() {
     amountController.dispose();
     nameController.dispose();
-    super.dispose();
+    addressController.dispose();
+    chequeDateController.dispose();
+    chequeNumberController.dispose();
+    bankController.dispose();
+    branchController.dispose();
+    accountNumberController.dispose();
+    panNumberController.dispose();
+    quantityController.dispose();
   }
 }
