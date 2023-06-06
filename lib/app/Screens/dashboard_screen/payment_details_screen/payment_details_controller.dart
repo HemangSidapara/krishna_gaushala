@@ -114,11 +114,24 @@ class PaymentDetailsController extends GetxController {
     } else {
       switch (tabList[index].type!) {
         case 'Receipt':
-          await generatePDFApi(url: 'generateReceipePdf', params: {
-            ApiKeys.name: nameController.text,
-            ApiKeys.amount: amountController.text,
-            ApiKeys.address: addressController.text,
-          });
+          await generatePDFApi(
+            url: 'generateReceipePdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.address: addressController.text,
+              ApiKeys.type: isPurposeFundSelected[0],
+              ApiKeys.type1: isPurposeFundSelected[1],
+              ApiKeys.type2: isPurposeFundSelected[2],
+              ApiKeys.cash: whichCashType[0],
+              ApiKeys.chequeNumber: chequeNumberController.text,
+              ApiKeys.chequeDate: chequeDateController.text,
+              ApiKeys.bank: bankController.text,
+              ApiKeys.branch: branchController.text,
+              ApiKeys.accountNumber: accountNumberController.text,
+              ApiKeys.panNumber: panNumberController.text,
+            },
+          );
           return;
 
         case 'Band Party':
@@ -204,16 +217,20 @@ class PaymentDetailsController extends GetxController {
     super.dispose();
   }
 
-  void resetControllers() {
-    amountController.clear();
-    nameController.clear();
-    addressController.clear();
+  void resetChequeControllers() {
     chequeDateController.clear();
     chequeNumberController.clear();
     bankController.clear();
     branchController.clear();
     accountNumberController.clear();
     panNumberController.clear();
+  }
+
+  void resetControllers() {
+    amountController.clear();
+    nameController.clear();
+    addressController.clear();
+    resetChequeControllers();
     quantityController.clear();
   }
 

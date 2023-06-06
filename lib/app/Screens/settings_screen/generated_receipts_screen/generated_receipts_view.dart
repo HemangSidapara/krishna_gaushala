@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipts_controller.dart';
+import 'package:krishna_gaushala/app/Utils/app_formatter.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 import 'package:krishna_gaushala/app/Widgets/get_date_widget.dart';
 import 'package:share_plus/share_plus.dart';
@@ -47,35 +48,39 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
         ),
       ),
       body: Obx(() {
-        return controller.isLoading.value
-            ? Center(
-                child: CircularProgressIndicator(color: AppColors.SECONDARY_COLOR),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ///Receipts
-                  GeneratedReceiptsCategoryList(title: 'Receipts', items: controller.receiptList),
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(color: AppColors.SECONDARY_COLOR),
+          );
+        } else {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ///Receipts
+                GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList),
 
-                  ///Niran
-                  GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList),
+                ///Niran
+                GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList),
 
-                  ///Gau Dohan
-                  GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList),
+                ///Gau Dohan
+                GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList),
 
-                  ///Vahan Vyavastha
-                  GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList),
+                ///Vahan Vyavastha
+                GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList),
 
-                  ///Sarvar
-                  GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList),
+                ///Sarvar
+                GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList),
 
-                  ///Makan Bandhkam
-                  GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList),
+                ///Makan Bandhkam
+                GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList),
 
-                  ///Band Party
-                  GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList),
-                ],
-              );
+                ///Band Party
+                GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList),
+              ],
+            ),
+          );
+        }
       }),
     );
   }
@@ -100,56 +105,88 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
             thickness: 1,
           ),
           items.isEmpty
-              ? InkWell(
-                  onTap: () {
-                    showEditPdfBottomSheet(billId: 'billId', type: 'Receipt');
-                  },
-                  child: Center(
-                    child: Text(
-                      'No Data Available',
-                      style: TextStyle(
-                        color: AppColors.SECONDARY_COLOR,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
+              ? Center(
+                  child: Text(
+                    'No Data Available',
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 )
-              : ListView.separated(
-                  itemCount: items.length,
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 1.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ///Title, Amount & Date
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ///Title & S.R. No.
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ///Title
-                                    Text(
-                                      items[index].name!,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: AppColors.SECONDARY_COLOR,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.sp,
+              : Obx(() {
+                  return ListView.separated(
+                    itemCount: items.length,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 1.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ///Title, Amount & Date
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ///Title & S.R. No.
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ///Title
+                                      Text(
+                                        items[index].name!,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14.sp,
+                                        ),
                                       ),
+
+                                      ///S.R No.
+                                      Text(
+                                        'S.R. No.: ${items[index].billId}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 8.sp,
+                                          color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 2.w),
+
+                                ///Amount & Date
+                                Column(
+                                  children: [
+                                    ///Amount
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.currency_rupee_rounded,
+                                          color: AppColors.SECONDARY_COLOR,
+                                          size: 10.sp,
+                                        ),
+                                        Text(
+                                          items[index].amount!.toString().toRupees(),
+                                          style: TextStyle(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
                                     ),
 
-                                    ///S.R No.
+                                    ///Date
                                     Text(
-                                      'S.R. No.: ${items[index].billId}',
+                                      GetDateOrTime().getNonSuffixDate(items[index].datetime!),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 8.sp,
@@ -158,130 +195,111 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(width: 2.w),
 
-                              ///Amount & Date
-                              Column(
-                                children: [
-                                  ///Amount
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.currency_rupee_rounded,
-                                        color: AppColors.SECONDARY_COLOR,
-                                        size: 10.sp,
-                                      ),
-                                      Text(
-                                        items[index].amount!.toRupees(),
-                                        style: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  ///Date
-                                  Text(
-                                    GetDateOrTime().getNonSuffixDate(items[index].datetime!),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 8.sp,
-                                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              ///Edit, Delete & Share
-                              PopupMenuButton(
-                                onSelected: (value) async {
-                                  if (value == 'share') {
-                                    if (items[index].url != null) {
-                                      await Share.share(items[index].url!, subject: 'Share Receipt to person.');
+                                ///Edit, Delete & Share
+                                PopupMenuButton(
+                                  onSelected: (value) async {
+                                    if (value == 'share') {
+                                      if (items[index].url != null) {
+                                        await Share.share(items[index].url!, subject: 'Share Receipt to person.');
+                                      }
+                                    } else if (value == 'edit') {
+                                      controller.amountController.text = items[index].amount ?? '';
+                                      controller.nameController.text = items[index].name ?? '';
+                                      if (title == 'Receipt') {
+                                        controller.addressController.text = items[index].address ?? '';
+                                        controller.isPurposeFundSelected[0] = items[index].type == 'No' ? false : true;
+                                        controller.isPurposeFundSelected[1] = items[index].type1 == 'No' ? false : true;
+                                        controller.isPurposeFundSelected[2] = items[index].type2 == 'No' ? false : true;
+                                        controller.whichCashType[0] = items[index].cash == 'Yes' ? true : false;
+                                        controller.whichCashType[1] = items[index].cash == 'No' ? true : false;
+                                        controller.chequeNumberController.text = items[index].chequeNumber ?? '';
+                                        controller.chequeDateController.text = items[index].chequeDate ?? '';
+                                        controller.bankController.text = items[index].bank ?? '';
+                                        controller.branchController.text = items[index].branch ?? '';
+                                        controller.accountNumberController.text = items[index].accountNumber ?? '';
+                                        controller.panNumberController.text = items[index].panNumber ?? '';
+                                      }
+                                      if (title == 'Niran' || title == 'Gau Dohan') {
+                                        controller.quantityController.text = items[index].quantity ?? '';
+                                      }
+                                      await showEditPdfBottomSheet(
+                                        billId: items[index].billId!,
+                                        type: title,
+                                      );
+                                    } else if (value == 'delete') {
+                                      await showDeletePdfDialog(billId: items[index].billId!, type: title);
                                     }
-                                  } else if (value == 'edit') {
-                                    controller.amountController.text = items[index].amount ?? '';
-                                    controller.nameController.text = items[index].name ?? '';
-                                    await showEditPdfBottomSheet(
-                                      billId: items[index].billId!,
-                                      type: items[index].type!,
-                                    );
-                                  } else if (value == 'delete') {
-                                    await showDeletePdfDialog(billId: items[index].billId!);
-                                  }
-                                },
-                                position: PopupMenuPosition.under,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  },
+                                  position: PopupMenuPosition.under,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  itemBuilder: (context) {
+                                    return [
+                                      ///Edit
+                                      PopupMenuItem(
+                                        value: 'edit',
+                                        child: Text(
+                                          'Edit',
+                                          style: TextStyle(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      const PopupMenuItem(
+                                        height: 0,
+                                        child: PopupMenuDivider(height: 0),
+                                      ),
+
+                                      ///Delete
+                                      PopupMenuItem(
+                                        value: 'delete',
+                                        child: Text(
+                                          'Delete',
+                                          style: TextStyle(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      const PopupMenuItem(
+                                        height: 0,
+                                        child: PopupMenuDivider(height: 0),
+                                      ),
+
+                                      ///Share
+                                      PopupMenuItem(
+                                        value: 'share',
+                                        child: Text(
+                                          'Share',
+                                          style: TextStyle(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ];
+                                  },
                                 ),
-                                itemBuilder: (context) {
-                                  return [
-                                    ///Edit
-                                    PopupMenuItem(
-                                      value: 'edit',
-                                      child: Text(
-                                        'Edit',
-                                        style: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    const PopupMenuItem(
-                                      height: 0,
-                                      child: PopupMenuDivider(height: 0),
-                                    ),
-
-                                    ///Delete
-                                    PopupMenuItem(
-                                      value: 'delete',
-                                      child: Text(
-                                        'Delete',
-                                        style: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    const PopupMenuItem(
-                                      height: 0,
-                                      child: PopupMenuDivider(height: 0),
-                                    ),
-
-                                    ///Share
-                                    PopupMenuItem(
-                                      value: 'share',
-                                      child: Text(
-                                        'Share',
-                                        style: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 0.5.h),
-                        ],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider(
-                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
-                      thickness: 1,
-                    );
-                  },
-                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(
+                        color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                        thickness: 1,
+                      );
+                    },
+                  );
+                }),
         ],
       ),
     );
@@ -378,10 +396,18 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     onPressed: () {
                                       controller.amountController.text = '100';
                                     },
+                                    style: TextButton.styleFrom(
+                                      elevation: 4,
+                                      backgroundColor: AppColors.SECONDARY_COLOR,
+                                      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
                                     child: Text(
                                       '₹ 100',
                                       style: TextStyle(
-                                        color: AppColors.SECONDARY_COLOR,
+                                        color: AppColors.WHITE_COLOR,
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -393,10 +419,18 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     onPressed: () {
                                       controller.amountController.text = '500';
                                     },
+                                    style: TextButton.styleFrom(
+                                      elevation: 4,
+                                      backgroundColor: AppColors.SECONDARY_COLOR,
+                                      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
                                     child: Text(
                                       '₹ 500',
                                       style: TextStyle(
-                                        color: AppColors.SECONDARY_COLOR,
+                                        color: AppColors.WHITE_COLOR,
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -408,10 +442,18 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     onPressed: () {
                                       controller.amountController.text = '1000';
                                     },
+                                    style: TextButton.styleFrom(
+                                      elevation: 4,
+                                      backgroundColor: AppColors.SECONDARY_COLOR,
+                                      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
                                     child: Text(
                                       '₹ 1000',
                                       style: TextStyle(
-                                        color: AppColors.SECONDARY_COLOR,
+                                        color: AppColors.WHITE_COLOR,
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -423,10 +465,18 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     onPressed: () {
                                       controller.amountController.text = '2000';
                                     },
+                                    style: TextButton.styleFrom(
+                                      elevation: 4,
+                                      backgroundColor: AppColors.SECONDARY_COLOR,
+                                      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
                                     child: Text(
                                       '₹ 2000',
                                       style: TextStyle(
-                                        color: AppColors.SECONDARY_COLOR,
+                                        color: AppColors.WHITE_COLOR,
                                         fontSize: 10.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -481,8 +531,6 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                               Obx(() {
                                 return Column(
                                   children: [
-                                    SizedBox(height: 3.h),
-
                                     ///Address
                                     TextFormField(
                                       controller: controller.addressController,
@@ -576,7 +624,11 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                         children: [
                                           ///Cash
                                           Flexible(
-                                            child: CashTypeWidget(onTap: () {}, title: AppStrings.cash, index: 0),
+                                            child: CashTypeWidget(
+                                              onTap: () {},
+                                              title: AppStrings.cash,
+                                              index: 0,
+                                            ),
                                           ),
                                           SizedBox(width: 3.w),
 
@@ -855,7 +907,6 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
                             ///Niran & Gau Dohan Extra Fields
                             if (type == 'Niran' || type == 'Gau Dohan') ...[
-                              SizedBox(height: 3.h),
                               TextFormField(
                                 controller: controller.quantityController,
                                 textInputAction: TextInputAction.done,
@@ -892,6 +943,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                                 ),
                               ),
+                              SizedBox(height: 3.h),
                             ],
 
                             ///Buttons
@@ -901,9 +953,8 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 ///Cancel
                                 ElevatedButton(
                                   onPressed: () {
-                                    controller.amountController.clear();
-                                    controller.nameController.clear();
                                     Get.back();
+                                    controller.resetControllers();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.WHITE_COLOR,
@@ -1077,9 +1128,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     });
   }
 
-  showDeletePdfDialog({
-    required String billId,
-  }) async {
+  showDeletePdfDialog({required String billId, required String type}) async {
     return await showGeneralDialog(
       context: context,
       barrierLabel: 'delete',
@@ -1148,7 +1197,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                   ///Delete
                   ElevatedButton(
                     onPressed: () async {
-                      await controller.checkDeleteReceipts(billId: billId);
+                      await controller.checkDeleteReceipts(billId: billId, type: type);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.ERROR_COLOR,

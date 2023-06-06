@@ -338,7 +338,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                             children: [
                               ///Cash
                               Flexible(
-                                child: CashTypeWidget(onTap: () {}, title: AppStrings.cash, index: 0),
+                                child: CashTypeWidget(
+                                    onTap: () {
+                                      controller.resetChequeControllers();
+                                    },
+                                    title: AppStrings.cash,
+                                    index: 0),
                               ),
                               SizedBox(width: 3.w),
 

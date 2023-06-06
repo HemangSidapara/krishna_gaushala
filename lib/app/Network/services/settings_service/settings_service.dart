@@ -106,19 +106,11 @@ class SettingsService {
   }
 
   Future<EditPdfModel?> editPdfApiService({
-    required String amount,
-    required String name,
-    required String billId,
-    required String type,
+    required String apiUrl,
+    required Map<String, dynamic> params,
   }) async {
-    final params = {
-      ApiKeys.amount: amount,
-      ApiKeys.name: name,
-      ApiKeys.billId: billId,
-      ApiKeys.type: type,
-    };
     var response = await ApiBaseHelper().postHTTP(
-      ApiUrls.editPdfApi,
+      ApiUrls.generatePDFApi + apiUrl,
       showProgress: true,
       params: params,
       onError: (error) {
@@ -129,17 +121,17 @@ class SettingsService {
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (spendAmountModel.code == '200') {
             if (kDebugMode) {
-              print('editPdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+              print('$apiUrl success :::: ${jsonDecode(res.response!.data)['msg']}');
             }
           } else {
             if (kDebugMode) {
-              print('editPdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+              print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
             }
             Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
           }
         } else {
           if (kDebugMode) {
-            print('editPdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+            print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
           }
           Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
         }
@@ -149,13 +141,14 @@ class SettingsService {
   }
 
   Future<DeletePdfModel?> deletePdfApiService({
+    required String apiUrl,
     required String billId,
   }) async {
     final params = {
       ApiKeys.billId: billId,
     };
     var response = await ApiBaseHelper().postHTTP(
-      ApiUrls.deletePdfApi,
+      ApiUrls.generatePDFApi + apiUrl,
       showProgress: true,
       params: params,
       onError: (error) {
@@ -166,17 +159,17 @@ class SettingsService {
         if (res.statusCode! >= 200 && res.statusCode! <= 299) {
           if (spendAmountModel.code == '200') {
             if (kDebugMode) {
-              print('deletePdf success :::: ${jsonDecode(res.response!.data)['msg'].length}');
+              print('$apiUrl success :::: ${jsonDecode(res.response!.data)['msg']}');
             }
           } else {
             if (kDebugMode) {
-              print('deletePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+              print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
             }
             Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
           }
         } else {
           if (kDebugMode) {
-            print('deletePdf error :::: ${jsonDecode(res.response!.data)['msg']}');
+            print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
           }
           Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
         }
