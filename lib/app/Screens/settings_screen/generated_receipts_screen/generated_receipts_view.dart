@@ -20,68 +20,131 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
   GlobalKey<FormState> editPdfFormKey = GlobalKey<FormState>();
 
+  FocusNode searchFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    searchFocusNode.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.WHITE_COLOR,
-      appBar: AppBar(
-        backgroundColor: AppColors.PRIMARY_COLOR,
-        centerTitle: true,
-        title: Text(
-          AppStrings.generatedReceipts,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: AppColors.SECONDARY_COLOR,
-          ),
-        ),
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColors.SECONDARY_COLOR,
-            size: 6.w,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(color: AppColors.SECONDARY_COLOR),
-          );
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ///Receipts
-                GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList),
-
-                ///Niran
-                GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList),
-
-                ///Gau Dohan
-                GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList),
-
-                ///Vahan Vyavastha
-                GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList),
-
-                ///Sarvar
-                GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList),
-
-                ///Makan Bandhkam
-                GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList),
-
-                ///Band Party
-                GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList),
-              ],
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.WHITE_COLOR,
+        appBar: AppBar(
+          backgroundColor: AppColors.PRIMARY_COLOR,
+          centerTitle: true,
+          title: Text(
+            AppStrings.generatedReceipts,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.SECONDARY_COLOR,
             ),
-          );
-        }
-      }),
+          ),
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: AppColors.SECONDARY_COLOR,
+              size: 6.w,
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+        ),
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(color: AppColors.SECONDARY_COLOR),
+            );
+          } else {
+            return Column(
+              children: [
+                ///SearchField
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                  child: TextFormField(
+                    controller: controller.searchController,
+                    focusNode: searchFocusNode,
+                    style: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    onChanged: (value) async {
+                      await getSearchedList(searchedValue: value);
+                    },
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(vertical: 0.5.h),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        color: searchFocusNode.hasFocus ? AppColors.SECONDARY_COLOR : Colors.grey,
+                        size: 6.w,
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      hintText: AppStrings.searchByTitle,
+                      hintStyle: TextStyle(
+                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                    cursorColor: AppColors.SECONDARY_COLOR,
+                  ),
+                ),
+
+                ///Data
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ///Receipts
+                        GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList),
+
+                        ///Niran
+                        GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList),
+
+                        ///Gau Dohan
+                        GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList),
+
+                        ///Vahan Vyavastha
+                        GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList),
+
+                        ///Sarvar
+                        GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList),
+
+                        ///Makan Bandhkam
+                        GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList),
+
+                        ///Band Party
+                        GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
+      ),
     );
   }
 
@@ -1224,5 +1287,66 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
         );
       },
     );
+  }
+
+  Future<void> getSearchedList({required String searchedValue}) async {
+    print('object :: ${searchedValue.trim() != "" && searchedValue.isNotEmpty}');
+    if (searchedValue.trim() != "" && searchedValue.isNotEmpty) {
+      resetSearchedList();
+      controller.receiptList.addAll(
+        controller.defaultReceiptList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.niranList.addAll(
+        controller.defaultNiranList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.gauDohanList.addAll(
+        controller.defaultGauDohanList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.vahanVyavasthaList.addAll(
+        controller.defaultVahanVyavasthaList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.sarvarList.addAll(
+        controller.defaultSarvarList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.makanBandhkamList.addAll(
+        controller.defaultMakanBandhkamList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+      controller.bandPartyList.addAll(
+        controller.defaultBandPartyList.where((e) {
+          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+        }).toList(),
+      );
+    } else {
+      resetSearchedList();
+      controller.receiptList.addAll(controller.defaultReceiptList);
+      controller.niranList.addAll(controller.defaultNiranList);
+      controller.gauDohanList.addAll(controller.defaultGauDohanList);
+      controller.vahanVyavasthaList.addAll(controller.defaultVahanVyavasthaList);
+      controller.sarvarList.addAll(controller.defaultSarvarList);
+      controller.makanBandhkamList.addAll(controller.defaultMakanBandhkamList);
+      controller.bandPartyList.addAll(controller.defaultBandPartyList);
+    }
+  }
+
+  void resetSearchedList() {
+    controller.receiptList.clear();
+    controller.niranList.clear();
+    controller.gauDohanList.clear();
+    controller.vahanVyavasthaList.clear();
+    controller.sarvarList.clear();
+    controller.makanBandhkamList.clear();
+    controller.bandPartyList.clear();
   }
 }

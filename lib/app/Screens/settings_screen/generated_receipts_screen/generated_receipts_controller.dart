@@ -9,6 +9,8 @@ import 'generated_receipt_model/get_billing_model.dart';
 class GeneratedReceiptsController extends GetxController {
   RxBool isLoading = false.obs;
 
+  TextEditingController searchController = TextEditingController();
+
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -21,6 +23,14 @@ class GeneratedReceiptsController extends GetxController {
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController panNumberController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+
+  RxList<Receipt> defaultReceiptList = RxList();
+  RxList<Niran> defaultNiranList = RxList();
+  RxList<GauDohan> defaultGauDohanList = RxList();
+  RxList<VahanVyavastha> defaultVahanVyavasthaList = RxList();
+  RxList<Sarvar> defaultSarvarList = RxList();
+  RxList<MakanBandhkam> defaultMakanBandhkamList = RxList();
+  RxList<BandParty> defaultBandPartyList = RxList();
 
   RxList<Receipt> receiptList = RxList();
   RxList<Niran> niranList = RxList();
@@ -122,13 +132,21 @@ class GeneratedReceiptsController extends GetxController {
       final response = await SettingsService().getBillingApiService();
 
       if (response?.code == '200') {
-        receiptList.value = response?.data?.receipt ?? [];
-        niranList.value = response?.data?.niran ?? [];
-        gauDohanList.value = response?.data?.gauDohan ?? [];
-        vahanVyavasthaList.value = response?.data?.vahanVyavastha ?? [];
-        sarvarList.value = response?.data?.sarvar ?? [];
-        makanBandhkamList.value = response?.data?.makanBandhkam ?? [];
-        bandPartyList.value = response?.data?.bandParty ?? [];
+        resetGeneratedReceipts();
+        defaultReceiptList.addAll(response?.data?.receipt ?? []);
+        defaultNiranList.addAll(response?.data?.niran ?? []);
+        defaultGauDohanList.addAll(response?.data?.gauDohan ?? []);
+        defaultVahanVyavasthaList.addAll(response?.data?.vahanVyavastha ?? []);
+        defaultSarvarList.addAll(response?.data?.sarvar ?? []);
+        defaultMakanBandhkamList.addAll(response?.data?.makanBandhkam ?? []);
+        defaultBandPartyList.addAll(response?.data?.bandParty ?? []);
+        receiptList.addAll(response?.data?.receipt ?? []);
+        niranList.addAll(response?.data?.niran ?? []);
+        gauDohanList.addAll(response?.data?.gauDohan ?? []);
+        vahanVyavasthaList.addAll(response?.data?.vahanVyavastha ?? []);
+        sarvarList.addAll(response?.data?.sarvar ?? []);
+        makanBandhkamList.addAll(response?.data?.makanBandhkam ?? []);
+        bandPartyList.addAll(response?.data?.bandParty ?? []);
       } else {
         resetGeneratedReceipts();
       }
@@ -312,6 +330,13 @@ class GeneratedReceiptsController extends GetxController {
   }
 
   void resetGeneratedReceipts() {
+    defaultReceiptList.clear();
+    defaultNiranList.clear();
+    defaultGauDohanList.clear();
+    defaultVahanVyavasthaList.clear();
+    defaultSarvarList.clear();
+    defaultMakanBandhkamList.clear();
+    defaultBandPartyList.clear();
     receiptList.clear();
     niranList.clear();
     gauDohanList.clear();

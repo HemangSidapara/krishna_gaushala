@@ -53,4 +53,5 @@ class AppStrings {
   static String pleaseEnterQuantity = 'Please enter quantity.';
   static String enterQuantity = 'Enter quantity';
   static String quantity = 'Quantity';
+  static String searchByTitle = 'Search by title';
 }
