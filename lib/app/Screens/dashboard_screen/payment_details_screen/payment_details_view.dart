@@ -72,7 +72,14 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   validator: (value) {
-                    return controller.validateAmount(value!);
+                    if (widget.tabList[widget.index].type == 'Niran' || widget.tabList[widget.index].type == 'Gau Dohan') {
+                      if (controller.quantityController.text.trim() == '') {
+                        return controller.validateAmount(value!);
+                      }
+                    } else {
+                      return controller.validateAmount(value!);
+                    }
+                    return null;
                   },
                   style: TextStyle(
                     color: AppColors.SECONDARY_COLOR,
@@ -627,7 +634,10 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     controller: controller.quantityController,
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      return controller.validateQuantity(value!);
+                      if (controller.amountController.text.trim() == '') {
+                        return controller.validateAmount(value!);
+                      }
+                      return null;
                     },
                     decoration: InputDecoration(
                       hintText: AppStrings.enterQuantity,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
@@ -7,6 +8,8 @@ import 'package:krishna_gaushala/app/Utils/app_formatter.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 import 'package:krishna_gaushala/app/Widgets/get_date_widget.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class GeneratedReceiptsView extends StatefulWidget {
   const GeneratedReceiptsView({Key? key}) : super(key: key);
@@ -22,12 +25,38 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
   FocusNode searchFocusNode = FocusNode();
 
+  final PdfViewerController _pdfViewerController = PdfViewerController();
+  OverlayEntry? _overlayEntry;
+
   @override
   void initState() {
     super.initState();
     searchFocusNode.addListener(() {
       setState(() {});
     });
+  }
+
+  ///PDF selection menu
+  void _showContextMenu(BuildContext context, PdfTextSelectionChangedDetails details) {
+    final OverlayState overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: details.globalSelectedRegion!.center.dy - 60,
+        left: details.globalSelectedRegion!.bottomLeft.dx,
+        child: ElevatedButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: details.selectedText ?? ''));
+            _pdfViewerController.clearSelection();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 10,
+          ),
+          child: Text('Copy', style: TextStyle(fontSize: 17, color: AppColors.BLACK_COLOR)),
+        ),
+      ),
+    );
+    overlayState.insert(_overlayEntry!);
   }
 
   @override
@@ -155,101 +184,83 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '$title:',
-            style: TextStyle(
-              color: AppColors.SECONDARY_COLOR,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '$title:',
+                style: TextStyle(
+                  color: AppColors.SECONDARY_COLOR,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                'Total: ${items.toList().grandTotal().toDouble().toRupees(symbol: '₹')}',
+                style: TextStyle(
+                  color: AppColors.AMOUNT_COLOR,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ],
           ),
           const Divider(
             color: Colors.grey,
             thickness: 1,
           ),
-          items.isEmpty
-              ? Center(
-                  child: Text(
-                    'No Data Available',
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                )
-              : Obx(() {
-                  return ListView.separated(
-                    itemCount: items.length,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 1.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ///Title, Amount & Date
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ///Title & S.R. No.
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      ///Title
-                                      Text(
-                                        items[index].name!,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
-
-                                      ///S.R No.
-                                      Text(
-                                        'S.R. No.: ${items[index].billId}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 8.sp,
-                                          color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 2.w),
-
-                                ///Amount & Date
-                                Column(
+          if (items.isEmpty)
+            Center(
+              child: Text(
+                'No Data Available',
+                style: TextStyle(
+                  color: AppColors.SECONDARY_COLOR,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          else
+            Obx(() {
+              return ListView.separated(
+                itemCount: items.length,
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h).copyWith(right: 5.w),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () async {
+                      await showViewPdfBottomSheet(url: items[index].url!);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 1.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ///Title, Amount & Date
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ///Title & S.R. No.
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ///Amount
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.currency_rupee_rounded,
-                                          color: AppColors.SECONDARY_COLOR,
-                                          size: 10.sp,
-                                        ),
-                                        Text(
-                                          items[index].amount!.toString().toRupees(),
-                                          style: TextStyle(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
+                                    ///Title
+                                    Text(
+                                      items[index].name!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: AppColors.SECONDARY_COLOR,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14.sp,
+                                      ),
                                     ),
 
-                                    ///Date
+                                    ///S.R No.
                                     Text(
-                                      GetDateOrTime().getNonSuffixDate(items[index].datetime!),
+                                      'S.R. No.: ${items[index].billId}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 8.sp,
@@ -258,111 +269,167 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     ),
                                   ],
                                 ),
+                              ),
+                              SizedBox(width: 2.w),
 
-                                ///Edit, Delete & Share
-                                PopupMenuButton(
-                                  onSelected: (value) async {
-                                    if (value == 'share') {
-                                      if (items[index].url != null) {
-                                        await Share.share(items[index].url!, subject: 'Share Receipt to person.');
-                                      }
-                                    } else if (value == 'edit') {
-                                      controller.amountController.text = items[index].amount ?? '';
-                                      controller.nameController.text = items[index].name ?? '';
-                                      if (title == 'Receipt') {
-                                        controller.addressController.text = items[index].address ?? '';
-                                        controller.isPurposeFundSelected[0] = items[index].type == 'No' ? false : true;
-                                        controller.isPurposeFundSelected[1] = items[index].type1 == 'No' ? false : true;
-                                        controller.isPurposeFundSelected[2] = items[index].type2 == 'No' ? false : true;
-                                        controller.whichCashType[0] = items[index].cash == 'Yes' ? true : false;
-                                        controller.whichCashType[1] = items[index].cash == 'No' ? true : false;
-                                        controller.chequeNumberController.text = items[index].chequeNumber ?? '';
-                                        controller.chequeDateController.text = items[index].chequeDate ?? '';
-                                        controller.bankController.text = items[index].bank ?? '';
-                                        controller.branchController.text = items[index].branch ?? '';
-                                        controller.accountNumberController.text = items[index].accountNumber ?? '';
-                                        controller.panNumberController.text = items[index].panNumber ?? '';
-                                      }
-                                      if (title == 'Niran' || title == 'Gau Dohan') {
-                                        controller.quantityController.text = items[index].quantity ?? '';
-                                      }
-                                      await showEditPdfBottomSheet(
-                                        billId: items[index].billId!,
-                                        type: title,
-                                      );
-                                    } else if (value == 'delete') {
-                                      await showDeletePdfDialog(billId: items[index].billId!, type: title);
-                                    }
-                                  },
-                                  position: PopupMenuPosition.under,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                              ///Amount & Date
+                              Column(
+                                children: [
+                                  ///Amount
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.currency_rupee_rounded,
+                                        color: AppColors.SECONDARY_COLOR,
+                                        size: 10.sp,
+                                      ),
+                                      Text(
+                                        items[index].amount!.toString().toRupees(),
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  itemBuilder: (context) {
-                                    return [
-                                      ///Edit
-                                      PopupMenuItem(
-                                        value: 'edit',
-                                        child: Text(
-                                          'Edit',
-                                          style: TextStyle(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      const PopupMenuItem(
-                                        height: 0,
-                                        child: PopupMenuDivider(height: 0),
-                                      ),
 
-                                      ///Delete
-                                      PopupMenuItem(
-                                        value: 'delete',
-                                        child: Text(
-                                          'Delete',
-                                          style: TextStyle(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      const PopupMenuItem(
-                                        height: 0,
-                                        child: PopupMenuDivider(height: 0),
-                                      ),
+                                  ///Date
+                                  Text(
+                                    GetDateOrTime().getNonSuffixDate(items[index].datetime!),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 8.sp,
+                                      color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                                    ),
+                                  ),
+                                ],
+                              ),
 
-                                      ///Share
-                                      PopupMenuItem(
-                                        value: 'share',
-                                        child: Text(
-                                          'Share',
-                                          style: TextStyle(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ];
-                                  },
+                              ///Edit, Delete & Share
+                              PopupMenuButton(
+                                onSelected: (value) async {
+                                  if (value == 'share') {
+                                    if (items[index].url != null) {
+                                      await Share.share(items[index].url!, subject: 'Share Receipt to person.');
+                                    }
+                                  } else if (value == 'edit') {
+                                    controller.amountController.text = items[index].amount ?? '';
+                                    controller.nameController.text = items[index].name ?? '';
+                                    if (title == 'Receipt') {
+                                      controller.addressController.text = items[index].address ?? '';
+                                      controller.isPurposeFundSelected[0] = items[index].type == 'No' ? false : true;
+                                      controller.isPurposeFundSelected[1] = items[index].type1 == 'No' ? false : true;
+                                      controller.isPurposeFundSelected[2] = items[index].type2 == 'No' ? false : true;
+                                      controller.whichCashType[0] = items[index].cash == 'Yes' ? true : false;
+                                      controller.whichCashType[1] = items[index].cash == 'No' ? true : false;
+                                      controller.chequeNumberController.text = items[index].chequeNumber ?? '';
+                                      controller.chequeDateController.text = items[index].chequeDate ?? '';
+                                      controller.bankController.text = items[index].bank ?? '';
+                                      controller.branchController.text = items[index].branch ?? '';
+                                      controller.accountNumberController.text = items[index].accountNumber ?? '';
+                                      controller.panNumberController.text = items[index].panNumber ?? '';
+                                    }
+                                    if (title == 'Niran' || title == 'Gau Dohan') {
+                                      controller.quantityController.text = items[index].quantity ?? '';
+                                    }
+                                    await showEditPdfBottomSheet(
+                                      billId: items[index].billId!,
+                                      type: title,
+                                    );
+                                  } else if (value == 'delete') {
+                                    await showDeletePdfDialog(billId: items[index].billId!, type: title);
+                                  } else if (value == 'view') {
+                                    await showViewPdfBottomSheet(url: items[index].url);
+                                  }
+                                },
+                                position: PopupMenuPosition.under,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Divider(
-                        color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
-                        thickness: 1,
-                      );
-                    },
+                                itemBuilder: (context) {
+                                  return [
+                                    ///Edit
+                                    PopupMenuItem(
+                                      value: 'edit',
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      height: 0,
+                                      child: PopupMenuDivider(height: 0),
+                                    ),
+
+                                    ///Delete
+                                    PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      height: 0,
+                                      child: PopupMenuDivider(height: 0),
+                                    ),
+
+                                    ///View
+                                    PopupMenuItem(
+                                      value: 'view',
+                                      child: Text(
+                                        'View',
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      height: 0,
+                                      child: PopupMenuDivider(height: 0),
+                                    ),
+
+                                    ///Share
+                                    PopupMenuItem(
+                                      value: 'share',
+                                      child: Text(
+                                        'Share',
+                                        style: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   );
-                }),
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(
+                    color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                    thickness: 1,
+                  );
+                },
+              );
+            }),
         ],
       ),
     );
@@ -1290,7 +1357,6 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
   }
 
   Future<void> getSearchedList({required String searchedValue}) async {
-    print('object :: ${searchedValue.trim() != "" && searchedValue.isNotEmpty}');
     if (searchedValue.trim() != "" && searchedValue.isNotEmpty) {
       resetSearchedList();
       controller.receiptList.addAll(
@@ -1348,5 +1414,82 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     controller.sarvarList.clear();
     controller.makanBandhkamList.clear();
     controller.bandPartyList.clear();
+  }
+
+  showViewPdfBottomSheet({required String url}) async {
+    return await showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      backgroundColor: AppColors.WHITE_COLOR,
+      constraints: BoxConstraints(maxHeight: 90.h, minHeight: 40.h, maxWidth: 100.w, minWidth: 100.w),
+      isScrollControlled: true,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
+          child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size(100.w, 10.h),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.SECONDARY_COLOR,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h).copyWith(right: 2.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'PDF Viewer',
+                      style: TextStyle(
+                        color: AppColors.WHITE_COLOR,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close_rounded,
+                        color: AppColors.WHITE_COLOR,
+                        size: 7.w,
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            body: SfTheme(
+              data: SfThemeData(
+                pdfViewerThemeData: SfPdfViewerThemeData(
+                  progressBarColor: AppColors.WARNING_COLOR,
+                ),
+              ),
+              child: SfPdfViewer.network(
+                url,
+                currentSearchTextHighlightColor: AppColors.PRIMARY_COLOR,
+                onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                  if (details.selectedText == null && _overlayEntry != null) {
+                    _overlayEntry?.remove();
+                    _overlayEntry = null;
+                  } else if (details.selectedText != null && _overlayEntry == null) {
+                    _showContextMenu(context, details);
+                  }
+                },
+                controller: _pdfViewerController,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
