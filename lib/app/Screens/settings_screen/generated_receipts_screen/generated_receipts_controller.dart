@@ -13,6 +13,7 @@ class GeneratedReceiptsController extends GetxController {
 
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   RxList<bool> isPurposeFundSelected = RxList.generate(3, (index) => false);
   RxList<bool> whichCashType = RxList.generate(2, (index) => index == 0 ? true : false);
@@ -174,6 +175,7 @@ class GeneratedReceiptsController extends GetxController {
             params: {
               ApiKeys.name: nameController.text,
               ApiKeys.amount: amountController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.address: addressController.text,
               ApiKeys.type: isPurposeFundSelected[0] ? 'Yes' : 'No',
               ApiKeys.type1: isPurposeFundSelected[1] ? 'Yes' : 'No',
@@ -194,6 +196,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateNiranPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
               ApiKeys.billId: billId,
@@ -205,6 +208,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateGauDohanPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
               ApiKeys.billId: billId,
@@ -216,6 +220,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateVahanVyavsthaPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
             },
@@ -226,6 +231,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateSarvarPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
             },
@@ -236,6 +242,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateMakanBandhkamPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
             },
@@ -246,6 +253,7 @@ class GeneratedReceiptsController extends GetxController {
             url: 'updateBandPartyPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
             },
@@ -349,6 +357,7 @@ class GeneratedReceiptsController extends GetxController {
   void resetControllers() {
     amountController.clear();
     nameController.clear();
+    phoneController.clear();
     addressController.clear();
     resetControllers();
     quantityController.clear();
@@ -361,5 +370,21 @@ class GeneratedReceiptsController extends GetxController {
     branchController.clear();
     accountNumberController.clear();
     panNumberController.clear();
+  }
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
+    addressController.dispose();
+    chequeDateController.dispose();
+    chequeNumberController.dispose();
+    bankController.dispose();
+    branchController.dispose();
+    accountNumberController.dispose();
+    panNumberController.dispose();
+    quantityController.dispose();
+    super.dispose();
   }
 }

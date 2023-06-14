@@ -26,7 +26,11 @@ extension RupeesFormatterFromDouble on double {
 
 extension RupeesFormatterFromString on String {
   String toRupees({String? symbol}) {
-    return indianRupeesFormat(symbol: symbol).format(int.parse(this));
+    if (this != '') {
+      return indianRupeesFormat(symbol: symbol).format(int.parse(this));
+    } else {
+      return '00';
+    }
   }
 }
 
@@ -36,7 +40,9 @@ extension RupeesGrandTotalFromList on List {
   String grandTotal() {
     double totalAmount = 0.0;
     for (var element in this) {
-      totalAmount = totalAmount + element.amount!.toString().toDouble();
+      if (element.amount != '' && element.amount != null) {
+        totalAmount = totalAmount + element.amount!.toString().toDouble();
+      }
     }
     return totalAmount.toString();
   }

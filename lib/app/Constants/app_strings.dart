@@ -54,4 +54,6 @@ class AppStrings {
   static String enterQuantity = 'Enter quantity';
   static String quantity = 'Quantity';
   static String searchByTitle = 'Search by title';
+  static String enterPhoneNumber = 'Enter phone number';
+  static String phoneNumber = 'Phone Number';
 }

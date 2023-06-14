@@ -244,6 +244,43 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                   ),
                 ),
+                SizedBox(height: 3.h),
+
+                ///PhoneNumber
+                TextFormField(
+                  controller: controller.phoneController,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: AppStrings.enterPhoneNumber,
+                    hintStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelText: AppStrings.phoneNumber,
+                    labelStyle: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.SECONDARY_COLOR,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                  ),
+                ),
 
                 ///Receipt Extra Fields
                 if (widget.tabList[widget.index].type == 'Receipt') ...[
@@ -578,50 +615,47 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                                   ),
                                 ),
-                                SizedBox(height: 2.h),
-
-                                ///PAN Number
-                                TextFormField(
-                                  controller: controller.panNumberController,
-                                  textInputAction: TextInputAction.done,
-                                  validator: (value) {
-                                    return controller.validatePANNumber(value!);
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: AppStrings.enterPanNumber,
-                                    hintStyle: TextStyle(
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    labelText: AppStrings.panNumber,
-                                    labelStyle: TextStyle(
-                                      color: AppColors.SECONDARY_COLOR,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: AppColors.SECONDARY_COLOR,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                  ),
-                                ),
-                                SizedBox(height: 2.h),
+                                SizedBox(height: 3.h),
                               ],
                             ),
                           ),
                         ],
+
+                        ///PAN Number
+                        TextFormField(
+                          controller: controller.panNumberController,
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            hintText: AppStrings.enterPanNumber,
+                            hintStyle: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            labelText: AppStrings.panNumber,
+                            labelStyle: TextStyle(
+                              color: AppColors.SECONDARY_COLOR,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.SECONDARY_COLOR,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
                       ],
                     );
                   }),

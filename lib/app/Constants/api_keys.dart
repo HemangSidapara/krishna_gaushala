@@ -19,4 +19,5 @@ class ApiKeys {
   static const branch = "branch";
   static const accountNumber = "account_number";
   static const panNumber = "pan_number";
+  static const phone = "phone";
 }

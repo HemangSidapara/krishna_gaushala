@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
@@ -6,10 +8,12 @@ import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentDetailsController extends GetxController {
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   RxList<bool> isPurposeFundSelected = RxList.generate(3, (index) => false);
   RxList<bool> whichCashType = RxList.generate(2, (index) => index == 0 ? true : false);
@@ -119,11 +123,12 @@ class PaymentDetailsController extends GetxController {
             params: {
               ApiKeys.name: nameController.text,
               ApiKeys.amount: amountController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.address: addressController.text,
               ApiKeys.type: isPurposeFundSelected[0] ? 'Yes' : 'No',
               ApiKeys.type1: isPurposeFundSelected[1] ? 'Yes' : 'No',
               ApiKeys.type2: isPurposeFundSelected[2] ? 'Yes' : 'No',
-              ApiKeys.cash: whichCashType[0],
+              ApiKeys.cash: whichCashType[0] ? 'Yes' : 'No',
               ApiKeys.chequeNumber: chequeNumberController.text,
               ApiKeys.chequeDate: chequeDateController.text,
               ApiKeys.bank: bankController.text,
@@ -139,6 +144,7 @@ class PaymentDetailsController extends GetxController {
             url: 'generateBandPartyPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
             },
           );
@@ -159,6 +165,7 @@ class PaymentDetailsController extends GetxController {
             url: 'generateSarvarPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
             },
           );
@@ -169,6 +176,7 @@ class PaymentDetailsController extends GetxController {
             url: 'generateVahanVyavsthaPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
             },
           );
@@ -179,6 +187,7 @@ class PaymentDetailsController extends GetxController {
             url: 'generateGauDohanPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
             },
@@ -190,6 +199,7 @@ class PaymentDetailsController extends GetxController {
             url: 'generateNiranPdf',
             params: {
               ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
             },
@@ -206,7 +216,29 @@ class PaymentDetailsController extends GetxController {
     );
 
     if (response?.code == '200') {
-      await Share.share(response!.path!, subject: 'Share Receipt to person.');
+      if (phoneController.text.trim() != '') {
+        String contactNo = phoneController.text.replaceAll('+', '').replaceRange(0, 2, '');
+        String waUrl = 'whatsapp://send?phone=+91$contactNo&text=Your receipt is here👇\n${response!.path!}';
+        String waWebUrl = 'https://wa.me/+91$contactNo?text=Your receipt is here👇\n${response.path!}';
+        try {
+          await launchUrl(
+            Uri.parse(waUrl),
+            mode: LaunchMode.externalApplication,
+          );
+        } on PlatformException catch (e) {
+          if (kDebugMode) {
+            print('onError sharePdf to WA :: ${e.code}');
+          }
+          if (e.code == 'ACTIVITY_NOT_FOUND') {
+            await launchUrl(
+              Uri.parse(waWebUrl),
+              mode: LaunchMode.externalApplication,
+            );
+          }
+        }
+      } else {
+        await Share.share(response!.path!, subject: 'Share Receipt to person.');
+      }
       resetControllers();
     } else {}
   }
@@ -229,6 +261,7 @@ class PaymentDetailsController extends GetxController {
   void resetControllers() {
     amountController.clear();
     nameController.clear();
+    phoneController.clear();
     addressController.clear();
     resetChequeControllers();
     quantityController.clear();
@@ -237,6 +270,7 @@ class PaymentDetailsController extends GetxController {
   void disposeControllers() {
     amountController.dispose();
     nameController.dispose();
+    phoneController.dispose();
     addressController.dispose();
     chequeDateController.dispose();
     chequeNumberController.dispose();

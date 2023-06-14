@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -8,8 +9,10 @@ import 'package:krishna_gaushala/app/Utils/app_formatter.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 import 'package:krishna_gaushala/app/Widgets/get_date_widget.dart';
 import 'package:share_plus/share_plus.dart';
+// ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GeneratedReceiptsView extends StatefulWidget {
   const GeneratedReceiptsView({Key? key}) : super(key: key);
@@ -27,6 +30,9 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
   final PdfViewerController _pdfViewerController = PdfViewerController();
   OverlayEntry? _overlayEntry;
+
+  List<ExpansionTileController> expansionControllers = List.generate(7, (index) => ExpansionTileController());
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -67,6 +73,21 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
       },
       child: Scaffold(
         backgroundColor: AppColors.WHITE_COLOR,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            scrollController.animateTo(
+              scrollController.position.minScrollExtent,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.fastOutSlowIn,
+            );
+          },
+          backgroundColor: AppColors.SECONDARY_COLOR,
+          child: Icon(
+            Icons.arrow_drop_up_rounded,
+            color: AppColors.WHITE_COLOR,
+            size: 8.w,
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: AppColors.PRIMARY_COLOR,
           centerTitle: true,
@@ -142,29 +163,30 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                 ///Data
                 Flexible(
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ///Receipts
-                        GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList),
+                        GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList, index: 0),
 
                         ///Niran
-                        GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList),
+                        GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList, index: 1),
 
                         ///Gau Dohan
-                        GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList),
+                        GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList, index: 2),
 
                         ///Vahan Vyavastha
-                        GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList),
+                        GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList, index: 3),
 
                         ///Sarvar
-                        GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList),
+                        GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList, index: 4),
 
                         ///Makan Bandhkam
-                        GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList),
+                        GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList, index: 5),
 
                         ///Band Party
-                        GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList),
+                        GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList, index: 6),
                       ],
                     ),
                   ),
@@ -178,38 +200,60 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
   }
 
   // ignore: non_constant_identifier_names
-  Widget GeneratedReceiptsCategoryList({required String title, required List items}) {
+  Widget GeneratedReceiptsCategoryList({
+    required String title,
+    required List items,
+    required int index,
+  }) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ExpansionTile(
+        controller: expansionControllers[index],
+        onExpansionChanged: (value) {
+          if (value) {
+            for (int i = 0; i < expansionControllers.length; i++) {
+              if (i != index && expansionControllers[i].isExpanded) {
+                expansionControllers[i].collapse();
+              }
+            }
+          }
+        },
+        iconColor: AppColors.SECONDARY_COLOR,
+        collapsedShape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.grey, width: 1),
+        ),
+        shape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.grey, width: 1),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '$title:',
+              style: TextStyle(
+                color: AppColors.SECONDARY_COLOR,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              'Total: ${items.toList().grandTotal().toDouble().toRupees(symbol: '₹')}',
+              style: TextStyle(
+                color: AppColors.AMOUNT_COLOR,
+                fontWeight: FontWeight.w900,
+                fontSize: 12.sp,
+              ),
+            ),
+          ],
+        ),
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '$title:',
-                style: TextStyle(
-                  color: AppColors.SECONDARY_COLOR,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                'Total: ${items.toList().grandTotal().toDouble().toRupees(symbol: '₹')}',
-                style: TextStyle(
-                  color: AppColors.AMOUNT_COLOR,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 12.sp,
-                ),
-              ),
-            ],
-          ),
           const Divider(
             color: Colors.grey,
             thickness: 1,
           ),
-          if (items.isEmpty)
+          if (items.isEmpty) ...[
             Center(
               child: Text(
                 'No Data Available',
@@ -219,8 +263,9 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-            )
-          else
+            ),
+            SizedBox(height: 1.h),
+          ] else
             Obx(() {
               return ListView.separated(
                 itemCount: items.length,
@@ -311,11 +356,34 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 onSelected: (value) async {
                                   if (value == 'share') {
                                     if (items[index].url != null) {
-                                      await Share.share(items[index].url!, subject: 'Share Receipt to person.');
+                                      if (items[index].phone != null && items[index].phone != '') {
+                                        String contactNo = items[index].phone.toString().replaceAll('+', '').replaceRange(0, 2, '');
+                                        String waUrl = 'whatsapp://send?phone=+91$contactNo&text=Your receipt is here👇\n${items[index].url}';
+                                        String waWebUrl = 'https://wa.me/+91$contactNo?text=Your receipt is here👇\n${items[index].url}';
+                                        try {
+                                          await launchUrl(
+                                            Uri.parse(waUrl),
+                                            mode: LaunchMode.externalApplication,
+                                          );
+                                        } on PlatformException catch (e) {
+                                          if (kDebugMode) {
+                                            print('onError sharePdf to WA :: ${e.code}');
+                                          }
+                                          if (e.code == 'ACTIVITY_NOT_FOUND') {
+                                            await launchUrl(
+                                              Uri.parse(waWebUrl),
+                                              mode: LaunchMode.externalApplication,
+                                            );
+                                          }
+                                        }
+                                      } else {
+                                        await Share.share(items[index].url!, subject: 'Share Receipt to person.');
+                                      }
                                     }
                                   } else if (value == 'edit') {
                                     controller.amountController.text = items[index].amount ?? '';
                                     controller.nameController.text = items[index].name ?? '';
+                                    controller.phoneController.text = items[index].phone ?? '';
                                     if (title == 'Receipt') {
                                       controller.addressController.text = items[index].address ?? '';
                                       controller.isPurposeFundSelected[0] = items[index].type == 'No' ? false : true;
@@ -654,7 +722,44 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                               ),
                             ),
-                            SizedBox(height: 5.h),
+                            SizedBox(height: 3.h),
+
+                            ///PhoneNumber
+                            TextFormField(
+                              controller: controller.phoneController,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: AppStrings.enterPhoneNumber,
+                                hintStyle: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                labelText: AppStrings.phoneNumber,
+                                labelStyle: TextStyle(
+                                  color: AppColors.SECONDARY_COLOR,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.SECONDARY_COLOR,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                              ),
+                            ),
+                            SizedBox(height: 3.h),
 
                             ///Receipt Extra Fields
                             if (type == 'Receipt') ...[
@@ -987,49 +1092,46 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                               ),
                                             ),
                                             SizedBox(height: 2.h),
-
-                                            ///PAN Number
-                                            TextFormField(
-                                              controller: controller.panNumberController,
-                                              textInputAction: TextInputAction.done,
-                                              validator: (value) {
-                                                return controller.validatePANNumber(value!);
-                                              },
-                                              decoration: InputDecoration(
-                                                hintText: AppStrings.enterPanNumber,
-                                                hintStyle: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                labelText: AppStrings.panNumber,
-                                                labelStyle: TextStyle(
-                                                  color: AppColors.SECONDARY_COLOR,
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: AppColors.SECONDARY_COLOR,
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                              ),
-                                            ),
-                                            SizedBox(height: 2.h),
                                           ],
                                         ),
                                       ),
                                     ],
+
+                                    ///PAN Number
+                                    TextFormField(
+                                      controller: controller.panNumberController,
+                                      textInputAction: TextInputAction.done,
+                                      decoration: InputDecoration(
+                                        hintText: AppStrings.enterPanNumber,
+                                        hintStyle: TextStyle(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        labelText: AppStrings.panNumber,
+                                        labelStyle: TextStyle(
+                                          color: AppColors.SECONDARY_COLOR,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: AppColors.SECONDARY_COLOR,
+                                            width: 1,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                            width: 1,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                      ),
+                                    ),
+                                    SizedBox(height: 3.h),
                                   ],
                                 );
                               }),

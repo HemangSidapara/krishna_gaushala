@@ -198,12 +198,14 @@ class BandParty {
   BandParty({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _url = url;
     _datetime = datetime;
@@ -212,18 +214,21 @@ class BandParty {
   BandParty.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _url = json['url'];
     _datetime = json['datetime'];
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _url;
   String? _datetime;
   BandParty copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
@@ -231,12 +236,14 @@ class BandParty {
       BandParty(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         url: url ?? _url,
         datetime: datetime ?? _datetime,
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get url => _url;
   String? get datetime => _datetime;
@@ -245,6 +252,7 @@ class BandParty {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['url'] = _url;
     map['datetime'] = _datetime;
@@ -265,12 +273,14 @@ class MakanBandhkam {
   MakanBandhkam({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _url = url;
     _datetime = datetime;
@@ -279,18 +289,21 @@ class MakanBandhkam {
   MakanBandhkam.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _url = json['url'];
     _datetime = json['datetime'];
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _url;
   String? _datetime;
   MakanBandhkam copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
@@ -298,12 +311,14 @@ class MakanBandhkam {
       MakanBandhkam(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         url: url ?? _url,
         datetime: datetime ?? _datetime,
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get url => _url;
   String? get datetime => _datetime;
@@ -312,6 +327,7 @@ class MakanBandhkam {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['url'] = _url;
     map['datetime'] = _datetime;
@@ -332,12 +348,14 @@ class Sarvar {
   Sarvar({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _url = url;
     _datetime = datetime;
@@ -346,18 +364,21 @@ class Sarvar {
   Sarvar.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _url = json['url'];
     _datetime = json['datetime'];
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _url;
   String? _datetime;
   Sarvar copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
@@ -365,12 +386,14 @@ class Sarvar {
       Sarvar(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         url: url ?? _url,
         datetime: datetime ?? _datetime,
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get url => _url;
   String? get datetime => _datetime;
@@ -379,6 +402,7 @@ class Sarvar {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['url'] = _url;
     map['datetime'] = _datetime;
@@ -399,12 +423,14 @@ class VahanVyavastha {
   VahanVyavastha({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _url = url;
     _datetime = datetime;
@@ -413,18 +439,21 @@ class VahanVyavastha {
   VahanVyavastha.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _url = json['url'];
     _datetime = json['datetime'];
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _url;
   String? _datetime;
   VahanVyavastha copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? url,
     String? datetime,
@@ -432,12 +461,14 @@ class VahanVyavastha {
       VahanVyavastha(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         url: url ?? _url,
         datetime: datetime ?? _datetime,
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get url => _url;
   String? get datetime => _datetime;
@@ -446,6 +477,7 @@ class VahanVyavastha {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['url'] = _url;
     map['datetime'] = _datetime;
@@ -467,6 +499,7 @@ class GauDohan {
   GauDohan({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? quantity,
     String? url,
@@ -474,6 +507,7 @@ class GauDohan {
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _quantity = quantity;
     _url = url;
@@ -483,6 +517,7 @@ class GauDohan {
   GauDohan.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _quantity = json['quantity'];
     _url = json['url'];
@@ -490,6 +525,7 @@ class GauDohan {
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _quantity;
   String? _url;
@@ -497,6 +533,7 @@ class GauDohan {
   GauDohan copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? quantity,
     String? url,
@@ -505,6 +542,7 @@ class GauDohan {
       GauDohan(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         quantity: quantity ?? _quantity,
         url: url ?? _url,
@@ -512,6 +550,7 @@ class GauDohan {
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get quantity => _quantity;
   String? get url => _url;
@@ -521,6 +560,7 @@ class GauDohan {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['quantity'] = _quantity;
     map['url'] = _url;
@@ -543,6 +583,7 @@ class Niran {
   Niran({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? quantity,
     String? url,
@@ -550,6 +591,7 @@ class Niran {
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _quantity = quantity;
     _url = url;
@@ -559,6 +601,7 @@ class Niran {
   Niran.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _quantity = json['quantity'];
     _url = json['url'];
@@ -566,6 +609,7 @@ class Niran {
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _quantity;
   String? _url;
@@ -573,6 +617,7 @@ class Niran {
   Niran copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? quantity,
     String? url,
@@ -581,6 +626,7 @@ class Niran {
       Niran(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         quantity: quantity ?? _quantity,
         url: url ?? _url,
@@ -588,6 +634,7 @@ class Niran {
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get quantity => _quantity;
   String? get url => _url;
@@ -597,6 +644,7 @@ class Niran {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['quantity'] = _quantity;
     map['url'] = _url;
@@ -607,6 +655,7 @@ class Niran {
 
 /// bill_id : "1"
 /// name : "????"
+/// phone : "8952136748"
 /// amount : "1000"
 /// address : "Rajkot"
 /// type : "Yes"
@@ -629,6 +678,7 @@ class Receipt {
   Receipt({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? address,
     String? type,
@@ -646,6 +696,7 @@ class Receipt {
   }) {
     _billId = billId;
     _name = name;
+    _phone = phone;
     _amount = amount;
     _address = address;
     _type = type;
@@ -665,6 +716,7 @@ class Receipt {
   Receipt.fromJson(dynamic json) {
     _billId = json['bill_id'];
     _name = json['name'];
+    _phone = json['phone'];
     _amount = json['amount'];
     _address = json['address'];
     _type = json['type'];
@@ -682,6 +734,7 @@ class Receipt {
   }
   String? _billId;
   String? _name;
+  String? _phone;
   String? _amount;
   String? _address;
   String? _type;
@@ -699,6 +752,7 @@ class Receipt {
   Receipt copyWith({
     String? billId,
     String? name,
+    String? phone,
     String? amount,
     String? address,
     String? type,
@@ -717,6 +771,7 @@ class Receipt {
       Receipt(
         billId: billId ?? _billId,
         name: name ?? _name,
+        phone: phone ?? _phone,
         amount: amount ?? _amount,
         address: address ?? _address,
         type: type ?? _type,
@@ -734,6 +789,7 @@ class Receipt {
       );
   String? get billId => _billId;
   String? get name => _name;
+  String? get phone => _phone;
   String? get amount => _amount;
   String? get address => _address;
   String? get type => _type;
@@ -753,6 +809,7 @@ class Receipt {
     final map = <String, dynamic>{};
     map['bill_id'] = _billId;
     map['name'] = _name;
+    map['phone'] = _phone;
     map['amount'] = _amount;
     map['address'] = _address;
     map['type'] = _type;
