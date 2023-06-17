@@ -17,6 +17,10 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   SettingsController controller = Get.find<SettingsController>();
 
+  bool languageExpanded = false;
+  bool selectedGujarati = Get.locale == const Locale('gu', 'IN') ? true : false;
+  bool selectedEnglish = Get.locale == const Locale('en', 'IN') ? true : false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,6 +131,152 @@ class _SettingsViewState extends State<SettingsView> {
                 thickness: 1,
               );
             },
+          ),
+
+          ExpansionTile(
+            onExpansionChanged: (value) {
+              setState(() {
+                languageExpanded = value;
+              });
+            },
+            shape: InputBorder.none,
+            tilePadding: EdgeInsets.only(left: 9.w, right: 5.w),
+            trailing: RotatedBox(
+              quarterTurns: languageExpanded ? -2 : 0,
+              child: Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: AppColors.SECONDARY_COLOR,
+                size: 5.w,
+              ),
+            ),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.translate_rounded,
+                  color: AppColors.SECONDARY_COLOR,
+                  size: 5.5.w,
+                ),
+                SizedBox(width: 3.w),
+                Text(
+                  AppStrings.changeLanguage.tr,
+                  style: TextStyle(
+                    color: AppColors.SECONDARY_COLOR,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
+            childrenPadding: EdgeInsets.only(left: 9.w, right: 5.w),
+            children: [
+              Divider(
+                color: AppColors.SECONDARY_COLOR.withOpacity(0.5),
+                thickness: 1,
+              ),
+              SizedBox(height: 1.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ///English
+                  Flexible(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedEnglish = true;
+                          selectedGujarati = false;
+                          Get.updateLocale(const Locale('en', 'IN'));
+                        });
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ///CheckBox
+                          AnimatedContainer(
+                            padding: EdgeInsets.all(0.5.w),
+                            decoration: BoxDecoration(
+                              color: selectedEnglish ? AppColors.SECONDARY_COLOR : AppColors.WHITE_COLOR,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: AppColors.SECONDARY_COLOR,
+                                width: 1,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 400),
+                            child: Icon(
+                              Icons.done_rounded,
+                              color: AppColors.WHITE_COLOR,
+                              size: 4.w,
+                            ),
+                          ),
+                          SizedBox(width: 3.w),
+
+                          ///Title
+                          Flexible(
+                            child: Text(
+                              AppStrings.english.tr,
+                              style: TextStyle(
+                                color: AppColors.SECONDARY_COLOR,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  ///Gujarati
+                  Flexible(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedGujarati = true;
+                          selectedEnglish = false;
+                          Get.updateLocale(const Locale('gu', 'IN'));
+                        });
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ///CheckBox
+                          AnimatedContainer(
+                            padding: EdgeInsets.all(0.5.w),
+                            decoration: BoxDecoration(
+                              color: selectedGujarati ? AppColors.SECONDARY_COLOR : AppColors.WHITE_COLOR,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: AppColors.SECONDARY_COLOR,
+                                width: 1,
+                              ),
+                            ),
+                            duration: const Duration(milliseconds: 400),
+                            child: Icon(
+                              Icons.done_rounded,
+                              color: AppColors.WHITE_COLOR,
+                              size: 4.w,
+                            ),
+                          ),
+                          SizedBox(width: 3.w),
+
+                          ///Title
+                          Flexible(
+                            child: Text(
+                              AppStrings.gujarati.tr,
+                              style: TextStyle(
+                                color: AppColors.SECONDARY_COLOR,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

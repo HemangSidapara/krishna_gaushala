@@ -27,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
           backgroundColor: AppColors.PRIMARY_COLOR,
           centerTitle: true,
           title: Text(
-            AppStrings.login,
+            AppStrings.login.tr,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -51,12 +51,12 @@ class _LoginViewState extends State<LoginView> {
                     return controller.validateEmail(value!);
                   },
                   decoration: InputDecoration(
-                      hintText: 'Enter username',
+                      hintText: AppStrings.enterUsername.tr,
                       hintStyle: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                       ),
-                      labelText: 'Username',
+                      labelText: AppStrings.username.tr,
                       labelStyle: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 10.sp,
@@ -102,12 +102,12 @@ class _LoginViewState extends State<LoginView> {
                           });
                         },
                       ),
-                      hintText: 'Enter password',
+                      hintText: AppStrings.enterPassword.tr,
                       hintStyle: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                       ),
-                      labelText: 'Password',
+                      labelText: AppStrings.password.tr,
                       labelStyle: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 10.sp,
@@ -146,7 +146,7 @@ class _LoginViewState extends State<LoginView> {
                     elevation: 8,
                   ),
                   child: Text(
-                    AppStrings.login,
+                    AppStrings.login.tr,
                     style: TextStyle(
                       color: AppColors.WHITE_COLOR,
                       fontWeight: FontWeight.w600,

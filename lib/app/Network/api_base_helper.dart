@@ -13,16 +13,9 @@ class ApiBaseHelper {
   static const String baseUrl = ApiUrls.baseUrl;
   static bool showProgressDialog = true;
 
-  static BaseOptions opts = BaseOptions(
-    baseUrl: baseUrl,
-    responseType: ResponseType.json,
-    connectTimeout: const Duration(milliseconds: 5000),
-    receiveTimeout: const Duration(milliseconds: 5000),
-    sendTimeout: const Duration(milliseconds: 10000),
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-  );
+  static BaseOptions opts = BaseOptions(baseUrl: baseUrl, responseType: ResponseType.json, connectTimeout: const Duration(milliseconds: 5000), receiveTimeout: const Duration(milliseconds: 5000), sendTimeout: const Duration(milliseconds: 10000), headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  });
 
   static Dio createDio() {
     return Dio(opts);
@@ -105,7 +98,11 @@ class ApiBaseHelper {
       );
       return handleResponse(response, onError!, onSuccess!);
     } on DioError catch (e) {
-      return handleError(e, onError!, onSuccess!);
+      if (e != null) {
+        return handleError(e, onError!, onSuccess!);
+      } else {
+        return ResponseModel(statusCode: e.response?.statusCode, response: e.response);
+      }
     }
   }
 
@@ -181,7 +178,6 @@ class ApiBaseHelper {
         return ResponseModel(statusCode: e.response!.statusCode, response: e.response);
       default:
         onError(DioExceptions.fromDioError(e));
-      // throw DioExceptions.fromDioError(e);
     }
   }
 }

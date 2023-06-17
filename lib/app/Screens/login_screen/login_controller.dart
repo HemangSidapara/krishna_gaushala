@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   ///validate username
   String? validateEmail(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterUsername;
+      return AppStrings.pleaseEnterUsername.tr;
     }
     return null;
   }

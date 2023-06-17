@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
+import 'package:krishna_gaushala/app/Widgets/show_date_picker_widget.dart';
 
 class PaymentDetailsView extends StatefulWidget {
   final int index;
@@ -94,7 +96,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                     ),
-                    hintText: AppStrings.enterAmount,
+                    hintText: AppStrings.enterAmount.tr,
                     hintStyle: TextStyle(
                       color: AppColors.BLACK_COLOR.withOpacity(0.5),
                       fontWeight: FontWeight.w500,
@@ -215,12 +217,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     return controller.validateName(value!);
                   },
                   decoration: InputDecoration(
-                    hintText: AppStrings.enterPersonName,
+                    hintText: AppStrings.enterPersonName.tr,
                     hintStyle: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
-                    labelText: AppStrings.personName,
+                    labelText: AppStrings.personName.tr,
                     labelStyle: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontSize: 10.sp,
@@ -251,13 +253,17 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                   controller: controller.phoneController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
+                  maxLength: 10,
+                  validator: (value) {
+                    return controller.validatePhoneNumber(value!);
+                  },
                   decoration: InputDecoration(
-                    hintText: AppStrings.enterPhoneNumber,
+                    hintText: AppStrings.enterPhoneNumber.tr,
                     hintStyle: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
-                    labelText: AppStrings.phoneNumber,
+                    labelText: AppStrings.phoneNumber.tr,
                     labelStyle: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontSize: 10.sp,
@@ -287,7 +293,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                   Obx(() {
                     return Column(
                       children: [
-                        SizedBox(height: 3.h),
+                        SizedBox(height: 1.5.h),
 
                         ///Address
                         TextFormField(
@@ -297,12 +303,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                             return controller.validateAddress(value!);
                           },
                           decoration: InputDecoration(
-                            hintText: AppStrings.enterYourAddress,
+                            hintText: AppStrings.enterYourAddress.tr,
                             hintStyle: TextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                             ),
-                            labelText: AppStrings.address,
+                            labelText: AppStrings.address.tr,
                             labelStyle: TextStyle(
                               color: AppColors.SECONDARY_COLOR,
                               fontSize: 10.sp,
@@ -332,7 +338,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            AppStrings.purposeOfFund,
+                            AppStrings.purposeOfFund.tr,
                             style: TextStyle(
                               color: AppColors.SECONDARY_COLOR,
                               fontWeight: FontWeight.w700,
@@ -349,11 +355,11 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                           padding: EdgeInsets.symmetric(horizontal: 2.w),
                           child: Column(
                             children: [
-                              PurposeFundWidget(onTap: () {}, title: AppStrings.nisahayBinvarsiGayBaladShaySarvarFund, index: 0),
+                              PurposeFundWidget(onTap: () {}, title: AppStrings.nisahayBinvarsiGayBaladShaySarvarFund.tr, index: 0),
                               SizedBox(height: 1.5.h),
-                              PurposeFundWidget(onTap: () {}, title: AppStrings.makanBandhkamFund, index: 1),
+                              PurposeFundWidget(onTap: () {}, title: AppStrings.makanBandhkamFund.tr, index: 1),
                               SizedBox(height: 1.5.h),
-                              PurposeFundWidget(onTap: () {}, title: AppStrings.generalFund, index: 2),
+                              PurposeFundWidget(onTap: () {}, title: AppStrings.generalFund.tr, index: 2),
                               SizedBox(height: 3.h),
                             ],
                           ),
@@ -363,7 +369,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            AppStrings.cashType,
+                            AppStrings.cashType.tr,
                             style: TextStyle(
                               color: AppColors.SECONDARY_COLOR,
                               fontWeight: FontWeight.w700,
@@ -386,14 +392,14 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     onTap: () {
                                       controller.resetChequeControllers();
                                     },
-                                    title: AppStrings.cash,
+                                    title: AppStrings.cash.tr,
                                     index: 0),
                               ),
                               SizedBox(width: 3.w),
 
                               ///Cheque
                               Flexible(
-                                child: CashTypeWidget(onTap: () {}, title: AppStrings.cheque, index: 1),
+                                child: CashTypeWidget(onTap: () {}, title: AppStrings.cheque.tr, index: 1),
                               ),
                             ],
                           ),
@@ -468,6 +474,13 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                   validator: (value) {
                                     return controller.validateChequeDate(value!);
                                   },
+                                  onTap: () async {
+                                    final selectedDate = await showDatePickerWidget(context: context);
+                                    if (selectedDate != null) {
+                                      controller.chequeDateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+                                    }
+                                  },
+                                  readOnly: true,
                                   decoration: InputDecoration(
                                     hintText: AppStrings.enterChequeDate,
                                     hintStyle: TextStyle(
@@ -626,12 +639,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                           controller: controller.panNumberController,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                            hintText: AppStrings.enterPanNumber,
+                            hintText: AppStrings.enterPanNumber.tr,
                             hintStyle: TextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                             ),
-                            labelText: AppStrings.panNumber,
+                            labelText: AppStrings.panNumber.tr,
                             labelStyle: TextStyle(
                               color: AppColors.SECONDARY_COLOR,
                               fontSize: 10.sp,

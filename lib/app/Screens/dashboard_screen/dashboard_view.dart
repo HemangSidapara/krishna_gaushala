@@ -41,7 +41,7 @@ class _DashboardViewState extends State<DashboardView> {
             )
           ],
           title: Text(
-            AppStrings.krishnaGaushala,
+            AppStrings.krishnaGaushala.tr,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -60,6 +60,19 @@ class _DashboardViewState extends State<DashboardView> {
                         length: controller.tabsList.length,
                         child: Column(
                           children: [
+                            Container(
+                              color: AppColors.PRIMARY_COLOR,
+                              width: double.maxFinite,
+                              alignment: Alignment.center,
+                              child: Text(
+                                AppStrings.asADonationGiftService.tr,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.SECONDARY_COLOR,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                             Container(
                               color: AppColors.PRIMARY_COLOR,
                               child: TabBar(
@@ -87,7 +100,7 @@ class _DashboardViewState extends State<DashboardView> {
                                 tabs: [
                                   for (int index = 0; index < controller.tabsList.length; index++)
                                     Text(
-                                      controller.tabsList[index].type ?? '',
+                                      controller.tabsList[index].type.toString().tr ?? '',
                                     ),
                                 ],
                               ),
@@ -107,7 +120,14 @@ class _DashboardViewState extends State<DashboardView> {
                           ],
                         ),
                       )
-                    : const Text('Temporary service is not available'),
+                    : Text(
+                        AppStrings.temporaryServiceIsNotAvailable.tr,
+                        style: TextStyle(
+                          color: AppColors.SECONDARY_COLOR,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                        ),
+                      ),
           );
         }),
       ),

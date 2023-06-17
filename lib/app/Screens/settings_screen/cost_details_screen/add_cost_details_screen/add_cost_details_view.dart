@@ -110,7 +110,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                       ),
-                      hintText: AppStrings.enterAmount,
+                      hintText: AppStrings.enterAmount.tr,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),
                         fontWeight: FontWeight.w500,

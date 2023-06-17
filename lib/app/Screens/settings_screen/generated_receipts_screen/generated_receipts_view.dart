@@ -2,12 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/generated_receipts_screen/generated_receipts_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_formatter.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 import 'package:krishna_gaushala/app/Widgets/get_date_widget.dart';
+import 'package:krishna_gaushala/app/Widgets/show_date_picker_widget.dart';
 import 'package:share_plus/share_plus.dart';
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -357,7 +359,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   if (value == 'share') {
                                     if (items[index].url != null) {
                                       if (items[index].phone != null && items[index].phone != '') {
-                                        String contactNo = items[index].phone.toString().replaceAll('+', '').replaceRange(0, 2, '');
+                                        String contactNo = items[index].phone;
                                         String waUrl = 'whatsapp://send?phone=+91$contactNo&text=Your receipt is here👇\n${items[index].url}';
                                         String waWebUrl = 'https://wa.me/+91$contactNo?text=Your receipt is here👇\n${items[index].url}';
                                         try {
@@ -572,7 +574,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                                 ),
-                                hintText: AppStrings.enterAmount,
+                                hintText: AppStrings.enterAmount.tr,
                                 hintStyle: TextStyle(
                                   color: AppColors.BLACK_COLOR.withOpacity(0.5),
                                   fontWeight: FontWeight.w500,
@@ -693,12 +695,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 return controller.validateName(value!);
                               },
                               decoration: InputDecoration(
-                                hintText: AppStrings.enterPersonName,
+                                hintText: AppStrings.enterPersonName.tr,
                                 hintStyle: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                labelText: AppStrings.personName,
+                                labelText: AppStrings.personName.tr,
                                 labelStyle: TextStyle(
                                   color: AppColors.SECONDARY_COLOR,
                                   fontSize: 10.sp,
@@ -729,13 +731,17 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                               controller: controller.phoneController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
+                              maxLength: 10,
+                              validator: (value) {
+                                return controller.validatePhoneNumber(value!);
+                              },
                               decoration: InputDecoration(
-                                hintText: AppStrings.enterPhoneNumber,
+                                hintText: AppStrings.enterPhoneNumber.tr,
                                 hintStyle: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                labelText: AppStrings.phoneNumber,
+                                labelText: AppStrings.phoneNumber.tr,
                                 labelStyle: TextStyle(
                                   color: AppColors.SECONDARY_COLOR,
                                   fontSize: 10.sp,
@@ -759,7 +765,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                               ),
                             ),
-                            SizedBox(height: 3.h),
+                            SizedBox(height: 1.5.h),
 
                             ///Receipt Extra Fields
                             if (type == 'Receipt') ...[
@@ -774,12 +780,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                         return controller.validateAddress(value!);
                                       },
                                       decoration: InputDecoration(
-                                        hintText: AppStrings.enterYourAddress,
+                                        hintText: AppStrings.enterYourAddress.tr,
                                         hintStyle: TextStyle(
                                           fontSize: 10.sp,
                                           fontWeight: FontWeight.w400,
                                         ),
-                                        labelText: AppStrings.address,
+                                        labelText: AppStrings.address.tr,
                                         labelStyle: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 10.sp,
@@ -809,7 +815,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        AppStrings.purposeOfFund,
+                                        AppStrings.purposeOfFund.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontWeight: FontWeight.w700,
@@ -826,11 +832,11 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                       padding: EdgeInsets.symmetric(horizontal: 2.w),
                                       child: Column(
                                         children: [
-                                          PurposeFundWidget(onTap: () {}, title: AppStrings.nisahayBinvarsiGayBaladShaySarvarFund, index: 0),
+                                          PurposeFundWidget(onTap: () {}, title: AppStrings.nisahayBinvarsiGayBaladShaySarvarFund.tr, index: 0),
                                           SizedBox(height: 1.5.h),
-                                          PurposeFundWidget(onTap: () {}, title: AppStrings.makanBandhkamFund, index: 1),
+                                          PurposeFundWidget(onTap: () {}, title: AppStrings.makanBandhkamFund.tr, index: 1),
                                           SizedBox(height: 1.5.h),
-                                          PurposeFundWidget(onTap: () {}, title: AppStrings.generalFund, index: 2),
+                                          PurposeFundWidget(onTap: () {}, title: AppStrings.generalFund.tr, index: 2),
                                           SizedBox(height: 3.h),
                                         ],
                                       ),
@@ -840,7 +846,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        AppStrings.cashType,
+                                        AppStrings.cashType.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontWeight: FontWeight.w700,
@@ -861,7 +867,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                           Flexible(
                                             child: CashTypeWidget(
                                               onTap: () {},
-                                              title: AppStrings.cash,
+                                              title: AppStrings.cash.tr,
                                               index: 0,
                                             ),
                                           ),
@@ -869,7 +875,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
                                           ///Cheque
                                           Flexible(
-                                            child: CashTypeWidget(onTap: () {}, title: AppStrings.cheque, index: 1),
+                                            child: CashTypeWidget(onTap: () {}, title: AppStrings.cheque.tr, index: 1),
                                           ),
                                         ],
                                       ),
@@ -944,6 +950,13 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                               validator: (value) {
                                                 return controller.validateChequeDate(value!);
                                               },
+                                              onTap: () async {
+                                                final selectedDate = await showDatePickerWidget(context: context);
+                                                if (selectedDate != null) {
+                                                  controller.chequeDateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+                                                }
+                                              },
+                                              readOnly: true,
                                               decoration: InputDecoration(
                                                 hintText: AppStrings.enterChequeDate,
                                                 hintStyle: TextStyle(
@@ -1102,12 +1115,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                       controller: controller.panNumberController,
                                       textInputAction: TextInputAction.done,
                                       decoration: InputDecoration(
-                                        hintText: AppStrings.enterPanNumber,
+                                        hintText: AppStrings.enterPanNumber.tr,
                                         hintStyle: TextStyle(
                                           fontSize: 10.sp,
                                           fontWeight: FontWeight.w400,
                                         ),
-                                        labelText: AppStrings.panNumber,
+                                        labelText: AppStrings.panNumber.tr,
                                         labelStyle: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 10.sp,

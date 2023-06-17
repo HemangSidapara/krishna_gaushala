@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
+import 'package:krishna_gaushala/app/Constants/app_validators.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:share_plus/share_plus.dart';
@@ -29,6 +30,8 @@ class PaymentDetailsController extends GetxController {
   String? validateAmount(String value) {
     if (value.isEmpty) {
       return AppStrings.pleaseEnterAmount;
+    } else if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+      return AppStrings.amountIsNumericOnly;
     }
     return null;
   }
@@ -36,7 +39,15 @@ class PaymentDetailsController extends GetxController {
   ///validate name
   String? validateName(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterPersonName;
+      return AppStrings.pleaseEnterPersonName.tr;
+    }
+    return null;
+  }
+
+  ///validate phone number
+  String? validatePhoneNumber(String value) {
+    if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+      return AppStrings.pleaseEnterValidPhoneNumber.tr;
     }
     return null;
   }
@@ -44,7 +55,7 @@ class PaymentDetailsController extends GetxController {
   ///validate address
   String? validateAddress(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterAddress;
+      return AppStrings.pleaseEnterAddress.tr;
     }
     return null;
   }
@@ -52,7 +63,7 @@ class PaymentDetailsController extends GetxController {
   ///validate cheque number
   String? validateChequeNumber(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterAddress;
+      return AppStrings.pleaseEnterChequeNumber.tr;
     }
     return null;
   }
@@ -92,7 +103,7 @@ class PaymentDetailsController extends GetxController {
   ///validate pan number
   String? validatePANNumber(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterPanNumber;
+      return AppStrings.pleaseEnterPanNumber.tr;
     }
     return null;
   }
@@ -100,7 +111,7 @@ class PaymentDetailsController extends GetxController {
   ///validate quantity
   String? validateQuantity(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterQuantity;
+      return AppStrings.pleaseEnterQuantity.tr;
     }
     return null;
   }
@@ -217,7 +228,7 @@ class PaymentDetailsController extends GetxController {
 
     if (response?.code == '200') {
       if (phoneController.text.trim() != '') {
-        String contactNo = phoneController.text.replaceAll('+', '').replaceRange(0, 2, '');
+        String contactNo = phoneController.text;
         String waUrl = 'whatsapp://send?phone=+91$contactNo&text=Your receipt is here👇\n${response!.path!}';
         String waWebUrl = 'https://wa.me/+91$contactNo?text=Your receipt is here👇\n${response.path!}';
         try {
