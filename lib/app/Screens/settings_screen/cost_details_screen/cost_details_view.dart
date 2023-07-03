@@ -44,7 +44,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
           )
         ],
         title: Text(
-          AppStrings.costDetails,
+          AppStrings.costDetails.tr,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,

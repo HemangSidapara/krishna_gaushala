@@ -71,7 +71,7 @@ class PaymentDetailsController extends GetxController {
   ///validate cheque date
   String? validateChequeDate(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterChequeDate;
+      return AppStrings.pleaseEnterChequeDate.tr;
     }
     return null;
   }
@@ -79,7 +79,7 @@ class PaymentDetailsController extends GetxController {
   ///validate bank
   String? validateBank(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterBank;
+      return AppStrings.pleaseEnterBank.tr;
     }
     return null;
   }
@@ -87,7 +87,7 @@ class PaymentDetailsController extends GetxController {
   ///validate branch
   String? validateBranch(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterBranch;
+      return AppStrings.pleaseEnterBranch.tr;
     }
     return null;
   }
@@ -95,7 +95,7 @@ class PaymentDetailsController extends GetxController {
   ///validate account number
   String? validateAccountNumber(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterAccountNumber;
+      return AppStrings.pleaseEnterAccountNumber.tr;
     }
     return null;
   }
@@ -125,7 +125,7 @@ class PaymentDetailsController extends GetxController {
     if (!isValid) {
       return;
     } else if (!isPurposeFundSelected[0] && !isPurposeFundSelected[1] && !isPurposeFundSelected[2] && tabList[index].type! == 'Receipt') {
-      Utils.validationCheck(isSuccess: false, message: AppStrings.pleaseSelectPurposeOfFund);
+      Utils.validationCheck(isSuccess: false, message: AppStrings.pleaseSelectPurposeOfFund.tr);
     } else {
       switch (tabList[index].type!) {
         case 'Receipt':

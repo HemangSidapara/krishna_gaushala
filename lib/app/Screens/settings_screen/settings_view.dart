@@ -29,7 +29,7 @@ class _SettingsViewState extends State<SettingsView> {
         backgroundColor: AppColors.PRIMARY_COLOR,
         centerTitle: true,
         title: Text(
-          AppStrings.settings,
+          AppStrings.settings.tr,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
           child: Text(
-            AppStrings.logOut,
+            AppStrings.logOut.tr,
             style: TextStyle(
               color: AppColors.WHITE_COLOR,
               fontSize: 12.sp,
@@ -104,7 +104,7 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                         SizedBox(width: 3.w),
                         Text(
-                          controller.settingsNameList[index],
+                          controller.settingsNameList[index].tr,
                           style: TextStyle(
                             color: AppColors.SECONDARY_COLOR,
                             fontWeight: FontWeight.w700,

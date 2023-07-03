@@ -94,7 +94,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
           backgroundColor: AppColors.PRIMARY_COLOR,
           centerTitle: true,
           title: Text(
-            AppStrings.generatedReceipts,
+            AppStrings.generatedReceipts.tr,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -151,7 +151,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                         borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      hintText: AppStrings.searchByTitle,
+                      hintText: AppStrings.searchByTitle.tr,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),
                         fontWeight: FontWeight.w500,
@@ -170,25 +170,25 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ///Receipts
-                        GeneratedReceiptsCategoryList(title: 'Receipt', items: controller.receiptList, index: 0),
+                        GeneratedReceiptsCategoryList(title: AppStrings.receipt.tr, items: controller.receiptList, index: 0),
 
                         ///Niran
-                        GeneratedReceiptsCategoryList(title: 'Niran', items: controller.niranList, index: 1),
+                        GeneratedReceiptsCategoryList(title: AppStrings.niran.tr, items: controller.niranList, index: 1),
 
                         ///Gau Dohan
-                        GeneratedReceiptsCategoryList(title: 'Gau Dohan', items: controller.gauDohanList, index: 2),
+                        GeneratedReceiptsCategoryList(title: AppStrings.gauDohan.tr, items: controller.gauDohanList, index: 2),
 
                         ///Vahan Vyavastha
-                        GeneratedReceiptsCategoryList(title: 'Vahan Vyavastha', items: controller.vahanVyavasthaList, index: 3),
+                        GeneratedReceiptsCategoryList(title: AppStrings.vahanVyavastha.tr, items: controller.vahanVyavasthaList, index: 3),
 
                         ///Sarvar
-                        GeneratedReceiptsCategoryList(title: 'Sarvar', items: controller.sarvarList, index: 4),
+                        GeneratedReceiptsCategoryList(title: AppStrings.sarvar.tr, items: controller.sarvarList, index: 4),
 
                         ///Makan Bandhkam
-                        GeneratedReceiptsCategoryList(title: 'Makan Bandhkam', items: controller.makanBandhkamList, index: 5),
+                        GeneratedReceiptsCategoryList(title: AppStrings.makanBandhkam.tr, items: controller.makanBandhkamList, index: 5),
 
                         ///Band Party
-                        GeneratedReceiptsCategoryList(title: 'Band Party', items: controller.bandPartyList, index: 6),
+                        GeneratedReceiptsCategoryList(title: AppStrings.bandParty.tr, items: controller.bandPartyList, index: 6),
                       ],
                     ),
                   ),
@@ -887,7 +887,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          AppStrings.chequeDetails,
+                                          AppStrings.chequeDetails.tr,
                                           style: TextStyle(
                                             color: AppColors.SECONDARY_COLOR,
                                             fontWeight: FontWeight.w700,
@@ -912,12 +912,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                                 return controller.validateChequeNumber(value!);
                                               },
                                               decoration: InputDecoration(
-                                                hintText: AppStrings.enterChequeNumber,
+                                                hintText: AppStrings.enterChequeNumber.tr,
                                                 hintStyle: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                labelText: AppStrings.chequeNumber,
+                                                labelText: AppStrings.chequeNumber.tr,
                                                 labelStyle: TextStyle(
                                                   color: AppColors.SECONDARY_COLOR,
                                                   fontSize: 10.sp,
@@ -958,12 +958,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                               },
                                               readOnly: true,
                                               decoration: InputDecoration(
-                                                hintText: AppStrings.enterChequeDate,
+                                                hintText: AppStrings.enterChequeDate.tr,
                                                 hintStyle: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                labelText: AppStrings.chequeDate,
+                                                labelText: AppStrings.chequeDate.tr,
                                                 labelStyle: TextStyle(
                                                   color: AppColors.SECONDARY_COLOR,
                                                   fontSize: 10.sp,
@@ -997,12 +997,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                                 return controller.validateBank(value!);
                                               },
                                               decoration: InputDecoration(
-                                                hintText: AppStrings.enterBank,
+                                                hintText: AppStrings.enterBank.tr,
                                                 hintStyle: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                labelText: AppStrings.bank,
+                                                labelText: AppStrings.bank.tr,
                                                 labelStyle: TextStyle(
                                                   color: AppColors.SECONDARY_COLOR,
                                                   fontSize: 10.sp,
@@ -1036,12 +1036,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                                 return controller.validateBranch(value!);
                                               },
                                               decoration: InputDecoration(
-                                                hintText: AppStrings.enterBranch,
+                                                hintText: AppStrings.enterBranch.tr,
                                                 hintStyle: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                labelText: AppStrings.branch,
+                                                labelText: AppStrings.branch.tr,
                                                 labelStyle: TextStyle(
                                                   color: AppColors.SECONDARY_COLOR,
                                                   fontSize: 10.sp,
@@ -1075,12 +1075,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                                 return controller.validateAccountNumber(value!);
                                               },
                                               decoration: InputDecoration(
-                                                hintText: AppStrings.enterAccountNumber,
+                                                hintText: AppStrings.enterAccountNumber.tr,
                                                 hintStyle: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                labelText: AppStrings.accountNumber,
+                                                labelText: AppStrings.accountNumber.tr,
                                                 labelStyle: TextStyle(
                                                   color: AppColors.SECONDARY_COLOR,
                                                   fontSize: 10.sp,
@@ -1159,12 +1159,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   return controller.validateQuantity(value!);
                                 },
                                 decoration: InputDecoration(
-                                  hintText: AppStrings.enterQuantity,
+                                  hintText: AppStrings.enterQuantity.tr,
                                   hintStyle: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
-                                  labelText: AppStrings.quantity,
+                                  labelText: AppStrings.quantity.tr,
                                   labelStyle: TextStyle(
                                     color: AppColors.SECONDARY_COLOR,
                                     fontSize: 10.sp,

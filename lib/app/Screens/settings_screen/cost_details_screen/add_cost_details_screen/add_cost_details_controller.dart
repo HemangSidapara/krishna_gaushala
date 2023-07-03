@@ -28,7 +28,7 @@ class AddCostDetailsController extends GetxController {
   ///validate amount
   String? validateAmount(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterAmount;
+      return AppStrings.pleaseEnterAmount.tr;
     }
     return null;
   }
@@ -36,7 +36,7 @@ class AddCostDetailsController extends GetxController {
   ///validate Title of Expenditure
   String? validateTitleOfExpenditure(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterTitle;
+      return AppStrings.pleaseEnterTitle.tr;
     }
     return null;
   }
@@ -44,7 +44,7 @@ class AddCostDetailsController extends GetxController {
   ///validate note
   String? validateNote(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterNote;
+      return AppStrings.pleaseEnterNote.tr;
     }
     return null;
   }

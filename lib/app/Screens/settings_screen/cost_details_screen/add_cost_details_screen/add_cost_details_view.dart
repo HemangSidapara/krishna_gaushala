@@ -30,7 +30,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
           backgroundColor: AppColors.PRIMARY_COLOR,
           centerTitle: true,
           title: Text(
-            Get.arguments['isEdit'] == true ? AppStrings.editCostDetails : AppStrings.addCostDetails,
+            Get.arguments['isEdit'] == true ? AppStrings.editCostDetails.tr : AppStrings.addCostDetails.tr,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -69,7 +69,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
               ),
             ),
             child: Text(
-              AppStrings.save,
+              AppStrings.save.tr,
               style: TextStyle(
                 color: AppColors.WHITE_COLOR,
                 fontSize: 12.sp,
@@ -225,7 +225,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
 
                   ///Title of Expenditure
                   Text(
-                    AppStrings.titleOfExpenditure,
+                    AppStrings.titleOfExpenditure.tr,
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontSize: 12.sp,
@@ -239,7 +239,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                     controller: controller.titleOfExpenditureController,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      return controller.validateAmount(value!);
+                      return controller.validateTitleOfExpenditure(value!);
                     },
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
@@ -254,7 +254,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                       ),
-                      hintText: AppStrings.titleOfExpenditure,
+                      hintText: AppStrings.titleOfExpenditure.tr,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),
                         fontWeight: FontWeight.w500,
@@ -267,7 +267,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
 
                   ///Note
                   Text(
-                    AppStrings.note,
+                    AppStrings.note.tr,
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontWeight: FontWeight.w700,
@@ -279,7 +279,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                     controller: controller.noteController,
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      return controller.validateAmount(value!);
+                      return controller.validateNote(value!);
                     },
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
@@ -295,7 +295,7 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
                       ),
-                      hintText: AppStrings.note,
+                      hintText: AppStrings.note.tr,
                       hintStyle: TextStyle(
                         color: AppColors.BLACK_COLOR.withOpacity(0.5),
                         fontWeight: FontWeight.w500,

@@ -50,7 +50,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
             ),
           ),
           child: Text(
-            AppStrings.save,
+            AppStrings.save.tr,
             style: TextStyle(
               color: AppColors.WHITE_COLOR,
               fontSize: 12.sp,
@@ -411,7 +411,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              AppStrings.chequeDetails,
+                              AppStrings.chequeDetails.tr,
                               style: TextStyle(
                                 color: AppColors.SECONDARY_COLOR,
                                 fontWeight: FontWeight.w700,
@@ -436,12 +436,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     return controller.validateChequeNumber(value!);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: AppStrings.enterChequeNumber,
+                                    hintText: AppStrings.enterChequeNumber.tr,
                                     hintStyle: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    labelText: AppStrings.chequeNumber,
+                                    labelText: AppStrings.chequeNumber.tr,
                                     labelStyle: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 10.sp,
@@ -482,12 +482,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                   },
                                   readOnly: true,
                                   decoration: InputDecoration(
-                                    hintText: AppStrings.enterChequeDate,
+                                    hintText: AppStrings.enterChequeDate.tr,
                                     hintStyle: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    labelText: AppStrings.chequeDate,
+                                    labelText: AppStrings.chequeDate.tr,
                                     labelStyle: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 10.sp,
@@ -521,12 +521,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     return controller.validateBank(value!);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: AppStrings.enterBank,
+                                    hintText: AppStrings.enterBank.tr,
                                     hintStyle: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    labelText: AppStrings.bank,
+                                    labelText: AppStrings.bank.tr,
                                     labelStyle: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 10.sp,
@@ -560,12 +560,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     return controller.validateBranch(value!);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: AppStrings.enterBranch,
+                                    hintText: AppStrings.enterBranch.tr,
                                     hintStyle: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    labelText: AppStrings.branch,
+                                    labelText: AppStrings.branch.tr,
                                     labelStyle: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 10.sp,
@@ -599,12 +599,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                                     return controller.validateAccountNumber(value!);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: AppStrings.enterAccountNumber,
+                                    hintText: AppStrings.enterAccountNumber.tr,
                                     hintStyle: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                    labelText: AppStrings.accountNumber,
+                                    labelText: AppStrings.accountNumber.tr,
                                     labelStyle: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 10.sp,
@@ -687,12 +687,12 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      hintText: AppStrings.enterQuantity,
+                      hintText: AppStrings.enterQuantity.tr,
                       hintStyle: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                       ),
-                      labelText: AppStrings.quantity,
+                      labelText: AppStrings.quantity.tr,
                       labelStyle: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 10.sp,

@@ -93,7 +93,7 @@ class GeneratedReceiptsController extends GetxController {
   ///validate cheque date
   String? validateChequeDate(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterChequeDate;
+      return AppStrings.pleaseEnterChequeDate.tr;
     }
     return null;
   }
@@ -101,7 +101,7 @@ class GeneratedReceiptsController extends GetxController {
   ///validate bank
   String? validateBank(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterBank;
+      return AppStrings.pleaseEnterBank.tr;
     }
     return null;
   }
@@ -109,7 +109,7 @@ class GeneratedReceiptsController extends GetxController {
   ///validate branch
   String? validateBranch(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterBranch;
+      return AppStrings.pleaseEnterBranch.tr;
     }
     return null;
   }
@@ -117,7 +117,7 @@ class GeneratedReceiptsController extends GetxController {
   ///validate account number
   String? validateAccountNumber(String value) {
     if (value.isEmpty) {
-      return AppStrings.pleaseEnterAccountNumber;
+      return AppStrings.pleaseEnterAccountNumber.tr;
     }
     return null;
   }
