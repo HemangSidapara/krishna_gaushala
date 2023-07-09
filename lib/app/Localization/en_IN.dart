@@ -75,4 +75,13 @@ Map<String, String> enIN = <String, String>{
   AppStrings.pleaseEnterTitle: "Please enter title.",
   AppStrings.pleaseEnterNote: "Please enter note.",
   AppStrings.save: "Save",
+  AppStrings.edit: "Edit",
+  AppStrings.cancel: "Cancel",
+  AppStrings.editGeneratedReceipt: "Edit Generated Receipt",
+  AppStrings.delete: "Delete",
+  AppStrings.view: "View",
+  AppStrings.share: "Share",
+  AppStrings.noDataAvailable: "No data available",
+  AppStrings.areYouSureYouWantToDeleteThisCostDetails: "Are you sure, you want to delete this cost details?",
+  AppStrings.areYouSureYouWantToDeleteThisReceipt: "Are you sure, you want to delete this receipt?",
 };

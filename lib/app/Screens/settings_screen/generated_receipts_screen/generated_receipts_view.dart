@@ -423,7 +423,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     PopupMenuItem(
                                       value: 'edit',
                                       child: Text(
-                                        'Edit',
+                                        AppStrings.edit.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 12.sp,
@@ -440,7 +440,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     PopupMenuItem(
                                       value: 'delete',
                                       child: Text(
-                                        'Delete',
+                                        AppStrings.delete.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 12.sp,
@@ -457,7 +457,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     PopupMenuItem(
                                       value: 'view',
                                       child: Text(
-                                        'View',
+                                        AppStrings.view.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 12.sp,
@@ -474,7 +474,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     PopupMenuItem(
                                       value: 'share',
                                       child: Text(
-                                        'Share',
+                                        AppStrings.share.tr,
                                         style: TextStyle(
                                           color: AppColors.SECONDARY_COLOR,
                                           fontSize: 12.sp,
@@ -532,7 +532,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Edit Generated Receipt',
+                    AppStrings.editGeneratedReceipt.tr,
                     style: TextStyle(
                       color: AppColors.SECONDARY_COLOR,
                       fontWeight: FontWeight.w600,
@@ -1215,7 +1215,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     fixedSize: Size(35.w, 6.h),
                                   ),
                                   child: Text(
-                                    'Cancel',
+                                    AppStrings.cancel.tr,
                                     style: TextStyle(
                                       color: AppColors.SECONDARY_COLOR,
                                       fontSize: 12.sp,
@@ -1242,7 +1242,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     fixedSize: Size(35.w, 6.h),
                                   ),
                                   child: Text(
-                                    'Edit',
+                                    AppStrings.edit.tr,
                                     style: TextStyle(
                                       color: AppColors.WHITE_COLOR,
                                       fontSize: 12.sp,
@@ -1398,7 +1398,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
               ///ConfirmNote
               Text(
-                'Are you sure, you want to delete this receipt?',
+                AppStrings.areYouSureYouWantToDeleteThisReceipt.tr,
                 style: TextStyle(
                   color: AppColors.SECONDARY_COLOR,
                   fontSize: 12.sp,
@@ -1430,7 +1430,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                       fixedSize: Size(35.w, 6.h),
                     ),
                     child: Text(
-                      'Cancel',
+                      AppStrings.cancel.tr,
                       style: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 12.sp,
@@ -1453,7 +1453,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                       fixedSize: Size(35.w, 6.h),
                     ),
                     child: Text(
-                      'Delete',
+                      AppStrings.delete.tr,
                       style: TextStyle(
                         color: AppColors.WHITE_COLOR,
                         fontSize: 12.sp,

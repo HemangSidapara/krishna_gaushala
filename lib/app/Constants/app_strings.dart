@@ -74,4 +74,13 @@ class AppStrings {
   static String pleaseEnterTitle = 'Please enter title.';
   static String pleaseEnterNote = 'Please enter note.';
   static String save = 'Save';
+  static String edit = 'Edit';
+  static String cancel = 'Cancel';
+  static String editGeneratedReceipt = 'Edit Generated Receipt';
+  static String delete = 'Delete';
+  static String view = 'View';
+  static String share = 'Share';
+  static String noDataAvailable = 'No data available';
+  static String areYouSureYouWantToDeleteThisCostDetails = 'Are you sure, you want to delete this cost details?';
+  static String areYouSureYouWantToDeleteThisReceipt = 'Are you sure, you want to delete this receipt?';
 }

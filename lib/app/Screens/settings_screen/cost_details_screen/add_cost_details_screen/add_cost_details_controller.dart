@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
+import 'package:krishna_gaushala/app/Constants/app_validators.dart';
 import 'package:krishna_gaushala/app/Network/services/settings_service/settings_service.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_controller.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_model/get_spends_model.dart' as GetSpends;
@@ -10,6 +11,15 @@ class AddCostDetailsController extends GetxController {
   TextEditingController amountController = TextEditingController();
   TextEditingController titleOfExpenditureController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  RxList<bool> whichCashType = RxList.generate(2, (index) => index == 0 ? true : false);
+  TextEditingController chequeNumberController = TextEditingController();
+  TextEditingController chequeDateController = TextEditingController();
+  TextEditingController bankController = TextEditingController();
+  TextEditingController branchController = TextEditingController();
+  TextEditingController accountNumberController = TextEditingController();
+  TextEditingController panNumberController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
   GetSpends.Data? editableData = GetSpends.Data();
 
   @override
@@ -45,6 +55,86 @@ class AddCostDetailsController extends GetxController {
   String? validateNote(String value) {
     if (value.isEmpty) {
       return AppStrings.pleaseEnterNote.tr;
+    }
+    return null;
+  }
+
+  ///validate name
+  String? validateName(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterPersonName.tr;
+    }
+    return null;
+  }
+
+  ///validate phone number
+  String? validatePhoneNumber(String value) {
+    if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+      return AppStrings.pleaseEnterValidPhoneNumber.tr;
+    }
+    return null;
+  }
+
+  ///validate address
+  String? validateAddress(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterAddress.tr;
+    }
+    return null;
+  }
+
+  ///validate cheque number
+  String? validateChequeNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterChequeNumber.tr;
+    }
+    return null;
+  }
+
+  ///validate cheque date
+  String? validateChequeDate(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterChequeDate.tr;
+    }
+    return null;
+  }
+
+  ///validate bank
+  String? validateBank(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterBank.tr;
+    }
+    return null;
+  }
+
+  ///validate branch
+  String? validateBranch(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterBranch.tr;
+    }
+    return null;
+  }
+
+  ///validate account number
+  String? validateAccountNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterAccountNumber.tr;
+    }
+    return null;
+  }
+
+  ///validate pan number
+  String? validatePANNumber(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterPanNumber.tr;
+    }
+    return null;
+  }
+
+  ///validate quantity
+  String? validateQuantity(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterQuantity.tr;
     }
     return null;
   }
@@ -95,9 +185,39 @@ class AddCostDetailsController extends GetxController {
 
   @override
   void dispose() {
+    disposeControllers();
+    super.dispose();
+  }
+
+  void resetChequeControllers() {
+    chequeDateController.clear();
+    chequeNumberController.clear();
+    bankController.clear();
+    branchController.clear();
+    accountNumberController.clear();
+    panNumberController.clear();
+  }
+
+  void resetControllers() {
+    amountController.clear();
+    titleOfExpenditureController.clear();
+    noteController.clear();
+    addressController.clear();
+    resetChequeControllers();
+    quantityController.clear();
+  }
+
+  void disposeControllers() {
     amountController.dispose();
     titleOfExpenditureController.dispose();
     noteController.dispose();
-    super.dispose();
+    addressController.dispose();
+    chequeDateController.dispose();
+    chequeNumberController.dispose();
+    bankController.dispose();
+    branchController.dispose();
+    accountNumberController.dispose();
+    panNumberController.dispose();
+    quantityController.dispose();
   }
 }

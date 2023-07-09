@@ -74,4 +74,13 @@ Map<String, String> guIN = <String, String>{
   AppStrings.pleaseEnterTitle: "કૃપા કરીને શીર્ષક દાખલ કરો.",
   AppStrings.pleaseEnterNote: "કૃપા કરીને નોંધ દાખલ કરો.",
   AppStrings.save: "સેવ",
+  AppStrings.edit: "સુધારો",
+  AppStrings.cancel: "રદ કરો",
+  AppStrings.editGeneratedReceipt: "જનરેટ કરેલી રસીદમાં ફેરફાર કરો",
+  AppStrings.delete: "કાઢી નાખો",
+  AppStrings.view: "વ્યુ",
+  AppStrings.share: "શેર",
+  AppStrings.noDataAvailable: "કોઈ ડેટા ઉપલબ્ધ નથી",
+  AppStrings.areYouSureYouWantToDeleteThisCostDetails: "શું તમે ખરેખર આ ખર્ચ વિગતો કાઢી નાખવા માંગો છો?",
+  AppStrings.areYouSureYouWantToDeleteThisReceipt: "શું તમે ખરેખર આ રસીદ કાઢી નાખવા માંગો છો?",
 };

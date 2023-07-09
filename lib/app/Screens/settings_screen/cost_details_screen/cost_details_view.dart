@@ -71,7 +71,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
             : controller.costDetailsList.isEmpty
                 ? Center(
                     child: Text(
-                      'No Data Available',
+                      AppStrings.noDataAvailable.tr,
                       style: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 12.sp,
@@ -149,7 +149,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                                           PopupMenuItem(
                                             value: 'edit',
                                             child: Text(
-                                              'Edit',
+                                              AppStrings.edit.tr,
                                               style: TextStyle(
                                                 color: AppColors.SECONDARY_COLOR,
                                                 fontSize: 12.sp,
@@ -166,7 +166,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                                           PopupMenuItem(
                                             value: 'delete',
                                             child: Text(
-                                              'Delete',
+                                              AppStrings.delete.tr,
                                               style: TextStyle(
                                                 color: AppColors.SECONDARY_COLOR,
                                                 fontSize: 12.sp,
@@ -255,7 +255,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
 
               ///ConfirmNote
               Text(
-                'Are you sure, you want to delete this cost details?',
+                AppStrings.areYouSureYouWantToDeleteThisCostDetails.tr,
                 style: TextStyle(
                   color: AppColors.SECONDARY_COLOR,
                   fontSize: 12.sp,
@@ -287,7 +287,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                       fixedSize: Size(35.w, 6.h),
                     ),
                     child: Text(
-                      'Cancel',
+                      AppStrings.cancel.tr,
                       style: TextStyle(
                         color: AppColors.SECONDARY_COLOR,
                         fontSize: 12.sp,
@@ -310,7 +310,7 @@ class _CostDetailsViewState extends State<CostDetailsView> {
                       fixedSize: Size(35.w, 6.h),
                     ),
                     child: Text(
-                      'Delete',
+                      AppStrings.delete.tr,
                       style: TextStyle(
                         color: AppColors.WHITE_COLOR,
                         fontSize: 12.sp,

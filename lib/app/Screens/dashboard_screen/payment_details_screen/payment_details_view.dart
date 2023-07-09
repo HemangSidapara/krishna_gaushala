@@ -726,7 +726,11 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
   }
 
   // ignore: non_constant_identifier_names
-  Widget PurposeFundWidget({required VoidCallback onTap, required String title, required int index}) {
+  Widget PurposeFundWidget({
+    required VoidCallback onTap,
+    required String title,
+    required int index,
+  }) {
     return Obx(() {
       return InkWell(
         onTap: () {
@@ -778,7 +782,11 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
   }
 
   // ignore: non_constant_identifier_names
-  Widget CashTypeWidget({required VoidCallback onTap, required String title, required int index}) {
+  Widget CashTypeWidget({
+    required VoidCallback onTap,
+    required String title,
+    required int index,
+  }) {
     return Obx(() {
       return InkWell(
         onTap: () {

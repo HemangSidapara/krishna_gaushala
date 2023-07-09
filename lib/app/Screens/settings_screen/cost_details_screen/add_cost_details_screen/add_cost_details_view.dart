@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_controller.dart';
+import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_field.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 
 class AddCostDetailsView extends StatefulWidget {
@@ -15,11 +16,8 @@ class AddCostDetailsView extends StatefulWidget {
 class _AddCostDetailsViewState extends State<AddCostDetailsView> {
   AddCostDetailsController controller = Get.find<AddCostDetailsController>();
 
-  GlobalKey<FormState> addCostDetailsFormKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -50,263 +48,51 @@ class _AddCostDetailsViewState extends State<AddCostDetailsView> {
           ),
         ),
         resizeToAvoidBottomInset: false,
-        bottomSheet: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h).copyWith(top: 0),
-          child: ElevatedButton(
-            onPressed: () async {
-              if (Get.arguments['isEdit'] == true) {
-                await controller.checkEditCostDetails(key: addCostDetailsFormKey, spendId: controller.editableData!.spendId!);
-              } else {
-                await controller.checkAddCostDetails(key: addCostDetailsFormKey);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.SECONDARY_COLOR,
-              fixedSize: Size(90.w, 6.h),
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+        body: DefaultTabController(
+          length: 6,
+          child: Column(
+            children: [
+              Container(
+                color: AppColors.PRIMARY_COLOR,
+                child: TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h).copyWith(bottom: 0),
+                  labelPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                  labelStyle: TextStyle(
+                    color: AppColors.SECONDARY_COLOR,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  unselectedLabelColor: AppColors.BLACK_COLOR.withOpacity(0.5),
+                  unselectedLabelStyle: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  indicatorColor: AppColors.SECONDARY_COLOR,
+                  indicator: UnderlineTabIndicator(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: AppColors.SECONDARY_COLOR,
+                      width: 2.3,
+                    ),
+                  ),
+                  isScrollable: true,
+                  tabs: [
+                    for (int index = 0; index < 6; index++)
+                      const Text(
+                        'Sarvar' ?? '',
+                      ),
+                  ],
+                ),
               ),
-            ),
-            child: Text(
-              AppStrings.save.tr,
-              style: TextStyle(
-                color: AppColors.WHITE_COLOR,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
+              Expanded(
+                child: TabBarView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    for (int index = 0; index < 6; index++) const AddCostDetailsFields(),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
-        body: Form(
-          key: addCostDetailsFormKey,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w).copyWith(bottom: keyboardPadding != 0.0 ? keyboardPadding : 0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 5.h),
-
-                  ///Amount
-                  TextFormField(
-                    controller: controller.amountController,
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      return controller.validateAmount(value!);
-                    },
-                    keyboardType: TextInputType.number,
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.currency_rupee_rounded, color: AppColors.SECONDARY_COLOR, size: 6.w),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
-                      ),
-                      hintText: AppStrings.enterAmount.tr,
-                      hintStyle: TextStyle(
-                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                    cursorColor: AppColors.SECONDARY_COLOR,
-                  ),
-                  SizedBox(height: 3.h),
-
-                  ///DefaultAmount
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ///₹ 100
-                        TextButton(
-                          onPressed: () {
-                            controller.amountController.text = '100';
-                          },
-                          style: TextButton.styleFrom(
-                            elevation: 4,
-                            backgroundColor: AppColors.SECONDARY_COLOR,
-                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: Text(
-                            '₹ 100',
-                            style: TextStyle(
-                              color: AppColors.WHITE_COLOR,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-                        ///₹ 500
-                        TextButton(
-                          onPressed: () {
-                            controller.amountController.text = '500';
-                          },
-                          style: TextButton.styleFrom(
-                            elevation: 4,
-                            backgroundColor: AppColors.SECONDARY_COLOR,
-                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: Text(
-                            '₹ 500',
-                            style: TextStyle(
-                              color: AppColors.WHITE_COLOR,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-                        ///₹ 1000
-                        TextButton(
-                          onPressed: () {
-                            controller.amountController.text = '1000';
-                          },
-                          style: TextButton.styleFrom(
-                            elevation: 4,
-                            backgroundColor: AppColors.SECONDARY_COLOR,
-                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: Text(
-                            '₹ 1000',
-                            style: TextStyle(
-                              color: AppColors.WHITE_COLOR,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-                        ///₹ 2000
-                        TextButton(
-                          onPressed: () {
-                            controller.amountController.text = '2000';
-                          },
-                          style: TextButton.styleFrom(
-                            elevation: 4,
-                            backgroundColor: AppColors.SECONDARY_COLOR,
-                            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: Text(
-                            '₹ 2000',
-                            style: TextStyle(
-                              color: AppColors.WHITE_COLOR,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 3.h),
-
-                  ///Title of Expenditure
-                  Text(
-                    AppStrings.titleOfExpenditure.tr,
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 0.6.h),
-
-                  ///Title of Expenditure Field
-                  TextFormField(
-                    controller: controller.titleOfExpenditureController,
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      return controller.validateTitleOfExpenditure(value!);
-                    },
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
-                      ),
-                      hintText: AppStrings.titleOfExpenditure.tr,
-                      hintStyle: TextStyle(
-                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                    cursorColor: AppColors.SECONDARY_COLOR,
-                  ),
-                  SizedBox(height: 2.h),
-
-                  ///Note
-                  Text(
-                    AppStrings.note.tr,
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                  SizedBox(height: 0.6.h),
-                  TextFormField(
-                    controller: controller.noteController,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      return controller.validateNote(value!);
-                    },
-                    style: TextStyle(
-                      color: AppColors.SECONDARY_COLOR,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    minLines: 3,
-                    maxLines: 8,
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 2),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.SECONDARY_COLOR, width: 1.5),
-                      ),
-                      hintText: AppStrings.note.tr,
-                      hintStyle: TextStyle(
-                        color: AppColors.BLACK_COLOR.withOpacity(0.5),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                    cursorColor: AppColors.SECONDARY_COLOR,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
       ),
