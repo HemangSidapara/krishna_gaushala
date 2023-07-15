@@ -83,4 +83,21 @@ class AppStrings {
   static String noDataAvailable = 'No data available';
   static String areYouSureYouWantToDeleteThisCostDetails = 'Are you sure, you want to delete this cost details?';
   static String areYouSureYouWantToDeleteThisReceipt = 'Are you sure, you want to delete this receipt?';
+  static String expenseList = 'Expense List';
+  static String medicine = 'Medicine';
+  static String khor = 'Khor';
+  static String majuri = 'Majuri';
+  static String driverSalary = 'Driver Salary';
+  static String buildingMaterials = 'Building Materials';
+  static String gowalPagar = 'Gowal Pagar';
+  static String diesel = 'Diesel';
+  static String other = 'Other';
+  static String selectExpenseType = 'Select expense type';
+  static String pleaseSelectExpenseType = 'Please select expense type.';
+  static String voucherDate = 'Voucher date';
+  static String enterVoucherDate = 'Enter voucher date';
+  static String pleaseEnterVoucherDate = 'Please enter voucher date.';
+  static String expenseType = 'Expense type';
+  static String enterExpenseType = 'Enter expense type';
+  static String pleaseEnterExpenseType = 'Please enter expense type.';
 }

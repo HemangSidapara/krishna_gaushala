@@ -170,25 +170,25 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ///Receipts
-                        GeneratedReceiptsCategoryList(title: AppStrings.receipt.tr, items: controller.receiptList, index: 0),
+                        GeneratedReceiptsCategoryList(title: AppStrings.receipt, items: controller.receiptList, index: 0),
 
                         ///Niran
-                        GeneratedReceiptsCategoryList(title: AppStrings.niran.tr, items: controller.niranList, index: 1),
+                        GeneratedReceiptsCategoryList(title: AppStrings.niran, items: controller.niranList, index: 1),
 
                         ///Gau Dohan
-                        GeneratedReceiptsCategoryList(title: AppStrings.gauDohan.tr, items: controller.gauDohanList, index: 2),
+                        GeneratedReceiptsCategoryList(title: AppStrings.gauDohan, items: controller.gauDohanList, index: 2),
 
                         ///Vahan Vyavastha
-                        GeneratedReceiptsCategoryList(title: AppStrings.vahanVyavastha.tr, items: controller.vahanVyavasthaList, index: 3),
+                        GeneratedReceiptsCategoryList(title: AppStrings.vahanVyavastha, items: controller.vahanVyavasthaList, index: 3),
 
                         ///Sarvar
-                        GeneratedReceiptsCategoryList(title: AppStrings.sarvar.tr, items: controller.sarvarList, index: 4),
+                        // GeneratedReceiptsCategoryList(title: AppStrings.sarvar.tr, items: controller.sarvarList, index: 4),
 
                         ///Makan Bandhkam
-                        GeneratedReceiptsCategoryList(title: AppStrings.makanBandhkam.tr, items: controller.makanBandhkamList, index: 5),
+                        GeneratedReceiptsCategoryList(title: AppStrings.makanBandhkam, items: controller.makanBandhkamList, index: 5),
 
                         ///Band Party
-                        GeneratedReceiptsCategoryList(title: AppStrings.bandParty.tr, items: controller.bandPartyList, index: 6),
+                        GeneratedReceiptsCategoryList(title: AppStrings.bandParty, items: controller.bandPartyList, index: 6),
                       ],
                     ),
                   ),
@@ -233,7 +233,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '$title:',
+              '${title.tr}:',
               style: TextStyle(
                 color: AppColors.SECONDARY_COLOR,
                 fontSize: 12.sp,
@@ -258,7 +258,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
           if (items.isEmpty) ...[
             Center(
               child: Text(
-                'No Data Available',
+                AppStrings.noDataAvailable.tr,
                 style: TextStyle(
                   color: AppColors.SECONDARY_COLOR,
                   fontSize: 12.sp,
@@ -386,8 +386,8 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     controller.amountController.text = items[index].amount ?? '';
                                     controller.nameController.text = items[index].name ?? '';
                                     controller.phoneController.text = items[index].phone ?? '';
+                                    controller.addressController.text = items[index].address ?? '';
                                     if (title == 'Receipt') {
-                                      controller.addressController.text = items[index].address ?? '';
                                       controller.isPurposeFundSelected[0] = items[index].type == 'No' ? false : true;
                                       controller.isPurposeFundSelected[1] = items[index].type1 == 'No' ? false : true;
                                       controller.isPurposeFundSelected[2] = items[index].type2 == 'No' ? false : true;
@@ -559,7 +559,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
                               validator: (value) {
-                                return controller.validateAmount(value!);
+                                return controller.validateAmount(value!, type);
                               },
                               style: TextStyle(
                                 color: AppColors.SECONDARY_COLOR,
@@ -765,52 +765,49 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                 focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                               ),
                             ),
-                            SizedBox(height: 1.5.h),
+                            SizedBox(height: 2.h),
+
+                            ///Address
+                            TextFormField(
+                              controller: controller.addressController,
+                              textInputAction: TextInputAction.done,
+                              decoration: InputDecoration(
+                                hintText: AppStrings.enterYourAddress.tr,
+                                hintStyle: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                labelText: AppStrings.address.tr,
+                                labelStyle: TextStyle(
+                                  color: AppColors.SECONDARY_COLOR,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.SECONDARY_COLOR,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
 
                             ///Receipt Extra Fields
                             if (type == 'Receipt') ...[
                               Obx(() {
                                 return Column(
                                   children: [
-                                    ///Address
-                                    TextFormField(
-                                      controller: controller.addressController,
-                                      textInputAction: TextInputAction.done,
-                                      validator: (value) {
-                                        return controller.validateAddress(value!);
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: AppStrings.enterYourAddress.tr,
-                                        hintStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                        labelText: AppStrings.address.tr,
-                                        labelStyle: TextStyle(
-                                          color: AppColors.SECONDARY_COLOR,
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: AppColors.SECONDARY_COLOR,
-                                            width: 1,
-                                          ),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                            width: 1,
-                                          ),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                      ),
-                                    ),
-                                    SizedBox(height: 3.h),
-
                                     ///Purpose of fund
                                     Align(
                                       alignment: Alignment.centerLeft,
@@ -1151,7 +1148,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                             ],
 
                             ///Niran & Gau Dohan Extra Fields
-                            if (type == 'Niran' || type == 'Gau Dohan') ...[
+                            if (type == 'Niran') ...[
                               TextFormField(
                                 controller: controller.quantityController,
                                 textInputAction: TextInputAction.done,
@@ -1427,7 +1424,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                         color: AppColors.SECONDARY_COLOR,
                         width: 1,
                       ),
-                      fixedSize: Size(35.w, 6.h),
+                      fixedSize: Size(32.w, 6.h),
                     ),
                     child: Text(
                       AppStrings.cancel.tr,
@@ -1438,6 +1435,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                       ),
                     ),
                   ),
+                  SizedBox(width: 3.w),
 
                   ///Delete
                   ElevatedButton(
@@ -1450,7 +1448,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 4,
-                      fixedSize: Size(35.w, 6.h),
+                      fixedSize: Size(32.w, 6.h),
                     ),
                     child: Text(
                       AppStrings.delete.tr,
@@ -1494,11 +1492,11 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
           return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
         }).toList(),
       );
-      controller.sarvarList.addAll(
-        controller.defaultSarvarList.where((e) {
-          return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
-        }).toList(),
-      );
+      // controller.sarvarList.addAll(
+      //   controller.defaultSarvarList.where((e) {
+      //     return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
+      //   }).toList(),
+      // );
       controller.makanBandhkamList.addAll(
         controller.defaultMakanBandhkamList.where((e) {
           return e.name!.toLowerCase().contains(searchedValue.toLowerCase());
@@ -1515,7 +1513,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
       controller.niranList.addAll(controller.defaultNiranList);
       controller.gauDohanList.addAll(controller.defaultGauDohanList);
       controller.vahanVyavasthaList.addAll(controller.defaultVahanVyavasthaList);
-      controller.sarvarList.addAll(controller.defaultSarvarList);
+      // controller.sarvarList.addAll(controller.defaultSarvarList);
       controller.makanBandhkamList.addAll(controller.defaultMakanBandhkamList);
       controller.bandPartyList.addAll(controller.defaultBandPartyList);
     }
@@ -1526,7 +1524,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     controller.niranList.clear();
     controller.gauDohanList.clear();
     controller.vahanVyavasthaList.clear();
-    controller.sarvarList.clear();
+    // controller.sarvarList.clear();
     controller.makanBandhkamList.clear();
     controller.bandPartyList.clear();
   }

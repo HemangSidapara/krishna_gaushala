@@ -35,6 +35,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h).copyWith(top: 0),
         child: ElevatedButton(
           onPressed: () async {
+            FocusManager.instance.primaryFocus?.unfocus();
             await controller.checkPayment(
               key: paymentDetailsFormKey,
               index: widget.index,
@@ -74,11 +75,7 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   validator: (value) {
-                    if (widget.tabList[widget.index].type == 'Niran' || widget.tabList[widget.index].type == 'Gau Dohan') {
-                      if (controller.quantityController.text.trim() == '') {
-                        return controller.validateAmount(value!);
-                      }
-                    } else {
+                    if (widget.tabList[widget.index].type != 'Niran') {
                       return controller.validateAmount(value!);
                     }
                     return null;
@@ -209,6 +206,109 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                 ),
                 SizedBox(height: 5.h),
 
+                ///ExpenseList
+                if (widget.tabList[widget.index].type == 'Expense List') ...[
+                  Obx(() {
+                    return Column(
+                      children: [
+                        DropdownButtonFormField(
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: AppColors.SECONDARY_COLOR,
+                            size: 4.w,
+                          ),
+                          validator: (value) {
+                            return controller.validateExpenseList(value);
+                          },
+                          decoration: InputDecoration(
+                            hintText: AppStrings.selectExpenseType.tr,
+                            hintStyle: TextStyle(
+                              color: AppColors.SECONDARY_COLOR,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.SECONDARY_COLOR,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                          ),
+                          items: [
+                            for (int i = 0; i < controller.expenseList.length; i++)
+                              DropdownMenuItem(
+                                value: i,
+                                child: Text(
+                                  controller.expenseList[i].tr,
+                                  style: TextStyle(
+                                    color: AppColors.SECONDARY_COLOR,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                          ],
+                          onChanged: (value) {
+                            controller.whichExpenseType(value ?? -1);
+                          },
+                        ),
+                        SizedBox(height: 3.h),
+
+                        ///Expense Type
+                        if (controller.whichExpenseType.value == 9) ...[
+                          TextFormField(
+                            controller: controller.expenseTypeController,
+                            textInputAction: TextInputAction.done,
+                            validator: (value) {
+                              return controller.validateExpenseType(value!);
+                            },
+                            decoration: InputDecoration(
+                              hintText: AppStrings.enterExpenseType.tr,
+                              hintStyle: TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              labelText: AppStrings.expenseType.tr,
+                              labelStyle: TextStyle(
+                                color: AppColors.SECONDARY_COLOR,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.SECONDARY_COLOR,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                            ),
+                          ),
+                          SizedBox(height: 3.h),
+                        ],
+                      ],
+                    );
+                  }),
+                ],
+
                 ///Name
                 TextFormField(
                   controller: controller.nameController,
@@ -287,52 +387,49 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
                   ),
                 ),
+                SizedBox(height: 2.h),
+
+                ///Address
+                TextFormField(
+                  controller: controller.addressController,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: AppStrings.enterYourAddress.tr,
+                    hintStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelText: AppStrings.address.tr,
+                    labelStyle: TextStyle(
+                      color: AppColors.SECONDARY_COLOR,
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.SECONDARY_COLOR,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                  ),
+                ),
 
                 ///Receipt Extra Fields
                 if (widget.tabList[widget.index].type == 'Receipt') ...[
                   Obx(() {
                     return Column(
                       children: [
-                        SizedBox(height: 1.5.h),
-
-                        ///Address
-                        TextFormField(
-                          controller: controller.addressController,
-                          textInputAction: TextInputAction.done,
-                          validator: (value) {
-                            return controller.validateAddress(value!);
-                          },
-                          decoration: InputDecoration(
-                            hintText: AppStrings.enterYourAddress.tr,
-                            hintStyle: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelText: AppStrings.address.tr,
-                            labelStyle: TextStyle(
-                              color: AppColors.SECONDARY_COLOR,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.SECONDARY_COLOR,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.BLACK_COLOR.withOpacity(0.6),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
-                          ),
-                        ),
-                        SizedBox(height: 3.h),
+                        SizedBox(height: 2.h),
 
                         ///Purpose of fund
                         Align(
@@ -674,17 +771,14 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                   }),
                 ],
 
-                ///Niran & Gau Dohan Extra Fields
-                if (widget.tabList[widget.index].type == 'Niran' || widget.tabList[widget.index].type == 'Gau Dohan') ...[
+                ///Niran Extra Fields
+                if (widget.tabList[widget.index].type == 'Niran') ...[
                   SizedBox(height: 3.h),
                   TextFormField(
                     controller: controller.quantityController,
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (controller.amountController.text.trim() == '') {
-                        return controller.validateAmount(value!);
-                      }
-                      return null;
+                      return controller.validateQuantity(value!);
                     },
                     decoration: InputDecoration(
                       hintText: AppStrings.enterQuantity.tr,
@@ -717,6 +811,169 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     ),
                   ),
                 ],
+
+                ///Expense List Extra Fields
+                if (widget.tabList[widget.index].type == 'Expense List') ...[
+                  Obx(() {
+                    return Column(
+                      children: [
+                        SizedBox(height: 3.h),
+
+                        ///Voucher Date
+                        TextFormField(
+                          controller: controller.voucherDateController,
+                          textInputAction: TextInputAction.done,
+                          validator: (value) {
+                            return controller.validateVoucherDate(value!);
+                          },
+                          onTap: () async {
+                            final selectedDate = await showDatePickerWidget(context: context);
+                            if (selectedDate != null) {
+                              controller.voucherDateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
+                            }
+                          },
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hintText: AppStrings.enterVoucherDate.tr,
+                            hintStyle: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            labelText: AppStrings.voucherDate.tr,
+                            labelStyle: TextStyle(
+                              color: AppColors.SECONDARY_COLOR,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.SECONDARY_COLOR,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+
+                        ///Cash Type
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            AppStrings.cashType.tr,
+                            style: TextStyle(
+                              color: AppColors.SECONDARY_COLOR,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                        SizedBox(height: 1.h),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                          child: Row(
+                            children: [
+                              ///Cash
+                              Flexible(
+                                child: CashTypeWidget(
+                                    onTap: () {
+                                      controller.resetChequeControllers();
+                                    },
+                                    title: AppStrings.cash.tr,
+                                    index: 0),
+                              ),
+                              SizedBox(width: 3.w),
+
+                              ///Cheque
+                              Flexible(
+                                child: CashTypeWidget(onTap: () {}, title: AppStrings.cheque.tr, index: 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 3.h),
+
+                        ///Cheque Details
+                        if (controller.whichCashType[1]) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              AppStrings.chequeDetails.tr,
+                              style: TextStyle(
+                                color: AppColors.SECONDARY_COLOR,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                          ),
+                          SizedBox(height: 1.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.w),
+                            child: Column(
+                              children: [
+                                ///Cheque Number
+                                TextFormField(
+                                  controller: controller.chequeNumberController,
+                                  textInputAction: TextInputAction.done,
+                                  validator: (value) {
+                                    return controller.validateChequeNumber(value!);
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: AppStrings.enterChequeNumber.tr,
+                                    hintStyle: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    labelText: AppStrings.chequeNumber.tr,
+                                    labelStyle: TextStyle(
+                                      color: AppColors.SECONDARY_COLOR,
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppColors.SECONDARY_COLOR,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                                  ),
+                                ),
+                                SizedBox(height: 3.h),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    );
+                  }),
+                ]
               ],
             ),
           ),

@@ -56,69 +56,71 @@ class _DashboardViewState extends State<DashboardView> {
             child: controller.isLoading.value
                 ? CircularProgressIndicator(color: AppColors.SECONDARY_COLOR)
                 : controller.tabsList.isNotEmpty
-                    ? DefaultTabController(
-                        length: controller.tabsList.length,
-                        child: Column(
-                          children: [
-                            Container(
-                              color: AppColors.PRIMARY_COLOR,
-                              width: double.maxFinite,
-                              alignment: Alignment.center,
-                              child: Text(
-                                AppStrings.asADonationGiftService.tr,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColors.SECONDARY_COLOR,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                    ? Column(
+                        children: [
+                          Container(
+                            color: AppColors.PRIMARY_COLOR,
+                            width: double.maxFinite,
+                            alignment: Alignment.center,
+                            child: Text(
+                              AppStrings.asADonationGiftService.tr,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.SECONDARY_COLOR,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Container(
-                              color: AppColors.PRIMARY_COLOR,
-                              child: TabBar(
-                                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h).copyWith(bottom: 0),
-                                labelPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-                                labelStyle: TextStyle(
+                          ),
+                          Container(
+                            color: AppColors.PRIMARY_COLOR,
+                            child: TabBar(
+                              controller: controller.tabController,
+                              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h).copyWith(bottom: 0),
+                              labelPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                              labelStyle: TextStyle(
+                                color: AppColors.SECONDARY_COLOR,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              unselectedLabelColor: AppColors.BLACK_COLOR.withOpacity(0.5),
+                              unselectedLabelStyle: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              indicatorColor: AppColors.SECONDARY_COLOR,
+                              indicator: UnderlineTabIndicator(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
                                   color: AppColors.SECONDARY_COLOR,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
+                                  width: 2.3,
                                 ),
-                                unselectedLabelColor: AppColors.BLACK_COLOR.withOpacity(0.5),
-                                unselectedLabelStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                indicatorColor: AppColors.SECONDARY_COLOR,
-                                indicator: UnderlineTabIndicator(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
-                                    color: AppColors.SECONDARY_COLOR,
-                                    width: 2.3,
+                              ),
+                              isScrollable: true,
+                              tabs: [
+                                for (int index = 0; index < controller.tabsList.length; index++)
+                                  Text(
+                                    controller.tabsList[index].type.toString().tr ?? '',
+                                    style: TextStyle(
+                                      color: controller.tabsList[index].type == 'Expense List' ? AppColors.ERROR_COLOR : null,
+                                    ),
                                   ),
-                                ),
-                                isScrollable: true,
-                                tabs: [
-                                  for (int index = 0; index < controller.tabsList.length; index++)
-                                    Text(
-                                      controller.tabsList[index].type.toString().tr ?? '',
-                                    ),
-                                ],
-                              ),
+                              ],
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                physics: const BouncingScrollPhysics(),
-                                children: [
-                                  for (int index = 0; index < controller.tabsList.length; index++)
-                                    PaymentDetailsView(
-                                      index: index,
-                                      tabList: controller.tabsList,
-                                    ),
-                                ],
-                              ),
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: controller.tabController,
+                              physics: const BouncingScrollPhysics(),
+                              children: [
+                                for (int index = 0; index < controller.tabsList.length; index++)
+                                  PaymentDetailsView(
+                                    index: index,
+                                    tabList: controller.tabsList,
+                                  ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       )
                     : Text(
                         AppStrings.temporaryServiceIsNotAvailable.tr,

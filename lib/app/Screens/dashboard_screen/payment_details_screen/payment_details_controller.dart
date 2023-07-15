@@ -7,11 +7,14 @@ import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Constants/app_validators.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
+import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PaymentDetailsController extends GetxController {
+  DashboardController dashboardController = Get.put(DashboardController());
+
   TextEditingController amountController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -25,14 +28,33 @@ class PaymentDetailsController extends GetxController {
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController panNumberController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+  TextEditingController voucherDateController = TextEditingController();
+  TextEditingController expenseTypeController = TextEditingController();
+
+  List<String> expenseList = [
+    AppStrings.niran,
+    AppStrings.medicine,
+    AppStrings.khor,
+    AppStrings.majuri,
+    AppStrings.driverSalary,
+    AppStrings.bandParty,
+    AppStrings.buildingMaterials,
+    AppStrings.gowalPagar,
+    AppStrings.diesel,
+    AppStrings.other,
+  ];
+  RxInt whichExpenseType = (-1).obs;
 
   ///validate amount
   String? validateAmount(String value) {
-    if (value.isEmpty) {
-      return AppStrings.pleaseEnterAmount;
-    } else if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
-      return AppStrings.amountIsNumericOnly;
+    if (dashboardController.tabController.index != 1) {
+      if (value.isEmpty) {
+        return AppStrings.pleaseEnterAmount;
+      } else if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+        return AppStrings.amountIsNumericOnly;
+      }
     }
+
     return null;
   }
 
@@ -46,7 +68,7 @@ class PaymentDetailsController extends GetxController {
 
   ///validate phone number
   String? validatePhoneNumber(String value) {
-    if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+    if (!AppValidators.phoneNumberValidator.hasMatch(value) && value.isNotEmpty) {
       return AppStrings.pleaseEnterValidPhoneNumber.tr;
     }
     return null;
@@ -116,6 +138,30 @@ class PaymentDetailsController extends GetxController {
     return null;
   }
 
+  ///validate expense list
+  String? validateExpenseList(int? value) {
+    if (value == null) {
+      return AppStrings.pleaseSelectExpenseType.tr;
+    }
+    return null;
+  }
+
+  ///validate voucher date
+  String? validateVoucherDate(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterVoucherDate.tr;
+    }
+    return null;
+  }
+
+  ///validate expense type
+  String? validateExpenseType(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterExpenseType.tr;
+    }
+    return null;
+  }
+
   Future<void> checkPayment({
     required GlobalKey<FormState> key,
     required int index,
@@ -150,45 +196,15 @@ class PaymentDetailsController extends GetxController {
           );
           return;
 
-        case 'Band Party':
+        case 'Niran':
           await generatePDFApi(
-            url: 'generateBandPartyPdf',
+            url: 'generateNiranPdf',
             params: {
               ApiKeys.name: nameController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
-            },
-          );
-          return;
-
-        case 'Makan Bandhkam':
-          await generatePDFApi(
-            url: 'generateMakanBandhkamPdf',
-            params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.amount: amountController.text,
-            },
-          );
-          return;
-
-        case 'Sarvar':
-          await generatePDFApi(
-            url: 'generateSarvarPdf',
-            params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
-            },
-          );
-          return;
-
-        case 'Vahan Vyavastha':
-          await generatePDFApi(
-            url: 'generateVahanVyavsthaPdf',
-            params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.quantity: quantityController.text,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -200,19 +216,54 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.name: nameController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
-              ApiKeys.quantity: quantityController.text,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
 
-        case 'Niran':
+        case 'Vahan Vyavastha':
           await generatePDFApi(
-            url: 'generateNiranPdf',
+            url: 'generateVahanVyavsthaPdf',
             params: {
               ApiKeys.name: nameController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
-              ApiKeys.quantity: quantityController.text,
+              ApiKeys.address: addressController.text,
+            },
+          );
+          return;
+
+        case 'Makan Bandhkam':
+          await generatePDFApi(
+            url: 'generateMakanBandhkamPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.phone: phoneController.text,
+              ApiKeys.address: addressController.text,
+            },
+          );
+          return;
+
+        case 'Band Party':
+          await generatePDFApi(
+            url: 'generateBandPartyPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.address: addressController.text,
+            },
+          );
+          return;
+
+        case 'Sarvar':
+          await generatePDFApi(
+            url: 'generateSarvarPdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
+              ApiKeys.amount: amountController.text,
             },
           );
           return;

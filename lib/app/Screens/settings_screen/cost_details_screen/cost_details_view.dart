@@ -25,24 +25,24 @@ class _CostDetailsViewState extends State<CostDetailsView> {
       appBar: AppBar(
         backgroundColor: AppColors.PRIMARY_COLOR,
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add_rounded,
-              color: AppColors.SECONDARY_COLOR,
-              size: 7.w,
-            ),
-            onPressed: () {
-              Get.toNamed(
-                Routes.addCostDetails,
-                arguments: {
-                  'isEdit': false,
-                  'editableData': null,
-                },
-              );
-            },
-          )
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(
+        //       Icons.add_rounded,
+        //       color: AppColors.SECONDARY_COLOR,
+        //       size: 7.w,
+        //     ),
+        //     onPressed: () {
+        //       Get.toNamed(
+        //         Routes.addCostDetails,
+        //         arguments: {
+        //           'isEdit': false,
+        //           'editableData': null,
+        //         },
+        //       );
+        //     },
+        //   )
+        // ],
         title: Text(
           AppStrings.costDetails.tr,
           style: TextStyle(

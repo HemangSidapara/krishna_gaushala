@@ -30,7 +30,7 @@ class GeneratedReceiptsController extends GetxController {
   RxList<Niran> defaultNiranList = RxList();
   RxList<GauDohan> defaultGauDohanList = RxList();
   RxList<VahanVyavastha> defaultVahanVyavasthaList = RxList();
-  RxList<Sarvar> defaultSarvarList = RxList();
+  // RxList<Sarvar> defaultSarvarList = RxList();
   RxList<MakanBandhkam> defaultMakanBandhkamList = RxList();
   RxList<BandParty> defaultBandPartyList = RxList();
 
@@ -38,7 +38,7 @@ class GeneratedReceiptsController extends GetxController {
   RxList<Niran> niranList = RxList();
   RxList<GauDohan> gauDohanList = RxList();
   RxList<VahanVyavastha> vahanVyavasthaList = RxList();
-  RxList<Sarvar> sarvarList = RxList();
+  // RxList<Sarvar> sarvarList = RxList();
   RxList<MakanBandhkam> makanBandhkamList = RxList();
   RxList<BandParty> bandPartyList = RxList();
 
@@ -49,8 +49,8 @@ class GeneratedReceiptsController extends GetxController {
   }
 
   ///validate amount
-  String? validateAmount(String value) {
-    if (value.isEmpty) {
+  String? validateAmount(String value, String title) {
+    if (value.isEmpty && title != AppStrings.receipt) {
       return AppStrings.pleaseEnterAmount;
     } else if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
       return AppStrings.amountIsNumericOnly;
@@ -68,7 +68,7 @@ class GeneratedReceiptsController extends GetxController {
 
   ///validate phone number
   String? validatePhoneNumber(String value) {
-    if (!AppValidators.phoneNumberValidator.hasMatch(value)) {
+    if (!AppValidators.phoneNumberValidator.hasMatch(value) && value.isNotEmpty) {
       return AppStrings.pleaseEnterValidPhoneNumber.tr;
     }
     return null;
@@ -149,14 +149,14 @@ class GeneratedReceiptsController extends GetxController {
         defaultNiranList.addAll(response?.data?.niran ?? []);
         defaultGauDohanList.addAll(response?.data?.gauDohan ?? []);
         defaultVahanVyavasthaList.addAll(response?.data?.vahanVyavastha ?? []);
-        defaultSarvarList.addAll(response?.data?.sarvar ?? []);
+        // defaultSarvarList.addAll(response?.data?.sarvar ?? []);
         defaultMakanBandhkamList.addAll(response?.data?.makanBandhkam ?? []);
         defaultBandPartyList.addAll(response?.data?.bandParty ?? []);
         receiptList.addAll(response?.data?.receipt ?? []);
         niranList.addAll(response?.data?.niran ?? []);
         gauDohanList.addAll(response?.data?.gauDohan ?? []);
         vahanVyavasthaList.addAll(response?.data?.vahanVyavastha ?? []);
-        sarvarList.addAll(response?.data?.sarvar ?? []);
+        // sarvarList.addAll(response?.data?.sarvar ?? []);
         makanBandhkamList.addAll(response?.data?.makanBandhkam ?? []);
         bandPartyList.addAll(response?.data?.bandParty ?? []);
       } else {
@@ -211,6 +211,7 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -221,8 +222,8 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.name: nameController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
-              ApiKeys.quantity: quantityController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -234,6 +235,7 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -245,6 +247,7 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -256,6 +259,7 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -267,6 +271,7 @@ class GeneratedReceiptsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.billId: billId,
+              ApiKeys.address: addressController.text,
             },
           );
           return;
@@ -353,14 +358,14 @@ class GeneratedReceiptsController extends GetxController {
     defaultNiranList.clear();
     defaultGauDohanList.clear();
     defaultVahanVyavasthaList.clear();
-    defaultSarvarList.clear();
+    // defaultSarvarList.clear();
     defaultMakanBandhkamList.clear();
     defaultBandPartyList.clear();
     receiptList.clear();
     niranList.clear();
     gauDohanList.clear();
     vahanVyavasthaList.clear();
-    sarvarList.clear();
+    // sarvarList.clear();
     makanBandhkamList.clear();
     bandPartyList.clear();
   }
@@ -380,7 +385,6 @@ class GeneratedReceiptsController extends GetxController {
     bankController.clear();
     branchController.clear();
     accountNumberController.clear();
-    panNumberController.clear();
   }
 
   @override
