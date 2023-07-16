@@ -178,6 +178,44 @@ class SettingsService {
     return deletePdfModelFromJson(response.response.toString());
   }
 
+  Future<DeletePdfModel?> deleteExpensePdfApiService({
+    required String apiUrl,
+    required String spendId,
+  }) async {
+    final params = {
+      ApiKeys.spendId: spendId,
+    };
+    var response = await ApiBaseHelper().postHTTP(
+      ApiUrls.generatePDFApi + apiUrl,
+      showProgress: true,
+      params: params,
+      onError: (error) {
+        Utils.validationCheck(message: error.message);
+      },
+      onSuccess: (res) {
+        SpendAmountModel spendAmountModel = spendAmountModelFromJson(res.response.toString());
+        if (res.statusCode! >= 200 && res.statusCode! <= 299) {
+          if (spendAmountModel.code == '200') {
+            if (kDebugMode) {
+              print('$apiUrl success :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+          } else {
+            if (kDebugMode) {
+              print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
+            }
+            Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+          }
+        } else {
+          if (kDebugMode) {
+            print('$apiUrl error :::: ${jsonDecode(res.response!.data)['msg']}');
+          }
+          Utils.validationCheck(message: jsonDecode(res.response!.data)['msg'], isSuccess: false);
+        }
+      },
+    );
+    return deletePdfModelFromJson(response.response.toString());
+  }
+
   Future<EditSpendsModel?> editSpendAmountApiService({
     required String amount,
     required String spendTo,

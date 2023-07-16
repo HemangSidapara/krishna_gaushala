@@ -2,9 +2,10 @@ import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_binding.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_view.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_binding.dart';
-import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_controller.dart';
 import 'package:krishna_gaushala/app/Screens/login_screen/login_binding.dart';
 import 'package:krishna_gaushala/app/Screens/login_screen/login_view.dart';
+import 'package:krishna_gaushala/app/Screens/otp_screen/otp_binding.dart';
+import 'package:krishna_gaushala/app/Screens/otp_screen/otp_view.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_binding.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/add_cost_details_screen/add_cost_details_view.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_binding.dart';
@@ -43,6 +44,13 @@ class AppPages {
       name: Routes.login,
       page: () => const LoginView(),
       binding: LoginBinding(),
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: transitionDuration,
+    ),
+    GetPage(
+      name: Routes.otpScreen,
+      page: () => const OtpView(),
+      binding: OtpBinding(),
       transition: Transition.rightToLeftWithFade,
       transitionDuration: transitionDuration,
     ),

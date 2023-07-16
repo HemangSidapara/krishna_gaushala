@@ -30,6 +30,7 @@ class GeneratedReceiptsController extends GetxController {
   RxList<Niran> defaultNiranList = RxList();
   RxList<GauDohan> defaultGauDohanList = RxList();
   RxList<VahanVyavastha> defaultVahanVyavasthaList = RxList();
+
   // RxList<Sarvar> defaultSarvarList = RxList();
   RxList<MakanBandhkam> defaultMakanBandhkamList = RxList();
   RxList<BandParty> defaultBandPartyList = RxList();
@@ -38,6 +39,7 @@ class GeneratedReceiptsController extends GetxController {
   RxList<Niran> niranList = RxList();
   RxList<GauDohan> gauDohanList = RxList();
   RxList<VahanVyavastha> vahanVyavasthaList = RxList();
+
   // RxList<Sarvar> sarvarList = RxList();
   RxList<MakanBandhkam> makanBandhkamList = RxList();
   RxList<BandParty> bandPartyList = RxList();
@@ -375,7 +377,7 @@ class GeneratedReceiptsController extends GetxController {
     nameController.clear();
     phoneController.clear();
     addressController.clear();
-    resetControllers();
+    resetChequeControllers();
     quantityController.clear();
   }
 

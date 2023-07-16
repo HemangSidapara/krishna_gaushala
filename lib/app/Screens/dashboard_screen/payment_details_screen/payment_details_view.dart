@@ -348,6 +348,49 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                 ),
                 SizedBox(height: 3.h),
 
+                ///Notes
+                if (widget.tabList[widget.index].type == 'Expense List') ...[
+                  TextFormField(
+                    controller: controller.notesController,
+                    textInputAction: TextInputAction.done,
+                    validator: (value) {
+                      return controller.validateNotes(value!);
+                    },
+                    minLines: 1,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.note.tr,
+                      hintStyle: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      labelText: AppStrings.note.tr,
+                      labelStyle: TextStyle(
+                        color: AppColors.SECONDARY_COLOR,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.SECONDARY_COLOR,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.BLACK_COLOR.withOpacity(0.6),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusColor: AppColors.BLACK_COLOR.withOpacity(0.6),
+                    ),
+                  ),
+                  SizedBox(height: 3.h),
+                ],
+
                 ///PhoneNumber
                 TextFormField(
                   controller: controller.phoneController,

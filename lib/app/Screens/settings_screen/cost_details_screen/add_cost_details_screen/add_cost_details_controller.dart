@@ -4,7 +4,6 @@ import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Constants/app_utils.dart';
 import 'package:krishna_gaushala/app/Constants/app_validators.dart';
 import 'package:krishna_gaushala/app/Network/services/settings_service/settings_service.dart';
-import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_controller.dart';
 import 'package:krishna_gaushala/app/Screens/settings_screen/cost_details_screen/cost_details_model/get_spends_model.dart' as GetSpends;
 
 class AddCostDetailsController extends GetxController {
@@ -155,7 +154,6 @@ class AddCostDetailsController extends GetxController {
       if (response?.code == '200') {
         Get.back(closeOverlays: true);
         Utils.validationCheck(message: response?.msg);
-        await Get.find<CostDetailsController>().checkCostDetails();
       }
     }
   }
@@ -178,7 +176,6 @@ class AddCostDetailsController extends GetxController {
       if (response?.code == '200') {
         Get.back(closeOverlays: true);
         Utils.validationCheck(message: response?.msg);
-        await Get.find<CostDetailsController>().checkCostDetails();
       }
     }
   }

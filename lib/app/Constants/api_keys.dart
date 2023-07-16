@@ -20,4 +20,6 @@ class ApiKeys {
   static const accountNumber = "account_number";
   static const panNumber = "pan_number";
   static const phone = "phone";
+  static const other = "other";
+  static const date = "date";
 }

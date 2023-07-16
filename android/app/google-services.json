@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853133899263",
+    "project_id": "krishna-gaushala-8745a",
+    "storage_bucket": "krishna-gaushala-8745a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853133899263:android:7dd3bcd939daae4a1063ca",
+        "android_client_info": {
+          "package_name": "com.gaushala.krishna_gaushala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853133899263-kf1j0euh0cdh0t6pb27736rvam99hmrl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOmK69JuuOquMBkFhJLV_-pjFspWisSM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853133899263-kf1j0euh0cdh0t6pb27736rvam99hmrl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -30,6 +30,7 @@ class PaymentDetailsController extends GetxController {
   TextEditingController quantityController = TextEditingController();
   TextEditingController voucherDateController = TextEditingController();
   TextEditingController expenseTypeController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
 
   List<String> expenseList = [
     AppStrings.niran,
@@ -162,6 +163,14 @@ class PaymentDetailsController extends GetxController {
     return null;
   }
 
+  ///validate notes
+  String? validateNotes(String value) {
+    if (value.isEmpty) {
+      return AppStrings.pleaseEnterNote.tr;
+    }
+    return null;
+  }
+
   Future<void> checkPayment({
     required GlobalKey<FormState> key,
     required int index,
@@ -267,6 +276,24 @@ class PaymentDetailsController extends GetxController {
             },
           );
           return;
+
+        case 'Expense List':
+          await generatePDFApi(
+            url: 'generateExpensePdf',
+            params: {
+              ApiKeys.name: nameController.text,
+              ApiKeys.phone: phoneController.text,
+              ApiKeys.amount: amountController.text,
+              ApiKeys.address: addressController.text,
+              ApiKeys.type: whichExpenseType.value != -1 ? expenseList[whichExpenseType.value] : '',
+              ApiKeys.other: expenseTypeController.text,
+              ApiKeys.notes: notesController.text,
+              ApiKeys.cash: whichCashType[0] ? 'Yes' : 'No',
+              ApiKeys.chequeNumber: chequeNumberController.text,
+              ApiKeys.date: voucherDateController.text.replaceAll('/', '-'),
+            },
+          );
+          return;
       }
     }
   }
@@ -317,7 +344,6 @@ class PaymentDetailsController extends GetxController {
     bankController.clear();
     branchController.clear();
     accountNumberController.clear();
-    panNumberController.clear();
   }
 
   void resetControllers() {
@@ -327,6 +353,11 @@ class PaymentDetailsController extends GetxController {
     addressController.clear();
     resetChequeControllers();
     quantityController.clear();
+    panNumberController.clear();
+    voucherDateController.clear();
+    expenseTypeController.clear();
+    notesController.clear();
+    whichExpenseType.value = -1;
   }
 
   void disposeControllers() {
@@ -341,5 +372,8 @@ class PaymentDetailsController extends GetxController {
     accountNumberController.dispose();
     panNumberController.dispose();
     quantityController.dispose();
+    notesController.dispose();
+    expenseTypeController.dispose();
+    voucherDateController.dispose();
   }
 }

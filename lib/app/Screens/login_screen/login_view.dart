@@ -135,6 +135,17 @@ class _LoginViewState extends State<LoginView> {
                 ///Button
                 ElevatedButton(
                   onPressed: () async {
+                    // print('+91${controller.usernameController.text}');
+                    // await FirebaseAuth.instance.verifyPhoneNumber(
+                    //   phoneNumber: '+91${controller.usernameController.text}',
+                    //   verificationCompleted: (phoneAuthCredential) {},
+                    //   verificationFailed: (error) {},
+                    //   codeSent: (verificationId, forceResendingToken) {
+                    //     print('codeSent');
+                    //   },
+                    //   codeAutoRetrievalTimeout: (verificationId) {},
+                    // );
+                    // await Get.toNamed(Routes.otpScreen);
                     await controller.checkLogin();
                   },
                   style: ElevatedButton.styleFrom(

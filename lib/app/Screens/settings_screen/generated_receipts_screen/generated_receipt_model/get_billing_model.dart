@@ -58,6 +58,7 @@ class GetBillingModel {
 /// Sarvar : [{"bill_id":"1","name":"Gaurav Patel","amount":"1000","url":"https://digitalpostmaker.in/RadheKrishnaCharitableTrust/AdminPanel/Sarvar/1.pdf","datetime":"2023-06-06 07:20:58"}]
 /// Makan Bandhkam : [{"bill_id":"2","name":"????","amount":"1000","url":"https://digitalpostmaker.in/RadheKrishnaCharitableTrust/AdminPanel/MakanBandhkam/2.pdf","datetime":"2023-06-06 07:20:54"}]
 /// Band Party : [{"bill_id":"1","name":"Gaurav Patel","amount":"1000","url":"https://digitalpostmaker.in/RadheKrishnaCharitableTrust/AdminPanel/BandParty/1.pdf","datetime":"2023-06-06 07:20:22"}]
+/// "Expense List": [{"spend_id": "4","name": "Gaurav","phone": "9316653501","address": "Rajkot","type": "Majuri","other": "","notes": "(10 Roj x 1000rs)","amount": "1000","cash": "Yes","cheque_number": "","datetime": "20-08-2023","url": "https://digitalpostmaker.in/RadheKrishnaCharitableTrust/AdminPanel/Expend/"},]
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
@@ -71,6 +72,7 @@ class Data {
     List<Sarvar>? sarvar,
     List<MakanBandhkam>? makanBandhkam,
     List<BandParty>? bandParty,
+    List<ExpenseList>? expenseList,
   }) {
     _receipt = receipt;
     _niran = niran;
@@ -79,6 +81,7 @@ class Data {
     _sarvar = sarvar;
     _makanBandhkam = makanBandhkam;
     _bandParty = bandParty;
+    _expenseList = expenseList;
   }
 
   Data.fromJson(dynamic json) {
@@ -124,6 +127,12 @@ class Data {
         _bandParty?.add(BandParty.fromJson(v));
       });
     }
+    if (json['Expense List'] != null) {
+      _expenseList = [];
+      json['Expense List'].forEach((v) {
+        _expenseList?.add(ExpenseList.fromJson(v));
+      });
+    }
   }
   List<Receipt>? _receipt;
   List<Niran>? _niran;
@@ -132,6 +141,7 @@ class Data {
   List<Sarvar>? _sarvar;
   List<MakanBandhkam>? _makanBandhkam;
   List<BandParty>? _bandParty;
+  List<ExpenseList>? _expenseList;
   Data copyWith({
     List<Receipt>? receipt,
     List<Niran>? niran,
@@ -140,6 +150,7 @@ class Data {
     List<Sarvar>? sarvar,
     List<MakanBandhkam>? makanBandhkam,
     List<BandParty>? bandParty,
+    List<ExpenseList>? expenseList,
   }) =>
       Data(
         receipt: receipt ?? _receipt,
@@ -149,6 +160,7 @@ class Data {
         sarvar: sarvar ?? _sarvar,
         makanBandhkam: makanBandhkam ?? _makanBandhkam,
         bandParty: bandParty ?? _bandParty,
+        expenseList: expenseList ?? _expenseList,
       );
   List<Receipt>? get receipt => _receipt;
   List<Niran>? get niran => _niran;
@@ -157,6 +169,7 @@ class Data {
   List<Sarvar>? get sarvar => _sarvar;
   List<MakanBandhkam>? get makanBandhkam => _makanBandhkam;
   List<BandParty>? get bandParty => _bandParty;
+  List<ExpenseList>? get expenseList => _expenseList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -180,6 +193,9 @@ class Data {
     }
     if (_bandParty != null) {
       map['Band Party'] = _bandParty?.map((v) => v.toJson()).toList();
+    }
+    if (_expenseList != null) {
+      map['Expense List'] = _expenseList?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -872,6 +888,123 @@ class Receipt {
     map['pan_number'] = _panNumber;
     map['url'] = _url;
     map['datetime'] = _datetime;
+    return map;
+  }
+}
+
+ExpenseList expenseListFromJson(String str) => ExpenseList.fromJson(json.decode(str));
+String expenseListToJson(BandParty data) => json.encode(data.toJson());
+
+class ExpenseList {
+  ExpenseList({
+    String? spendId,
+    String? name,
+    String? phone,
+    String? amount,
+    String? url,
+    String? datetime,
+    String? address,
+    String? type,
+    String? other,
+    String? notes,
+    String? cash,
+    String? chequeNumber,
+  }) {
+    _spendId = spendId;
+    _name = name;
+    _phone = phone;
+    _amount = amount;
+    _url = url;
+    _datetime = datetime;
+    _address = address;
+    _type = type;
+    _other = other;
+    _notes = notes;
+    _cash = cash;
+    _chequeNumber = chequeNumber;
+  }
+
+  ExpenseList.fromJson(dynamic json) {
+    _spendId = json['spend_id'];
+    _name = json['name'];
+    _phone = json['phone'];
+    _amount = json['amount'];
+    _url = json['url'];
+    _datetime = json['datetime'];
+    _address = json['address'];
+    _type = json['type'];
+    _other = json['other'];
+    _notes = json['notes'];
+    _cash = json['cash'];
+    _chequeNumber = json['cheque_number'];
+  }
+  String? _spendId;
+  String? _name;
+  String? _phone;
+  String? _amount;
+  String? _url;
+  String? _datetime;
+  String? _address;
+  String? _type;
+  String? _other;
+  String? _notes;
+  String? _cash;
+  String? _chequeNumber;
+  ExpenseList copyWith({
+    String? spendId,
+    String? name,
+    String? phone,
+    String? amount,
+    String? url,
+    String? datetime,
+    String? address,
+    String? type,
+    String? other,
+    String? notes,
+    String? cash,
+    String? chequeNumber,
+  }) =>
+      ExpenseList(
+        spendId: spendId ?? _spendId,
+        name: name ?? _name,
+        phone: phone ?? _phone,
+        amount: amount ?? _amount,
+        url: url ?? _url,
+        datetime: datetime ?? _datetime,
+        address: address ?? _address,
+        type: type ?? _type,
+        other: other ?? _other,
+        notes: notes ?? _notes,
+        cash: cash ?? _cash,
+        chequeNumber: chequeNumber ?? _chequeNumber,
+      );
+  String? get spendId => _spendId;
+  String? get name => _name;
+  String? get phone => _phone;
+  String? get amount => _amount;
+  String? get url => _url;
+  String? get datetime => _datetime;
+  String? get address => _address;
+  String? get type => _type;
+  String? get other => _other;
+  String? get notes => _notes;
+  String? get cash => _cash;
+  String? get chequeNumber => _chequeNumber;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['spend_id'] = _spendId;
+    map['name'] = _name;
+    map['phone'] = _phone;
+    map['amount'] = _amount;
+    map['url'] = _url;
+    map['datetime'] = _datetime;
+    map['address'] = _address;
+    map['type'] = _type;
+    map['other'] = _other;
+    map['notes'] = _notes;
+    map['cash'] = _cash;
+    map['cheque_number'] = _chequeNumber;
     return map;
   }
 }
