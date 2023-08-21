@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -331,7 +332,12 @@ class PaymentDetailsController extends GetxController {
     );
 
     if (response?.code == '200') {
-      _permissionReady = await _checkPermission();
+      final deviceInfo = await DeviceInfoPlugin().androidInfo;
+      if (deviceInfo.version.sdkInt > 32) {
+        _permissionReady = await _checkPermission1();
+      } else {
+        _permissionReady = await _checkPermission();
+      }
       if (_permissionReady) {
         await _prepareSaveDir();
         print("Downloading");
@@ -379,6 +385,19 @@ class PaymentDetailsController extends GetxController {
     final status = await Permission.storage.status;
     if (status != PermissionStatus.granted) {
       final result = await Permission.storage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _checkPermission1() async {
+    final status = await Permission.manageExternalStorage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.manageExternalStorage.request();
       if (result == PermissionStatus.granted) {
         return true;
       }

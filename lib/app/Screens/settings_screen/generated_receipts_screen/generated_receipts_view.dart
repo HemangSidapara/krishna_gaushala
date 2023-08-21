@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -448,7 +449,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     ),
 
                                     ///Delete
-                                    PopupMenuItem(
+                                    /*PopupMenuItem(
                                       value: 'delete',
                                       child: Text(
                                         AppStrings.delete.tr,
@@ -462,7 +463,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     const PopupMenuItem(
                                       height: 0,
                                       child: PopupMenuDivider(height: 0),
-                                    ),
+                                    ),*/
 
                                     ///View
                                     PopupMenuItem(
@@ -1587,7 +1588,12 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                             size: 7.w,
                           ),
                           onPressed: () async {
-                            _permissionReady = await _checkPermission();
+                            final deviceInfo = await DeviceInfoPlugin().androidInfo;
+                            if (deviceInfo.version.sdkInt > 32) {
+                              _permissionReady = await _checkPermission1();
+                            } else {
+                              _permissionReady = await _checkPermission();
+                            }
                             if (_permissionReady) {
                               await _prepareSaveDir();
                               print("Downloading");
@@ -1664,6 +1670,19 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     final status = await Permission.storage.status;
     if (status != PermissionStatus.granted) {
       final result = await Permission.storage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _checkPermission1() async {
+    final status = await Permission.manageExternalStorage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.manageExternalStorage.request();
       if (result == PermissionStatus.granted) {
         return true;
       }

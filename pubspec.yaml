@@ -53,6 +53,7 @@ dependencies:
   whatsapp_share: ^2.0.1
   printing: ^5.11.0
   pdf: ^3.10.4
+  device_info_plus: ^8.1.0
 
 dev_dependencies:
   flutter_test:
