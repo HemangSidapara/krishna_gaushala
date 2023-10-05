@@ -43,9 +43,6 @@ dependencies:
   url_launcher: ^6.1.11
   intl: ^0.18.1
   syncfusion_flutter_pdfviewer: ^21.2.9
-  firebase_core: ^2.15.0
-  cloud_firestore: ^4.8.3
-  firebase_auth: ^4.7.0
   pinput: ^2.2.31
   shared_preferences: ^2.2.0
   contacts_service: ^0.6.3
