@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:krishna_gaushala/app/Constants/app_colors.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
@@ -10,11 +14,15 @@ import 'package:krishna_gaushala/app/Utils/app_formatter.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
 import 'package:krishna_gaushala/app/Widgets/get_date_widget.dart';
 import 'package:krishna_gaushala/app/Widgets/show_date_picker_widget.dart';
+import 'package:pdf/pdf.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:whatsapp_share/whatsapp_share.dart';
 
 class GeneratedReceiptsView extends StatefulWidget {
   const GeneratedReceiptsView({Key? key}) : super(key: key);
@@ -35,6 +43,9 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
 
   List<ExpansionTileController> expansionControllers = List.generate(7, (index) => ExpansionTileController());
   ScrollController scrollController = ScrollController();
+
+  late String _localPath;
+  late bool _permissionReady;
 
   @override
   void initState() {
@@ -115,8 +126,8 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
         ),
         body: Obx(() {
           if (controller.isLoading.value) {
-            return Center(
-              child: CircularProgressIndicator(color: AppColors.SECONDARY_COLOR),
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.black),
             );
           } else {
             return Column(
@@ -277,7 +288,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () async {
-                      await showViewPdfBottomSheet(url: items[index].url!);
+                      await showViewPdfBottomSheet(url: items[index].url!, phone: items[index].phone);
                     },
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 1.h),
@@ -410,7 +421,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                   } else if (value == 'delete') {
                                     await showDeletePdfDialog(billId: items[index].billId!, type: title);
                                   } else if (value == 'view') {
-                                    await showViewPdfBottomSheet(url: items[index].url);
+                                    await showViewPdfBottomSheet(url: items[index].url, phone: items[index].phone);
                                   }
                                 },
                                 position: PopupMenuPosition.under,
@@ -471,7 +482,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                     ),
 
                                     ///Share
-                                    PopupMenuItem(
+                                    /*PopupMenuItem(
                                       value: 'share',
                                       child: Text(
                                         AppStrings.share.tr,
@@ -481,7 +492,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                   ];
                                 },
                               ),
@@ -1529,7 +1540,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
     controller.bandPartyList.clear();
   }
 
-  showViewPdfBottomSheet({required String url}) async {
+  showViewPdfBottomSheet({required String url, required String phone}) async {
     return await showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -1556,7 +1567,7 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.8.h).copyWith(right: 2.w),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'PDF Viewer',
@@ -1565,6 +1576,49 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       ),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.share_rounded,
+                            color: AppColors.WHITE_COLOR,
+                            size: 7.w,
+                          ),
+                          onPressed: () async {
+                            _permissionReady = await _checkPermission();
+                            if (_permissionReady) {
+                              await _prepareSaveDir();
+                              print("Downloading");
+                              try {
+                                await Dio().download(url, _localPath + "/" + "Gaushala.pdf");
+                                final String localPath = _localPath + "/" + "Gaushala.pdf";
+                                print("Download Completed.");
+                                await WhatsappShare.shareFile(
+                                  text: 'Your receipt is here',
+                                  phone: "91${phone}",
+                                  filePath: [localPath],
+                                );
+                              } catch (e) {
+                                print("Download Failed.\n\n" + e.toString());
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.print_rounded,
+                        color: AppColors.WHITE_COLOR,
+                        size: 7.w,
+                      ),
+                      onPressed: () async {
+                        http.Response response = await http.get(Uri.parse(url));
+                        var pdfData = response.bodyBytes;
+                        await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdfData);
+                      },
                     ),
                     IconButton(
                       icon: Icon(
@@ -1604,5 +1658,33 @@ class _GeneratedReceiptsViewState extends State<GeneratedReceiptsView> {
         );
       },
     );
+  }
+
+  Future<bool> _checkPermission() async {
+    final status = await Permission.storage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.storage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> _prepareSaveDir() async {
+    _localPath = (await _findLocalPath())!;
+
+    print(_localPath);
+    final savedDir = Directory(_localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String?> _findLocalPath() async {
+    return "/storage/emulated/0/Download";
   }
 }

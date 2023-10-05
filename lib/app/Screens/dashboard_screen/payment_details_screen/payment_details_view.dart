@@ -6,7 +6,9 @@ import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/payment_details_screen/payment_details_controller.dart';
 import 'package:krishna_gaushala/app/Utils/app_sizer.dart';
+import 'package:krishna_gaushala/app/Utils/contact_service.dart';
 import 'package:krishna_gaushala/app/Widgets/show_date_picker_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PaymentDetailsView extends StatefulWidget {
   final int index;
@@ -401,6 +403,11 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
                     return controller.validatePhoneNumber(value!);
                   },
                   decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          _askPermissions('/nativeContactPicker');
+                        },
+                        icon: const Icon(Icons.contact_page)),
                     hintText: AppStrings.enterPhoneNumber.tr,
                     hintStyle: TextStyle(
                       fontSize: 10.sp,
@@ -1138,5 +1145,43 @@ class _PaymentDetailsViewState extends State<PaymentDetailsView> {
         ),
       );
     });
+  }
+
+  Future<void> _askPermissions(String routeName) async {
+    PermissionStatus permissionStatus = await _getContactPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      if (routeName != null) {
+        final contact = await ContactsService.openDeviceContactPicker();
+        final mobilePhone = contact?.phones?.firstWhere(
+          (phone) => phone.label?.toLowerCase() == 'mobile',
+        );
+        mobilePhone!.value.toString().replaceAll(' ', '');
+        String? newString = mobilePhone?.value.toString().substring(mobilePhone!.value.toString().length - 10);
+        //controller.selectedNumber.value = newString!;
+        controller.phoneController.text = newString!;
+      }
+    } else {
+      _handleInvalidPermissions(permissionStatus);
+    }
+  }
+
+  Future<PermissionStatus> _getContactPermission() async {
+    PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted && permission != PermissionStatus.permanentlyDenied) {
+      PermissionStatus permissionStatus = await Permission.contacts.request();
+      return permissionStatus;
+    } else {
+      return permission;
+    }
+  }
+
+  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.denied) {
+      final snackBar = SnackBar(content: Text('Access to contact data denied'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      final snackBar = SnackBar(content: Text('Contact data not available on device'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }
