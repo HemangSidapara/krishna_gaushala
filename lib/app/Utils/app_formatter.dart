@@ -41,6 +41,7 @@ extension RupeesGrandTotalFromList on List {
     double totalAmount = 0.0;
     for (var element in this) {
       if (element.amount != '' && element.amount != null) {
+        print(element.amount);
         totalAmount = totalAmount + element.amount!.toString().toDouble();
       }
     }

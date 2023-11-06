@@ -186,20 +186,20 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateReceipePdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.amount: amountController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.address: addressController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.address: addressController.text.trim(),
               ApiKeys.type: isPurposeFundSelected[0] ? 'Yes' : 'No',
               ApiKeys.type1: isPurposeFundSelected[1] ? 'Yes' : 'No',
               ApiKeys.type2: isPurposeFundSelected[2] ? 'Yes' : 'No',
               ApiKeys.cash: whichCashType[0] ? 'Yes' : 'No',
-              ApiKeys.chequeNumber: chequeNumberController.text,
-              ApiKeys.chequeDate: chequeDateController.text,
-              ApiKeys.bank: bankController.text,
-              ApiKeys.branch: branchController.text,
-              ApiKeys.accountNumber: accountNumberController.text,
-              ApiKeys.panNumber: panNumberController.text,
+              ApiKeys.chequeNumber: chequeNumberController.text.trim(),
+              ApiKeys.chequeDate: chequeDateController.text.trim(),
+              ApiKeys.bank: bankController.text.trim(),
+              ApiKeys.branch: branchController.text.trim(),
+              ApiKeys.accountNumber: accountNumberController.text.trim(),
+              ApiKeys.panNumber: panNumberController.text.trim(),
               ApiKeys.billId: billId,
             },
           );
@@ -208,12 +208,12 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateNiranPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
-              ApiKeys.quantity: quantityController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.isNumericOnly ? amountController.text.trim() : '0000',
+              ApiKeys.quantity: quantityController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
@@ -221,11 +221,11 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateGauDohanPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
@@ -233,11 +233,11 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateVahanVyavsthaPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
@@ -245,11 +245,11 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateSarvarPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
@@ -257,11 +257,11 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateMakanBandhkamPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
@@ -269,11 +269,11 @@ class GeneratedReceiptsController extends GetxController {
           await editPDFApi(
             url: 'updateBandPartyPdf',
             params: {
-              ApiKeys.name: nameController.text,
-              ApiKeys.phone: phoneController.text,
-              ApiKeys.amount: amountController.text,
+              ApiKeys.name: nameController.text.trim(),
+              ApiKeys.phone: phoneController.text.trim(),
+              ApiKeys.amount: amountController.text.trim(),
               ApiKeys.billId: billId,
-              ApiKeys.address: addressController.text,
+              ApiKeys.address: addressController.text.trim(),
             },
           );
           return;
