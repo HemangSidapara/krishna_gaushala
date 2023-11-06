@@ -22,4 +22,5 @@ class ApiKeys {
   static const phone = "phone";
   static const other = "other";
   static const date = "date";
+  static const userid = "user_id";
 }

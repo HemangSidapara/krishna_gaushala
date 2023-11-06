@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
 import 'package:krishna_gaushala/app/Network/services/auth_service/login_service.dart';
 import 'package:krishna_gaushala/app/Routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
@@ -39,6 +40,8 @@ class LoginController extends GetxController {
       );
 
       if (response?.code == '200') {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_id', response!.userId.toString());
         Get.toNamed(Routes.dashboard);
       } else {}
     }

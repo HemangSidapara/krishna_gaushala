@@ -1,6 +1,8 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:krishna_gaushala/app/Constants/api_keys.dart';
 import 'package:krishna_gaushala/app/Constants/app_strings.dart';
@@ -9,8 +11,9 @@ import 'package:krishna_gaushala/app/Constants/app_validators.dart';
 import 'package:krishna_gaushala/app/Network/services/dashboard_service/payment_service.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:krishna_gaushala/app/Screens/dashboard_screen/dashboard_model/get_types_model.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:whatsapp_share/whatsapp_share.dart';
 
 class PaymentDetailsController extends GetxController {
   DashboardController dashboardController = Get.put(DashboardController());
@@ -45,6 +48,22 @@ class PaymentDetailsController extends GetxController {
     AppStrings.other,
   ];
   RxInt whichExpenseType = (-1).obs;
+  String? userId;
+
+  late String _localPath;
+  late bool _permissionReady;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getSharedPreference();
+  }
+
+  void getSharedPreference() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('user_id');
+  }
 
   ///validate amount
   String? validateAmount(String value) {
@@ -201,6 +220,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.branch: branchController.text,
               ApiKeys.accountNumber: accountNumberController.text,
               ApiKeys.panNumber: panNumberController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -214,6 +234,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.amount: amountController.text,
               ApiKeys.quantity: quantityController.text,
               ApiKeys.address: addressController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -226,6 +247,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.address: addressController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -238,6 +260,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.address: addressController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -250,6 +273,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.amount: amountController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.address: addressController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -262,6 +286,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
               ApiKeys.address: addressController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -273,6 +298,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.name: nameController.text,
               ApiKeys.phone: phoneController.text,
               ApiKeys.amount: amountController.text,
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -291,6 +317,7 @@ class PaymentDetailsController extends GetxController {
               ApiKeys.cash: whichCashType[0] ? 'Yes' : 'No',
               ApiKeys.chequeNumber: chequeNumberController.text,
               ApiKeys.date: voucherDateController.text.replaceAll('/', '-'),
+              ApiKeys.userid: userId,
             },
           );
           return;
@@ -305,7 +332,29 @@ class PaymentDetailsController extends GetxController {
     );
 
     if (response?.code == '200') {
-      if (phoneController.text.trim() != '') {
+      final deviceInfo = await DeviceInfoPlugin().androidInfo;
+      if (deviceInfo.version.sdkInt > 32) {
+        _permissionReady = await _checkPermission1();
+      } else {
+        _permissionReady = await _checkPermission();
+      }
+      if (_permissionReady) {
+        await _prepareSaveDir();
+        print("Downloading");
+        try {
+          await Dio().download(response!.path!, _localPath + "/" + "Gaushala.pdf");
+          final String localPath = _localPath + "/" + "Gaushala.pdf";
+          print("Download Completed.");
+          await WhatsappShare.shareFile(
+            text: 'Your receipt is here',
+            phone: "91${phoneController.text}",
+            filePath: [localPath],
+          );
+        } catch (e) {
+          print("Download Failed.\n\n" + e.toString());
+        }
+      }
+      /*if (phoneController.text.trim() != '') {
         String contactNo = phoneController.text;
         String waUrl = 'whatsapp://send?phone=+91$contactNo&text=Your receipt is here👇\n${response!.path!}';
         String waWebUrl = 'https://wa.me/+91$contactNo?text=Your receipt is here👇\n${response.path!}';
@@ -327,9 +376,50 @@ class PaymentDetailsController extends GetxController {
         }
       } else {
         await Share.share(response!.path!, subject: 'Share Receipt to person.');
-      }
+      }*/
       resetControllers();
     } else {}
+  }
+
+  Future<bool> _checkPermission() async {
+    final status = await Permission.storage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.storage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _checkPermission1() async {
+    final status = await Permission.manageExternalStorage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.manageExternalStorage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> _prepareSaveDir() async {
+    _localPath = (await _findLocalPath())!;
+
+    print(_localPath);
+    final savedDir = Directory(_localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String?> _findLocalPath() async {
+    return "/storage/emulated/0/Download";
   }
 
   @override
